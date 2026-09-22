@@ -1,0 +1,41 @@
+# Python caches and environments
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.venv/
+venv/
+env/
+.ipynb_checkpoints/
+*.egg-info/
+build/
+dist/
+
+# Editors and operating systems
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Temporary files (keep intentional results and run logs)
+tmp/
+temp/
+*.tmp
+*.temp
+~$*
+*.bak
+
+# Credentials; still inspect staged files before every upload
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+credentials.json
+secrets.json
