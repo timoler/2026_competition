@@ -1,0 +1,73 @@
+{
+  "status": "FAIL",
+  "checks": [
+    {
+      "check": "q2_trajectories_match",
+      "pass": true,
+      "detail": "26 trips"
+    },
+    {
+      "check": "relay_schedule_present",
+      "pass": true,
+      "detail": "2 sorties"
+    },
+    {
+      "check": "relay_agl_limit",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "relay_energy_limit",
+      "pass": true,
+      "detail": "emax=2.5600kWh"
+    },
+    {
+      "check": "relay_soc_consistency",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "relay_backhaul_and_dem",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "relay_sortie_sequence",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "relay_no_conflict",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "relay_speed_sanity",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "continuous_connectivity",
+      "pass": false,
+      "detail": "coverage=98.8363% (35928/36351) uncovered=423"
+    },
+    {
+      "check": "communication_links_present",
+      "pass": true,
+      "detail": ""
+    }
+  ],
+  "uncovered_samples": [
+    "T010@806s",
+    "T010@807s",
+    "T010@808s",
+    "T010@809s",
+    "T010@810s",
+    "T010@811s",
+    "T010@812s",
+    "T010@813s",
+    "T010@814s",
+    "T011@4174s"
+  ],
+  "fine_coverage": 0.988363
+}

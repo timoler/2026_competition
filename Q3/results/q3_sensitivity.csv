@@ -1,0 +1,14 @@
+﻿parameter,value,improved_coverage,demand_points
+relay_agl_m,150.0,0.9559,1339
+relay_agl_m,200.0,0.994,1339
+relay_agl_m,250.0,0.994,1339
+relay_agl_m,300.0,0.994,1339
+los_clearance_m,0.0,0.994,1339
+los_clearance_m,10.0,0.9798,1386
+los_clearance_m,20.0,0.9504,1390
+time_step_s,2.0,0.9756,6691
+time_step_s,5.0,0.9727,2678
+time_step_s,10.0,0.994,1339
+link_margin_db,-3.0,0.9065,1796
+link_margin_db,0.0,0.994,1339
+link_margin_db,3.0,1.0,714

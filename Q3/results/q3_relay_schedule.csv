@@ -1,0 +1,3 @@
+﻿sortie_id,relay_id,energy_component_id,hover_x_m,hover_y_m,hover_lon,hover_lat,hover_altitude_m,agl_m,prep_start_s,takeoff_s,service_start_s,service_end_s,return_s,flight_out_s,flight_back_s,service_duration_s,energy_kwh,return_soc
+S01,R02,ERC-01,322575.159,2544526.435,109.2689029,22.9996314,740.132,300.0,113.7,293.7,745.0,4294.6,4715.9,421.3,421.3,3549.6,1.364847,0.573485
+S02,R01,ERC-02,315675.159,2550826.435,109.2008511,23.0557637,926.091,300.0,0.0,180.0,814.3,6609.5,7213.8,604.3,604.3,5795.2,2.17124,0.321488

@@ -1,0 +1,65 @@
+{
+  "status": "PROVISIONAL_ASSUMPTIONS_NOT_OFFICIAL_FINAL",
+  "version": "q3-scenario-v1",
+  "description": "Q3 通信约束下运输与中继联合调度。官方通信/中继参数全部取自附件(通信链路参数.xlsx / 中继无人机数据.xlsx)，补充假设见 assumptions。",
+
+  "official_communication": {
+    "carrier_frequency_mhz": 2400.0,
+    "system_loss_db": 3.0,
+    "terrain_occlusion_loss_db": 10.0,
+    "receiver_sensitivity_dbm": -98.0,
+    "fading_margin_db": 8.0,
+    "g01": {"tx_power_dbm": 27.0, "antenna_gain_dbi": 12.0, "antenna_height_m": 20.0},
+    "transport": {"tx_power_dbm": 20.0, "antenna_gain_dbi": 3.0},
+    "relay_access": {"tx_power_dbm": 20.0, "antenna_gain_dbi": 6.0},
+    "relay_backhaul": {"tx_power_dbm": 19.0, "antenna_gain_dbi": 8.0}
+  },
+
+  "official_relay": {
+    "type_id": "R",
+    "empty_mass_kg": 21.0,
+    "comm_module_mass_kg": 2.5,
+    "takeoff_mass_kg": 23.5,
+    "cruise_mps": 15.0,
+    "cruise_power_kw": 1.15,
+    "energy_kwh": 3.2,
+    "reserve": 0.20,
+    "prep_s": 180.0,
+    "link_build_s": 30.0,
+    "turnaround_s": 300.0,
+    "ascent_mps": 4.0,
+    "descent_mps": 3.0,
+    "ascent_efficiency": 0.72,
+    "descent_efficiency": 0.0,
+    "hover_power_kw": 1.05,
+    "comm_power_kw": 0.05,
+    "max_hover_agl_m": 300.0,
+    "drones": ["R01", "R02"],
+    "energy_components": {"count": 6, "full_charge_s": 1800.0}
+  },
+
+  "assumptions": {
+    "A1_concurrent_service": "中继无人机可同时为多架运输无人机提供接入服务(题面只限定每架运输机任一时刻由G01或一架中继服务，未限制单中继并发容量)。",
+    "A2_co_located_antennas": "中继接入端与回传端天线同位于悬停三维点(题面未给两端高度差/指向性)。",
+    "A3_need_window": "通信需求窗口=每架次[takeoff_s, return_s]，即爬升/巡航/下降/投送全程；准备阶段停在O01地面与G01零距离视为连通。",
+    "A4_relay_transit": "中继无人机往返途中不提供服务，也无需自身通信保障(题面只要求运输机连续通信)。",
+    "A5_hover_agl": "悬停离地高度统一取上限300m(题面只给上限未给最优值；AGL越大LOS越佳且能量余量充足，故取上限，并对AGL做敏感性)。",
+    "A6_time_step": "中继覆盖/优化的时间轴离散步长取5s；盲区检测用空间事件驱动采样(见model字段)，并对步长做敏感性。",
+    "A7_los_clearance": "视线遮挡判定为地形高程>=视线高程即遮挡，默认无额外净空裕度(clearance=0m)，clearance做敏感性。",
+    "A8_relay_energy_model": "中继能耗=爬升(m*g*h/(eta*3.6e6))+巡航(巡航功率*时间)+悬停(悬停功率*时间)+通信(通信功率*时间)，下降能耗0；爬升高度按 max(航线计划巡航海拔, 悬停海拔)-O01作业海拔 计。"
+  },
+
+  "model": {
+    "gravity_mps2": 9.80665,
+    "time_step_s": 5.0,
+    "cruise_sample_spacing_m": 15.0,
+    "los_clearance_m": 0.0,
+    "relay_agl_m": 300.0,
+    "candidate_grid_spacing_m": 300.0,
+    "terrain_margin_m": 3000.0,
+    "objective": ["minimize_outage", "minimize_relay_drones", "minimize_relay_energy"],
+    "communication_requirement": "运输无人机在[takeoff_s, return_s]内任意时刻必须直连G01或经单架中继两段链路连通"
+  },
+
+  "dem_path": null
+}
