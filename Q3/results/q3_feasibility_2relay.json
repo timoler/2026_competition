@@ -1,14 +1,14 @@
 {
-  "status": "PASS",
-  "strict_feasible": true,
+  "status": "FAIL",
+  "strict_feasible": false,
   "time_step_s": 1,
   "los_spacing_m": 10,
   "total_samples": 36351,
-  "uncovered_samples": 0,
-  "outage_sample_seconds": 0,
-  "coverage": 1.0,
-  "fine_coverage": 1.0,
-  "max_relays": 3,
+  "uncovered_samples": 407,
+  "outage_sample_seconds": 407,
+  "coverage": 0.9888036092542158,
+  "fine_coverage": 0.9888036092542158,
+  "max_relays": 2,
   "checks": [
     {
       "check": "q2_trajectories_match",
@@ -56,36 +56,6 @@
       "detail": ""
     },
     {
-      "check": "relay_backhaul_R03",
-      "pass": true,
-      "detail": ""
-    },
-    {
-      "check": "relay_agl_R03",
-      "pass": true,
-      "detail": ""
-    },
-    {
-      "check": "relay_energy_R03",
-      "pass": true,
-      "detail": ""
-    },
-    {
-      "check": "relay_soc_R03",
-      "pass": true,
-      "detail": ""
-    },
-    {
-      "check": "relay_sequence_R03",
-      "pass": true,
-      "detail": ""
-    },
-    {
-      "check": "relay_conflict_R03",
-      "pass": true,
-      "detail": ""
-    },
-    {
       "check": "relay_backhaul_R02",
       "pass": true,
       "detail": ""
@@ -117,11 +87,11 @@
     },
     {
       "check": "continuous_connectivity",
-      "pass": true,
+      "pass": false,
       "detail": ""
     }
   ],
-  "energy_kwh": 6.471971,
+  "energy_kwh": 4.226613,
   "q2_sha256": {
     ".gitattributes": "a79691a93b46e49ce460c26ef22afcc03d6eca1e63bf2edbc20e96159510f6c9",
     "code\\independent_audit.py": "2fc2cd17a99bbe825924139bd7cc70322a4f7570bf8f62e8c945c653c38b3a0f",
@@ -158,6 +128,56 @@
     "results\\q2_validation.json": "de6a15aa9334f03a63002720c52f7a3ef93c5fda76a0ee22e54acca9a95621e6"
   },
   "qualification": "1-second per-trip grid, not a proof between time samples; summed drone-sample seconds, not wall-clock union",
-  "robust_across_tested_los": true,
-  "resource_scenario": "augmented 3-relay fleet"
+  "search_method": "exhaustive original-lattice static pairs; coordinate refinement; third point best residual cover",
+  "search_scope": "one stationary sortie per relay; original 300m lattice and local x/y/AGL refinement; does not prove continuous-space or multi-sortie infeasibility",
+  "original_candidate_count": 1441,
+  "evaluated_feasible_candidates": 1429,
+  "original_lattice_pair_uncovered": 409,
+  "best_found_uncovered_samples": 407,
+  "global_infeasibility_proven": false,
+  "scenario": "official 2-relay fleet",
+  "schedule": [
+    {
+      "sortie_id": "S01",
+      "relay_id": "R01",
+      "energy_component_id": "ERC-01",
+      "hover_x_m": 315675.158634,
+      "hover_y_m": 2550876.435495,
+      "hover_altitude_m": 920.210144,
+      "hover_lon": 109.2008451399586,
+      "hover_lat": 23.05621517295538,
+      "agl_m": 299.99999995703126,
+      "prep_start_s": 0.3,
+      "takeoff_s": 180.3,
+      "service_start_s": 816.0,
+      "service_end_s": 6611.5,
+      "return_s": 7217.2,
+      "flight_out_s": 605.7,
+      "flight_back_s": 605.7,
+      "service_duration_s": 5795.5,
+      "energy_kwh": 2.172152,
+      "return_soc": 0.32120250000000006
+    },
+    {
+      "sortie_id": "S02",
+      "relay_id": "R02",
+      "energy_component_id": "ERC-02",
+      "hover_x_m": 322575.158634,
+      "hover_y_m": 2546026.435495,
+      "hover_altitude_m": 662.347198,
+      "hover_lon": 109.2687300333302,
+      "hover_lat": 23.013175327239786,
+      "agl_m": 299.9999995136719,
+      "prep_start_s": 140.2,
+      "takeoff_s": 320.2,
+      "service_start_s": 745.0,
+      "service_end_s": 6611.5,
+      "return_s": 7006.3,
+      "flight_out_s": 394.8,
+      "flight_back_s": 394.8,
+      "service_duration_s": 5866.5,
+      "energy_kwh": 2.054461,
+      "return_soc": 0.35798093750000004
+    }
+  ]
 }
