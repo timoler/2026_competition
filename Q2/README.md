@@ -33,16 +33,16 @@ python Q2/code/test_transport.py
 修改/另存 `q2_plan.json` 后，按指定方案重新计算并检查：
 
 ```bash
-python Q2/code/solve.py --plan Q2/results/q2_plan.json --output Q2/results/recomputed
+python Q2/code/solve.py --plan Q2/results/q2_plan.json --output Q2/results/recomputed --config Q2/code/scenario.json
 python Q2/code/validate.py --results Q2/results/recomputed
 ```
 
-每项包含 `trip_id, drone_id, battery_id, box_ids, route, preparation_start_s`。route 只填服务区，O01 自动补全，且应与该架次货箱目的地恰好一致。每个服务区在同架次访问一次。重算尊重指定资源与开始时刻，冲突或超硬时限直接报错，不偷偷修改决策。通过 `--config` 传新配置、`--inputs` 传新数据版本；不要只改同源 CSV 而保留旧 JSON。
+每项包含 `trip_id, drone_id, battery_id, box_ids, route, preparation_start_s`。route 只填服务区，O01 自动补全，且应与该架次货箱目的地恰好一致。每个服务区在同架次访问一次。重算尊重指定资源与开始时刻，冲突或超硬时限直接报错，不偷偷修改决策。`--config` 为必填（正式求解必须显式绑定 `Q2/code/scenario.json`，缺失即报错，不静默退回默认）；`--inputs` 传新数据版本；不要只改同源 CSV 而保留旧 JSON。
 
 重新优化全部组批和资源：
 
 ```bash
-python Q2/code/solve.py
+python Q2/code/solve.py --config Q2/code/scenario.json
 ```
 
 默认单点/多点各 256 个随机种子，再做 5000 次局部改进，约 1—2 分钟，视电脑而异。没有原附件也能基于已提交标准化输入重算。原始数据重新提取入口：
@@ -130,6 +130,7 @@ state = trajectory.position("T001", 1000.0)
 - 唯一物理实现为 `transport_core.py`。Q1/Q3 可以导入，或由协调人迁移至 shared，不能复制为各自修改的公式。共享补充假设尚待队友确认。
 - 最低 SOC 仅比 20% 高约 0.95 个百分点，能耗口径改变可能使方案不可行，必须重新运行。
 - 未考虑通信、中继、气象、避碰或空域约束；最多四站是优化搜索限制。不是实飞操作计划。
+- 局部搜索邻域只含移箱/交换箱/换机型/顺序调整，**未包含新增或拆分架次邻域**。拆分审计（`split` 测试）：当前 26 架次中仅 3 个双站架次（T019/T021/T022）、0 个达 4 站上限，把任一多点架次拆成两个单站架次都会使完工时间与能耗变差（T019 +872 s/+0.99 kWh，T021 +754 s/+0.73 kWh，T022 +1138 s/+1.48 kWh），故未发现拆分改善候选。因此不宣称全局最优。
 - 按用户要求先交 Q3 数据，不含正式论文或全题模板。队友复核通过后再提出 q2 → main PR，本次不发起。
 - 本次优先交付数据，不以图表作为验收条件；figures 目录保留。可选绘图脚本尚未完成渲染验证，不把未生成图表列为成果。
 
