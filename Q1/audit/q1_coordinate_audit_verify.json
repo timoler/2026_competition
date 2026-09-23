@@ -1,0 +1,35 @@
+{
+  "status": "PASS",
+  "checks": [
+    {
+      "name": "utm_conversion",
+      "pass": true,
+      "detail": "max node UTM error=0.000000 m"
+    },
+    {
+      "name": "all_15_service_areas",
+      "pass": true,
+      "detail": "15 areas"
+    },
+    {
+      "name": "outbound_return_symmetry",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "dem_path_bounds_and_nonnegative",
+      "pass": true,
+      "detail": "240 legs"
+    },
+    {
+      "name": "unified_results_complete",
+      "pass": true,
+      "detail": "missing=[]"
+    },
+    {
+      "name": "unified_results_consistent",
+      "pass": true,
+      "detail": "8 configs all feasible"
+    }
+  ]
+}
