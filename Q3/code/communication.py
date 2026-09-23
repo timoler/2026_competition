@@ -14,6 +14,7 @@ from __future__ import annotations
 import math
 
 import numpy as np
+from check_core import independent_los_occluded
 
 
 class LinkBudget:
@@ -78,8 +79,8 @@ class Connectivity:
 
     def _occluded(self, p, q) -> bool:
         """Terrain occlusion of the 3D sight line between two endpoints."""
-        return self.terrain.los_occluded(p[0], p[1], p[2], q[0], q[1], q[2],
-                                         self.spacing, self.clearance)
+        return independent_los_occluded(self.terrain, *p, *q,
+                                         clearance=self.clearance, spacing_m=self.spacing)
 
     def direct_ok(self, p) -> bool:
         occluded = self._occluded(p, self.g01)

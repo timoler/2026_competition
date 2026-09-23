@@ -14,10 +14,10 @@ import math
 import numpy as np
 
 
-def independent_los_occluded(terr, x1, y1, z1, x2, y2, z2, clearance=0.0):
+def independent_los_occluded(terr, x1, y1, z1, x2, y2, z2, clearance=0.0, spacing_m=10.0):
     """True if terrain blocks the 3D sight line (10 m sampling, strict inequality)."""
     d = float(np.hypot(x2 - x1, y2 - y1))
-    n = max(4, int(np.ceil(d / 10.0)) + 1)
+    n = max(4, int(np.ceil(d / spacing_m)) + 1)
     t = np.linspace(0.0, 1.0, n)
     xs = x1 + (x2 - x1) * t
     ys = y1 + (y2 - y1) * t
