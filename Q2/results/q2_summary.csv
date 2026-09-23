@@ -1,0 +1,12 @@
+﻿metric,value
+scenario_status,PROVISIONAL_ASSUMPTIONS_NOT_OFFICIAL_FINAL
+total_boxes,80
+hard_deadline_boxes,31
+total_trips,26
+multipoint_trips,3
+total_energy_kwh,71.44096897841617
+makespan_s,6973.648576672872
+weighted_soft_lateness_s,0
+late_boxes,0
+min_return_soc,0.2094894732576289
+total_operation_s,46538.322280049055

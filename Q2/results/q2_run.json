@@ -1,0 +1,31 @@
+{
+  "python": "3.12.9",
+  "inputs_sha256": "cff97f36029eb6a4c020bb0de296c47e1621f02dd28a860a679a0d0650e557bd",
+  "config_sha256": "e89874b7ac425a9965cd533fea122687f3631aeffdc4f1ee1bd453f05fb857d0",
+  "algorithm": "multi-start greedy insertion",
+  "seed_start": 20260923,
+  "attempts_per_method": 256,
+  "max_stops": 4,
+  "improvement_iterations": 5000,
+  "base_commit_at_run": "8a5504384d5d08ad65b53a6bc31fbc50b55c2ed5",
+  "selected_method": "single_stop_baseline",
+  "selected_seed": 20260980,
+  "before_improvement_objective": [
+    0,
+    7646.002064503854,
+    71.66346028005115,
+    26
+  ],
+  "accepted_improvements": 16,
+  "elapsed_s": 87.09000579999883,
+  "code_sha256": {
+    "independent_audit.py": "2fc2cd17a99bbe825924139bd7cc70322a4f7570bf8f62e8c945c653c38b3a0f",
+    "make_figures.py": "fcdb498ff4b5f292917ef180660b7ad0c27efb9c6bdac3767740cccf4c0537e0",
+    "prepare_data.py": "811160d20831ce2ba7bc6896bb735f2f04f213304d77fcf5da26fc3a1ff62f2e",
+    "solve.py": "aa01b45101dccd021a4b9c66ad6d270c34bf52c8c6bf62169213876ba2ac8f2a",
+    "test_transport.py": "237624e2c47028b4f634c94d818dc83036700269bd4e5f44082faefbefe695c8",
+    "transport_core.py": "0e93769c35a2259f0d9fbcb8a9115f96b4914ee9b0e56e2ba9401bc376d7267f",
+    "utm_interval.py": "81f0d860006bc719afce22080169add4d1e581bb1039786a69d9e97273753deb",
+    "validate.py": "a9821ea9a6f9cb44cf55c69c8bad874d4a40fe40184de278f2012af05ea25bf4"
+  }
+}

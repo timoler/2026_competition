@@ -1,0 +1,14 @@
+test_charge_boundaries (__main__.TransportTests.test_charge_boundaries) ... ok
+test_csv_corruptions_rejected (__main__.TransportTests.test_csv_corruptions_rejected) ... ok
+test_geometry_closed_corner_and_edge (__main__.TransportTests.test_geometry_closed_corner_and_edge) ... ok
+test_payload_limits_and_empty_return (__main__.TransportTests.test_payload_limits_and_empty_return) ... ok
+test_recompute_matches (__main__.TransportTests.test_recompute_matches) ... ok
+test_recompute_rejects_bad_plan (__main__.TransportTests.test_recompute_rejects_bad_plan) ... ok
+test_review_regressions (__main__.TransportTests.test_review_regressions) ... ok
+test_trajectory_all_boundaries (__main__.TransportTests.test_trajectory_all_boundaries) ... ok
+test_two_stop_load_decreases (__main__.TransportTests.test_two_stop_load_decreases) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 1.496s
+
+OK

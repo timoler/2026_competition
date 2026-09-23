@@ -1,0 +1,21 @@
+{
+  "status": "PASS_UNDER_DECLARED_SCENARIO",
+  "boxes": 80,
+  "trips": 26,
+  "segments": 55,
+  "checks": [
+    "coverage",
+    "payload",
+    "volume",
+    "hard_deadlines",
+    "drone_conflicts",
+    "battery_conflicts",
+    "charging",
+    "return_reserve",
+    "decreasing_load",
+    "stage_timestamps",
+    "energy",
+    "summary"
+  ],
+  "note": "Independent CSV arithmetic; not official-assumption approval or terrain certification."
+}
