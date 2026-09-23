@@ -1,0 +1,122 @@
+{
+  "k": 2,
+  "groups": [
+    {
+      "group_id": 1,
+      "blocks": [
+        "B01",
+        "B02",
+        "B03",
+        "B04",
+        "B05",
+        "B06",
+        "B07",
+        "B09",
+        "B10",
+        "B11",
+        "B12"
+      ],
+      "service_ids": [
+        "S001",
+        "S010",
+        "S002",
+        "S003",
+        "S006",
+        "S004",
+        "S005",
+        "S008",
+        "S007",
+        "S009",
+        "S012",
+        "S013",
+        "S014",
+        "S015"
+      ],
+      "n_sites": 14,
+      "n_boxes": 77,
+      "n_trips": 25,
+      "occupancy_s": 45349.89862993738,
+      "transport_energy_kwh": 70.367035,
+      "relay_service_s": 9344.8,
+      "relay_energy_kwh": 3.536087,
+      "transport_drones": {
+        "C": 2,
+        "B": 2,
+        "A": 4
+      },
+      "batteries": {
+        "C": 4,
+        "B": 4,
+        "A": 6
+      },
+      "relay_drones": 2,
+      "relay_modules": 2
+    },
+    {
+      "group_id": 2,
+      "blocks": [
+        "B08"
+      ],
+      "service_ids": [
+        "S011"
+      ],
+      "n_sites": 1,
+      "n_boxes": 3,
+      "n_trips": 1,
+      "occupancy_s": 1188.4236501116588,
+      "transport_energy_kwh": 1.073934,
+      "relay_service_s": 0,
+      "relay_energy_kwh": 0,
+      "transport_drones": {
+        "B": 1
+      },
+      "batteries": {
+        "B": 1
+      },
+      "relay_drones": 0,
+      "relay_modules": 0
+    }
+  ],
+  "total_resources": [
+    {
+      "C": 2,
+      "B": 3,
+      "A": 4
+    },
+    {
+      "C": 4,
+      "B": 5,
+      "A": 6
+    },
+    2,
+    2
+  ],
+  "resource_gap": {
+    "transport_drones": {
+      "A": 0,
+      "B": 1,
+      "C": 0
+    },
+    "batteries": {
+      "A": 0,
+      "B": 1,
+      "C": 0
+    },
+    "relay_drones": 0,
+    "relay_modules": 0
+  },
+  "resource_surplus": {
+    "transport_drones": {
+      "A": 0,
+      "B": 0,
+      "C": 0
+    },
+    "batteries": {
+      "A": 0,
+      "B": 0,
+      "C": 0
+    },
+    "relay_drones": 0,
+    "relay_modules": 4
+  }
+}

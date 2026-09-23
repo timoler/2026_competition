@@ -1,0 +1,4 @@
+﻿scenario,transport_drones,batteries,relay_drones,relay_modules
+Q3集中式,8,14,2,2
+2组分区,9,15,2,2
+3组分区,,,,

@@ -1,0 +1,150 @@
+{
+  "n_service_areas": 15,
+  "n_blocks": 12,
+  "blocks": [
+    {
+      "block_id": "B01",
+      "service_ids": [
+        "S001",
+        "S010"
+      ],
+      "trip_ids": [
+        "T005",
+        "T006",
+        "T016",
+        "T018",
+        "T020",
+        "T021",
+        "T024"
+      ]
+    },
+    {
+      "block_id": "B02",
+      "service_ids": [
+        "S002"
+      ],
+      "trip_ids": [
+        "T007",
+        "T017"
+      ]
+    },
+    {
+      "block_id": "B03",
+      "service_ids": [
+        "S003",
+        "S006"
+      ],
+      "trip_ids": [
+        "T001",
+        "T012",
+        "T019"
+      ]
+    },
+    {
+      "block_id": "B04",
+      "service_ids": [
+        "S004"
+      ],
+      "trip_ids": [
+        "T011"
+      ]
+    },
+    {
+      "block_id": "B05",
+      "service_ids": [
+        "S005",
+        "S008"
+      ],
+      "trip_ids": [
+        "T010",
+        "T015",
+        "T022",
+        "T023",
+        "T025"
+      ]
+    },
+    {
+      "block_id": "B06",
+      "service_ids": [
+        "S007"
+      ],
+      "trip_ids": [
+        "T003"
+      ]
+    },
+    {
+      "block_id": "B07",
+      "service_ids": [
+        "S009"
+      ],
+      "trip_ids": [
+        "T014"
+      ]
+    },
+    {
+      "block_id": "B08",
+      "service_ids": [
+        "S011"
+      ],
+      "trip_ids": [
+        "T013"
+      ]
+    },
+    {
+      "block_id": "B09",
+      "service_ids": [
+        "S012"
+      ],
+      "trip_ids": [
+        "T008"
+      ]
+    },
+    {
+      "block_id": "B10",
+      "service_ids": [
+        "S013"
+      ],
+      "trip_ids": [
+        "T004"
+      ]
+    },
+    {
+      "block_id": "B11",
+      "service_ids": [
+        "S014"
+      ],
+      "trip_ids": [
+        "T002"
+      ]
+    },
+    {
+      "block_id": "B12",
+      "service_ids": [
+        "S015"
+      ],
+      "trip_ids": [
+        "T009",
+        "T026"
+      ]
+    }
+  ],
+  "relay_sharing": {
+    "R02": [
+      "B01",
+      "B02",
+      "B07",
+      "B09",
+      "B10",
+      "B11"
+    ],
+    "R01": [
+      "B02",
+      "B03",
+      "B04",
+      "B05",
+      "B06",
+      "B07",
+      "B12"
+    ]
+  }
+}

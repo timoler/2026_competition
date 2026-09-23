@@ -1,0 +1,60 @@
+{
+  "status": "PASS",
+  "checks": [
+    {
+      "check": "each_service_area_exactly_once",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "no_empty_group",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "multi_site_trips_co_grouped",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "relay_sharing_compatible",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "trip_count_unchanged",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "relay_schedule_unchanged",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "resource_recomputation_matches",
+      "pass": true,
+      "detail": "mismatch=[]"
+    },
+    {
+      "check": "resources_nonnegative",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "gap_calculation_correct",
+      "pass": true,
+      "detail": "drones=1 batt=1 relay=0 modules=0"
+    },
+    {
+      "check": "2group_reproducible",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "3group_infeasible_reproducible",
+      "pass": true,
+      "detail": ""
+    }
+  ]
+}

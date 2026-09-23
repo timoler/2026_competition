@@ -1,0 +1,6 @@
+{
+  "k": 3,
+  "feasible": false,
+  "reason": "relay_sharing_constraint_infeasible",
+  "detail": "中继R01/R02共享关联把11个不可拆块强制同组，剩余仅1个块无法构成3个非空组"
+}

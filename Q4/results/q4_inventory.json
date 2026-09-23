@@ -1,0 +1,14 @@
+{
+  "transport_drones": {
+    "A": 4,
+    "B": 2,
+    "C": 2
+  },
+  "batteries": {
+    "A": 6,
+    "B": 4,
+    "C": 4
+  },
+  "relay_drones": 2,
+  "relay_energy_modules": 6
+}

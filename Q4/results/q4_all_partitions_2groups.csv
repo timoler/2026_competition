@@ -1,0 +1,2 @@
+﻿k,groups,n_trips_per_group,transport_drones,batteries,relay_drones,relay_modules,workload_W,workload_range,workload_cv
+2,"{B01,B02,B03,B04,B05,B06,B07,B09,B10,B11,B12}|{B08}",25;1,"{""C"": 2, ""B"": 3, ""A"": 4}","{""C"": 4, ""B"": 5, ""A"": 6}",2,2,1.0000;0.0000,1.0,1.4142135623730951
