@@ -1,13 +1,17 @@
 # 2026_competition
 
-三人数学建模比赛共享仓库。一个仓库、每问一个分支，验证后合并到 `main`。不建立重复的 deliverables 汇总区。
+三人数学建模比赛共享仓库。**`main` 是唯一正式成果入口**，四问成果分别位于 `Q1/`、`Q2/`、`Q3/`、`Q4/`。不建立重复的 deliverables 汇总区。
 
-## 开赛第一步
+## 成果入口
 
-1. 仓库拥有者在 Settings → Collaborators 邀请两位队友；队友接受后克隆本仓库。
-2. 三人共同填写下面的分工表，指定一人负责论文与合并协调（可以兼任建模）。
-3. 拿到题目后，协调人在 main 上传原始题目、附件和数据，再按实际问题数创建 q1、q2、q3、q4 等分支。只创建实际需要的分支。
-4. 每问负责人切换到对应分支，复制 `模板/Qx/` 为根目录的 `Q1/`、`Q2/` 等，填写 README 后开始工作。
+| 目录 | 问题 | 入口 |
+|---|---|---|
+| `Q1/` | 第一问：单点运输、组批、能耗/时间 | [`Q1/README.md`](Q1/README.md) |
+| `Q2/` | 第二问：多点运输调度与资源分配 | [`Q2/README.md`](Q2/README.md) |
+| `Q3/` | 第三问：通信盲区检测与中继调度 | [`Q3/README.md`](Q3/README.md) |
+| `Q4/` | 第四问：分区与独立资源配置 | [`Q4/README.md`](Q4/README.md) |
+
+每问 `README.md` 是该问唯一成果入口，含目标、方法、数据口径、运行方式、结果、论文图表、复核记录与状态。
 
 ## 三人分工
 
@@ -19,61 +23,40 @@
 
 三个人可以负责四问；每问必须指定一个负责人。论文手是兼任角色，不增加第四个人。分工变化直接更新此表。
 
-## 目录与分支
+## 目录
 
 ```text
-README.md
-上传规范.md
+README.md                # 本文件：成果入口
+上传规范.md               # 工作约定
+BRANCHES.md              # 分支拓扑、归档标签、依赖关系
+consolidate_main.py      # 仓库整合脚本（归档+清理旧分支）
 .gitignore
-模板/Qx/README.md          # 复制后填写，不作为比赛结果
-题目与附件/               # 拿到题目后建立，原件只读
-data/raw/                 # 原始数据，禁止覆盖
-Q1/                       # 在 q1 开发，通过复核后合并 main
-  code/                   # 代码、依赖说明
-  results/                # 处理后数据、结果表、运行记录
-  figures/                # 论文图与必要的分析图
-  README.md               # 本问唯一成果入口
-Q2/                       # 同理，按实际问题数建立
+模板/Qx/README.md         # 复制后填写，不作为比赛结果
+Q1/ Q2/ Q3/ Q4/          # 四问成果
 ```
 
-`main` 保存稳定、已复核的阶段成果及最终版本；未完成实验留在对应问题分支。问题分支是同一共享仓库里的分支，不必各自 Fork。所有人遵守 [上传规范](上传规范.md)。
+## 工作方式（短期分支）
 
-## 日常操作（以 Q1 为例）
-
-首次克隆后，若远程已经有 q1：
-
-```bash
-git clone https://github.com/timoler/2026_competition.git
-cd 2026_competition
-git fetch origin
-git switch --track origin/q1
-```
-
-若尚未创建，由负责人从最新 main 创建（其他问题替换数字）：
+`main` 是唯一正式成果入口。日常开发从 `main` 创建**短期工作分支**，复核合并后删除；**不再维护永久 q1～q4 成果分支链**。
 
 ```bash
 git switch main
 git pull --ff-only origin main
-git switch -c q1
-git push -u origin q1
-```
-
-每次工作前拉取自己分支；提交时明确选择自己的目录：
-
-```bash
-git switch q1
-git pull --ff-only origin q1
+git switch -c work/q1-fix            # 只改自己负责的 Qx 目录
 git add Q1/
 git diff --cached --stat
-git diff --cached
-git commit -m "feat(q1): 完成基线模型并附运行结果"
-git push origin q1
+git commit -m "fix(q1): 修正时间单位并重算结果"
+git push -u origin work/q1-fix
 ```
 
-代码、结果、图和 README 一起更新。通过复核后在 GitHub 发起 `q1 → main` 的 Pull Request（合并请求），由另一位队友检查并合并。不需要额外建审批系统或自动化流水线。
+通过复核后由协调人合并 `main` 并删除工作分支；本地分支是否保留由各人决定。跨问题依赖写明来源文件和采用的提交编号。
 
-## 论文手如何取成果
+## 结果边界（重要）
 
-在 **main** 打开 `Q1/README.md`、`Q2/README.md` 等，先看“当前状态”“最终结果”“论文图表清单”“复核记录”。清单必须链接到具体文件，并给出单位、图注和论文用途。未标记“最终”的稳定阶段结果仍可能更新；不要仅凭文件名认定最终版本。
+- **第三问**：原题两架中继最佳已找到 **407 个中断样本**（覆盖率 98.88%），`global_infeasibility_proven=false`，**未证明全局不可行**；三架增配 R03 在 1 秒网格及 LOS 15/10/5 米检查下通过（0 中断、100%）。
+- **第四问**：结果**适用于增配 R03 情景**，不适用于原题两架中继（原题两架无已验证的严格连续通信方案）。
+- 统一 `main` 只是分支与成果入口整理，**不代表论文证据审查已通过**。各问结果以对应 `Qx/README.md` 标注的状态为准。
 
-尚未合并的内容可切换问题分支查看，但只能作为草稿参考。定稿时记录采用的 main 提交编号，确保正文数值、结果表和图来自同一版本。
+## 历史与归档
+
+旧开发分支 q1～q4 的整理前尖端已归档为标签 `archive/consolidation/<分支>-<时间戳>`，详见 [BRANCHES.md](BRANCHES.md)。所有人遵守 [上传规范](上传规范.md)。
