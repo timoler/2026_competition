@@ -1,0 +1,5 @@
+﻿window,half_sec_uncovered,PASS
+T011_enter_blindspot,0,True
+T011_exit_blindspot,0,True
+R02_west_service_start,0,True
+R02_sortie_switch,0,True

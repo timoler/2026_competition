@@ -1,0 +1,71 @@
+{
+  "checks": [
+    {
+      "check": "physical_relay_count",
+      "pass_": true,
+      "detail": "R01, R02 only (<=2)"
+    },
+    {
+      "check": "r01_energy_limit",
+      "pass_": true,
+      "detail": "R01 energy=2.545846000 (limit 2.56)"
+    },
+    {
+      "check": "r01_return_soc",
+      "pass_": true,
+      "detail": "R01 SOC=0.204423125 (>=0.2)"
+    },
+    {
+      "check": "r01_agl",
+      "pass_": true,
+      "detail": ""
+    },
+    {
+      "check": "r01_backhaul",
+      "pass_": true,
+      "detail": ""
+    },
+    {
+      "check": "r02s_energy_limit",
+      "pass_": true,
+      "detail": "R02s energy=1.485975000"
+    },
+    {
+      "check": "r02s_agl",
+      "pass_": true,
+      "detail": ""
+    },
+    {
+      "check": "r02w_agl",
+      "pass_": true,
+      "detail": ""
+    },
+    {
+      "check": "r02w_backhaul",
+      "pass_": true,
+      "detail": ""
+    },
+    {
+      "check": "r02w_energy_limit",
+      "pass_": true,
+      "detail": "R02w energy=0.670401000"
+    },
+    {
+      "check": "r02_sortie_sequence",
+      "pass_": true,
+      "detail": "R02 west service start=6478.30 <= west_a=6478.30"
+    },
+    {
+      "check": "r02_soc",
+      "pass_": true,
+      "detail": "R02w SOC=0.790499687"
+    },
+    {
+      "check": "relay_components",
+      "pass_": true,
+      "detail": "3 components <= 6"
+    }
+  ],
+  "r01_energy_kwh": 2.545846,
+  "r01_return_soc": 0.204423125
+}

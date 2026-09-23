@@ -1,0 +1,14 @@
+{
+  "uncovered_samples": 407,
+  "coverage": 0.9888036092542158,
+  "status": "FAIL",
+  "intervals": [
+    {
+      "trip_id": "T011",
+      "start_s": 4175.392351884103,
+      "last_sample_s": 4581.392351884103,
+      "end_exclusive_s": 4582.392351884103,
+      "uncovered_samples": 407
+    }
+  ]
+}

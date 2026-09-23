@@ -1,12 +1,16 @@
 {
-  "n_relays_used": 3,
+  "n_relays_used": 2,
+  "n_sorties": 3,
+  "n_components": 3,
   "fine_total": 36351,
   "fine_uncovered": 0,
   "fine_coverage": 1.0,
   "time_step_s": 1,
   "los_spacing_m": 10,
   "strict_feasible": true,
-  "energy_kwh": 6.471971,
+  "energy_kwh": 4.702102,
   "robust_across_tested_los": true,
-  "resource_scenario": "augmented fleet: permits R03; still at most 6 energy components"
+  "resource_scenario": "official 2-relay fleet (R01/R02), R02 two sequential sorties",
+  "joint_makespan_s": 8440.2,
+  "transport_makespan_s": 8197.649
 }

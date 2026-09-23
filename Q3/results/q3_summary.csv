@@ -1,4 +1,4 @@
 ﻿scenario,relays,coverage,outage_s,longest_outage_s,affected_trips,relay_flight_s,relay_work_s,relay_energy_kwh,strict_feasible
-A_no_relay,0,0.6310142774614178,13413,1076,19,0,0,0,False
-B_two_relay_best_found,2,0.9888036092542158,407,407,1,2001.0,14083.0,4.226613,False
-C_three_relay_augmented,3,1.0,0,0,0,3646.0,21516.5,6.471971,True
+A_no_relay,0,0.6310142774614178,13413,1076,19,0.0,0.0,0.0,False
+B_two_relay_static_comparison,2,0.9888036092542158,407,407,1,2001.0,14083.0,4.226613,False
+C_two_relay_joint_final,2,1.0,0,0,0,3646.0,15724.2,4.702102,True

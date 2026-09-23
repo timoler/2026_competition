@@ -37,8 +37,8 @@
       "n_trips": 24,
       "occupancy_s": 43791.46,
       "transport_energy_kwh": 68.270825,
-      "relay_service_s": 17240.5,
-      "relay_energy_kwh": 6.471971,
+      "relay_service_s": 11448.2,
+      "relay_energy_kwh": 4.702102,
       "transport_drones": {
         "C": 2,
         "B": 2,
@@ -49,7 +49,7 @@
         "B": 3,
         "A": 6
       },
-      "relay_drones": 3,
+      "relay_drones": 2,
       "relay_modules": 3
     },
     {
@@ -65,8 +65,8 @@
       "n_trips": 1,
       "occupancy_s": 1558.44,
       "transport_energy_kwh": 2.096211,
-      "relay_service_s": 5795.5,
-      "relay_energy_kwh": 2.172152,
+      "relay_service_s": 7018.5,
+      "relay_energy_kwh": 2.545846,
       "transport_drones": {
         "B": 1
       },
@@ -112,7 +112,7 @@
       "B": 5,
       "A": 6
     },
-    "relay_drones": 4,
+    "relay_drones": 3,
     "relay_modules": 4
   },
   "resource_gap": {
@@ -126,72 +126,72 @@
       "B": 1,
       "C": 0
     },
-    "relay_drones": 2,
+    "relay_drones": 1,
     "relay_modules": 0
   },
-  "gap_sum": 5,
-  "total_resources_sum": 33,
+  "gap_sum": 4,
+  "total_resources_sum": 32,
   "workload_imbalance": 1.0,
   "top10": [
     {
       "partition": "{B01,B02,B03,B04,B05,B06,B09,B10,B11,B12}|{B07}|{B08}",
+      "gap": 4,
+      "total_resources": 32,
+      "imbalance": 1.0
+    },
+    {
+      "partition": "{B01,B02,B03,B04,B05,B06,B07,B09,B10,B11}|{B08}|{B12}",
       "gap": 5,
       "total_resources": 33,
       "imbalance": 1.0
     },
     {
-      "partition": "{B01,B02,B03,B04,B05,B06,B07,B09,B10,B11}|{B08}|{B12}",
-      "gap": 6,
-      "total_resources": 34,
+      "partition": "{B01,B02,B03,B04,B05,B07,B09,B10,B11,B12}|{B06}|{B08}",
+      "gap": 5,
+      "total_resources": 33,
+      "imbalance": 1.0
+    },
+    {
+      "partition": "{B01,B03,B04,B05,B06,B07,B09,B10,B11,B12}|{B02}|{B08}",
+      "gap": 5,
+      "total_resources": 33,
       "imbalance": 1.0
     },
     {
       "partition": "{B01,B02,B03,B04,B05,B06,B07,B09,B10,B12}|{B08}|{B11}",
-      "gap": 6,
+      "gap": 5,
       "total_resources": 34,
       "imbalance": 1.0
     },
     {
       "partition": "{B01,B02,B03,B04,B05,B06,B07,B09,B11,B12}|{B08}|{B10}",
-      "gap": 6,
+      "gap": 5,
       "total_resources": 34,
       "imbalance": 1.0
     },
     {
       "partition": "{B01,B02,B03,B04,B05,B06,B07,B10,B11,B12}|{B08}|{B09}",
-      "gap": 6,
+      "gap": 5,
       "total_resources": 34,
       "imbalance": 1.0
     },
     {
-      "partition": "{B01,B02,B03,B04,B05,B07,B09,B10,B11,B12}|{B06}|{B08}",
-      "gap": 6,
-      "total_resources": 34,
-      "imbalance": 1.0
+      "partition": "{B01,B02,B03,B04,B05,B06,B08,B10,B11,B12}|{B07}|{B09}",
+      "gap": 5,
+      "total_resources": 35,
+      "imbalance": 0.99621
     },
     {
-      "partition": "{B01,B02,B03,B05,B06,B07,B09,B10,B11,B12}|{B04}|{B08}",
-      "gap": 6,
-      "total_resources": 34,
-      "imbalance": 1.0
-    },
-    {
-      "partition": "{B01,B02,B03,B05,B07,B09,B10,B11,B12}|{B04,B06}|{B08}",
-      "gap": 6,
-      "total_resources": 34,
-      "imbalance": 1.0
-    },
-    {
-      "partition": "{B01,B03,B04,B05,B06,B07,B09,B10,B11,B12}|{B02}|{B08}",
-      "gap": 6,
-      "total_resources": 34,
-      "imbalance": 1.0
+      "partition": "{B01,B02,B03,B04,B05,B06,B08,B09,B10,B12}|{B07}|{B11}",
+      "gap": 5,
+      "total_resources": 35,
+      "imbalance": 0.998366
     },
     {
       "partition": "{B01,B02,B03,B04,B05,B06,B08,B09,B11,B12}|{B07}|{B10}",
-      "gap": 6,
+      "gap": 5,
       "total_resources": 35,
-      "imbalance": 0.998945
+      "imbalance": 1.0
     }
   ]
 }

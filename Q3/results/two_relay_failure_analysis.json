@@ -1,0 +1,44 @@
+{
+  "uncovered_samples": 407,
+  "n_failure_trips": 1,
+  "by_trip": {
+    "T011": 407
+  },
+  "n_intervals": 1,
+  "max_continuous_outage": 407,
+  "max_concurrent_drones_in_outage": 1,
+  "reason_counts": {
+    "direct_fail;R01_access_fail;R02_access_fail": 407
+  },
+  "spatial_clusters": 1,
+  "top_spatial_clusters": [
+    {
+      "cluster_x100m": 319500,
+      "cluster_y100m": 2553200,
+      "n_samples": 407,
+      "x_min": 319529.0,
+      "x_max": 319529.0,
+      "y_min": 2553224.7,
+      "y_max": 2553224.7,
+      "z_min": 228.3,
+      "z_max": 239.5,
+      "trips": "T011"
+    }
+  ],
+  "relay_positions": [
+    {
+      "R01": [
+        315675.158634,
+        2550876.435495,
+        920.210144
+      ]
+    },
+    {
+      "R02": [
+        322575.158634,
+        2546026.435495,
+        662.347198
+      ]
+    }
+  ]
+}

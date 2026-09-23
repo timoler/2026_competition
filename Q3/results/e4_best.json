@@ -1,0 +1,41 @@
+{
+  "uncovered_samples": 0,
+  "total_samples": 13413,
+  "coverage": 1.0,
+  "shifts": {
+    "T011": 2320.0,
+    "T015": 1223.0
+  },
+  "relay_windows": {
+    "R01_north": [
+      816,
+      7834.5
+    ],
+    "R02_south": [
+      745,
+      4751.0
+    ],
+    "R02_west": [
+      6490.4,
+      6906.4
+    ]
+  },
+  "relay_energy_kwh": {
+    "R01_north": 2.545832,
+    "R02_south": 1.485975,
+    "R02_west": 0.667928
+  },
+  "relay_serve_counts": {
+    "R01": 10373,
+    "R02south": 2633,
+    "R02west": 407
+  },
+  "r02_west_service_start": 6478.3,
+  "r02_west_arrives_in_time": true,
+  "uncovered_detail": [],
+  "backhaul": {
+    "R01": true,
+    "R02south": true,
+    "R02west": true
+  }
+}

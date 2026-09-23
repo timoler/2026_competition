@@ -1,0 +1,40 @@
+{
+  "checks": [
+    {
+      "check": "deadlines",
+      "pass_": true,
+      "detail": "overdue=[]"
+    },
+    {
+      "check": "box_coverage_exactly_once",
+      "pass_": true,
+      "detail": "80/80 unique"
+    },
+    {
+      "check": "uav_conflict",
+      "pass_": true,
+      "detail": "conflict=[]"
+    },
+    {
+      "check": "uav_count_in_inventory",
+      "pass_": true,
+      "detail": "drone ids/types valid"
+    },
+    {
+      "check": "battery_conflict",
+      "pass_": true,
+      "detail": "conflict=[]"
+    },
+    {
+      "check": "battery_count_in_inventory",
+      "pass_": true,
+      "detail": "battery ids valid"
+    },
+    {
+      "check": "transport_energy_soc_unchanged",
+      "pass_": true,
+      "detail": "geometry unchanged"
+    }
+  ],
+  "overdue_boxes": []
+}

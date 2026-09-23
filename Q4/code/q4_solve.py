@@ -127,13 +127,12 @@ def main():
 
     # write blocks + inventory
     write_blocks(blocks, block_trips, relay_blocks)
-    # 中继情景：原题库存仅 R01/R02 两架；Q3 严格可行性复算(274c677)采用三架
-    # 增配方案(R03)。这里区分「原题库存」与「实际调度架数」，缺口即增配量。
+    # 中继情景：正式 Q3 为两物理中继联合调度（R01 一次悬停 + R02 两次顺序架次），
+    # 已严格验证 100% 连续通信；原题库存 R01/R02 两架。
     relay_fleet = sorted({s["relay_id"] for s in relay})
-    relay_scenario = ("original 2-relay fleet (no verified strict-feasible "
-                      "communication plan)" if len(relay_fleet) <= 2 else
-                      f"augmented {len(relay_fleet)}-relay fleet (R03 added "
-                      f"beyond original 2)")
+    relay_scenario = ("original 2-relay fleet (R01/R02), strict-feasible joint schedule"
+                      if len(relay_fleet) <= 2 else
+                      f"augmented {len(relay_fleet)}-relay fleet")
     (OUT / "q4_inventory.json").write_text(
         json.dumps(dict(transport_drones=dict(inv["transport_drones"]),
                         batteries=dict(inv["batteries"]),
@@ -150,6 +149,7 @@ def main():
         tids = {t["trip_id"] for t in group_trips}
         # relay sorties serving this group = those with any served trip in group
         sorties = [s for s in relay if any(t in tids for t in relay_trips[s["relay_id"]])]
+        physical_relays = len(set(s["relay_id"] for s in sorties))
         return dict(
             n_trips=len(group_trips),
             n_boxes=sum(len(t["box_ids"]) for t in group_trips),
@@ -160,7 +160,8 @@ def main():
             relay_energy=sum(s["energy"] for s in sorties),
             drones=transport_drones(group_trips),
             batteries=batteries(group_trips, type_charge),
-            relay_drones=len(sorties),
+            relay_drones=physical_relays,           # physical relay UAVs (<=2)
+            relay_sorties=len(sorties),             # relay sorties (R01 x1 + R02 x2)
             relay_modules=relay_modules(sorties, inv["relay_module_charge"]))
 
     def transport_drones(g_trips):

@@ -29,7 +29,7 @@
     {
       "check": "relay_schedule_unchanged",
       "pass": true,
-      "detail": "3 relay sorties (R01/R02/R03, augmented)"
+      "detail": "3 relay sorties (R01 x1 + R02 x2, physical relays = 2)"
     },
     {
       "check": "resources_nonnegative",
@@ -39,7 +39,7 @@
     {
       "check": "gap_calculation_correct",
       "pass": true,
-      "detail": "gap_sum=3"
+      "detail": "gap_sum=2"
     },
     {
       "check": "2group_reproducible",

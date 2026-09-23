@@ -13,9 +13,8 @@
   "relay_energy_modules": 6,
   "q3_relay_schedule_fleet": [
     "R01",
-    "R02",
-    "R03"
+    "R02"
   ],
-  "q3_relay_schedule_fleet_count": 3,
-  "relay_scenario": "augmented 3-relay fleet (R03 added beyond original 2)"
+  "q3_relay_schedule_fleet_count": 2,
+  "relay_scenario": "original 2-relay fleet (R01/R02), strict-feasible joint schedule"
 }
