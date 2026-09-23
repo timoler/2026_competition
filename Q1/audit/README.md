@@ -38,5 +38,7 @@
 
 ## 复算前提
 
-两个脚本都需要原始数据目录，且 `code/main.py` 复用 Q2 的 `Terrain`，
-因此**运行 Q1 需要同仓库存在 `Q2/`**（`q1` 分支已包含完整 Q2，见根目录 `README.md` 的分支说明）。
+两个脚本都需要原始数据目录，且 `code/main.py` 复用 `Q2/code/prepare_data.py` 的 `Terrain`
+（见上文第二组审计），因此**运行 Q1 要求同仓库存在 `Q2/`**。
+`q1` 分支已合并 `q2`，检出 `q1` 即可直接运行；只含 `Q1/` 的检出版本会 `ImportError`。
+分支拓扑见根目录 [`BRANCHES.md`](../../BRANCHES.md)。
