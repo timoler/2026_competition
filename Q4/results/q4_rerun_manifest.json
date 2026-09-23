@@ -1,0 +1,13 @@
+{
+  "q3_source_commit": "274c67789d50c52ed58121c256f65b4598d5629d",
+  "input_files_sha256": {
+    "Q2/results/q2_trips.csv": "42cabfa241e561dfb680176013fdfd1a56238e161d5bae68b32815fb4cf41616",
+    "Q2/results/q2_inputs.json": "d195b84436270ab3e41f589138240c3d56c8315583a2877aa416cf938778e070",
+    "Q3/results/q3_relay_schedule.csv": "ff4eb056b383ecb9d420448efe3ffccb8105faeab84cfbb98d5febc7d7a81c73",
+    "Q3/results/q3_communication_links.csv": "c17b1ba81ba2b4ed20d5f9177dd52d78e62965426b2c7130382a22ae31b814b1"
+  },
+  "q4_head_at_run": "c37eba7672bdc63fdfa89e72f6db05e1753e9226",
+  "q3_commit_in_history": true,
+  "q4_validation_status": "PASS",
+  "elapsed_s": 9.442
+}

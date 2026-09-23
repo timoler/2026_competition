@@ -10,5 +10,12 @@
     "C": 4
   },
   "relay_drones": 2,
-  "relay_energy_modules": 6
+  "relay_energy_modules": 6,
+  "q3_relay_schedule_fleet": [
+    "R01",
+    "R02",
+    "R03"
+  ],
+  "q3_relay_schedule_fleet_count": 3,
+  "relay_scenario": "augmented 3-relay fleet (R03 added beyond original 2)"
 }

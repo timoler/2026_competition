@@ -127,11 +127,21 @@ def main():
 
     # write blocks + inventory
     write_blocks(blocks, block_trips, relay_blocks)
+    # 中继情景：原题库存仅 R01/R02 两架；Q3 严格可行性复算(274c677)采用三架
+    # 增配方案(R03)。这里区分「原题库存」与「实际调度架数」，缺口即增配量。
+    relay_fleet = sorted({s["relay_id"] for s in relay})
+    relay_scenario = ("original 2-relay fleet (no verified strict-feasible "
+                      "communication plan)" if len(relay_fleet) <= 2 else
+                      f"augmented {len(relay_fleet)}-relay fleet (R03 added "
+                      f"beyond original 2)")
     (OUT / "q4_inventory.json").write_text(
         json.dumps(dict(transport_drones=dict(inv["transport_drones"]),
                         batteries=dict(inv["batteries"]),
                         relay_drones=inv["relay_drones"],
-                        relay_energy_modules=inv["relay_modules"]),
+                        relay_energy_modules=inv["relay_modules"],
+                        q3_relay_schedule_fleet=relay_fleet,
+                        q3_relay_schedule_fleet_count=len(relay_fleet),
+                        relay_scenario=relay_scenario),
                    ensure_ascii=False, indent=2), encoding="utf-8")
 
     # resource accounting (relaxed relay: duplication)

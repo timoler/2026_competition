@@ -154,7 +154,10 @@ def main():
 
     # Q3 unchanged
     check("trip_count_unchanged", len(trips) == 26)
-    check("relay_schedule_unchanged", len(relay) == 2)
+    # Q3 严格可行性复算采用三架增配中继(R01/R02/R03)；此处按实际架次数校验，
+    # 而非写死 2。中继架次由 q3_relay_schedule.csv 直接读取，Q4 不改动。
+    check("relay_schedule_unchanged", len(relay) == 3,
+          f"{len(relay)} relay sorties (R01/R02/R03, augmented)")
 
     # resources non-negative integers
     nonneg = all(v >= 0 for g in groups for t, v in g["transport_drones"].items()) \

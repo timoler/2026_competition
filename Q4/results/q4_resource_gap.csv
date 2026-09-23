@@ -1,4 +1,4 @@
 ﻿scenario,feasible,transport_drones,batteries,relay_drones,relay_modules,inventory_drones,inventory_batteries,inventory_relay_drones,inventory_relay_modules,gap_drones,gap_batteries,gap_relay_drones,gap_relay_modules,note
-Q3集中式,True,8,14,2,2,8,14,2,6,0,0,0,0,
-2组分区,True,9,15,2,2,8,14,2,6,1,1,0,0,
-3组分区,True,10,16,3,3,8,14,2,6,2,2,1,0,
+Q3集中式,True,8,14,3,3,8,14,2,6,0,0,1,0,
+2组分区,True,9,15,3,3,8,14,2,6,1,1,1,0,
+3组分区,True,10,15,4,4,8,14,2,6,2,1,2,0,
