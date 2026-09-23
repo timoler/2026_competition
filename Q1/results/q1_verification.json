@@ -1,34 +1,30 @@
 {
-  "checked_flights": 148,
-  "plans": 8,
-  "baseline_count_lower_bound": 18,
-  "baseline_count": 18,
-  "site_lower_bounds": {
-    "S001": 2,
-    "S002": 2,
-    "S003": 2,
-    "S004": 1,
-    "S005": 1,
-    "S006": 1,
-    "S007": 1,
-    "S008": 1,
-    "S009": 1,
-    "S010": 1,
-    "S011": 1,
-    "S012": 1,
-    "S013": 1,
-    "S014": 1,
-    "S015": 1
-  },
+  "status": "PASS",
   "checks": [
-    "80 boxes exactly once per plan",
-    "destination, mass, volume",
-    "independent energy and time recomputation",
-    "return energy reserve",
-    "18-flight analytic lower bound met"
-  ],
-  "limits": [
-    "Uses exported geometry; geometric model assumptions are not independently proven by this check.",
-    "Energy formula completion is a modeling assumption."
+    {
+      "check": "utm_coordinates",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "leg_geometry_independent",
+      "pass": true,
+      "detail": "max dist diff=0.00e+00 m, max dem diff=0.00e+00 m"
+    },
+    {
+      "check": "max_payload_independent",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "batches_mass_volume_energy_time_reserve",
+      "pass": true,
+      "detail": "148 trip records"
+    },
+    {
+      "check": "submission_rows",
+      "pass": true,
+      "detail": ""
+    }
   ]
 }

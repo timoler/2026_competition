@@ -1,15 +1,18 @@
-"""Q1 reproducible exact grouped-count DP; numpy, Pillow, openpyxl, pyproj required.
-Usage: python solve_q1.py '/path/to/D题'
-Horizontal coordinates use WGS84 / UTM Zone 49N (EPSG:32649), shared with Q2/Q3.
+"""Q1 reproducible exact grouped-count DP; numpy, scipy, openpyxl, pyproj required.
+Usage: python main.py '/path/to/D题'
+Horizontal coordinates use WGS84 / UTM Zone 49N (EPSG:32649); the DEM path reuses
+Q2's verified UTM-straight-line traversal (Q2/code/prepare_data.py.Terrain).
 Energy decompositions remain declared modeling assumptions.
 """
 from pathlib import Path
 import sys, math, csv, json, hashlib, itertools
 from functools import lru_cache
 import numpy as np
-from PIL import Image
 import openpyxl
 from pyproj import Transformer
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "Q2" / "code"))
+from prepare_data import Terrain  # reuse Q2's verified UTM-straight-line DEM traversal
 
 SRC = Path(sys.argv[1]) if len(sys.argv)>1 else Path(__file__).resolve().parents[2] / 'data/raw/D题'
 OUT = Path(__file__).resolve().parents[1] / 'results'
@@ -37,37 +40,29 @@ utm = Transformer.from_crs(4326, 32649, always_xy=True)
 for key, n in nodes.items():
     n['x_m'], n['y_m'] = utm.transform(n['lon'], n['lat'])
     n['work_z'] = n['z'] + (0 if key == 'O01' else 30)
-im=Image.open(next(SRC.rglob('*.tif')));dem=np.asarray(im);tag=im.tag_v2
-sx,sy,_=tag[33550]; _,_,_,lon0,lat0,_=tag[33922]
-assert tag[34735][-1]==4326 and 1025 in tag[34735]
-# GeoKey 1025=2 is RasterPixelIsPoint: tiepoint is center, outer corner shifted 1/2 pixel.
-geokeys={tag[34735][i]:tag[34735][i+3] for i in range(4,len(tag[34735]),4)}
-assert geokeys[1025]==2
-def grid(n): return ((n['lon']-lon0)/sx+.5,(lat0-n['lat'])/sy+.5)
-def crossed_cells(p,q):
-    x,y=p;dx=q[0]-x;dy=q[1]-y; ts=[0.,1.]
-    for start,d in [(x,dx),(y,dy)]:
-        if abs(d)>1e-14:
-            lo,hi=sorted([start,start+d])
-            ts.extend((k-start)/d for k in range(math.ceil(lo),math.floor(hi)+1) if 0<(k-start)/d<1)
-    ts=sorted(set(ts));cells=set()
-    for t in ts+[(u+v)/2 for u,v in zip(ts,ts[1:])]:
-        xx=x+t*dx; yy=y+t*dy
-        cc={math.floor(xx)};rr={math.floor(yy)}
-        if abs(xx-round(xx))<1e-9: cc.update([round(xx)-1,round(xx)])
-        if abs(yy-round(yy))<1e-9: rr.update([round(yy)-1,round(yy)])
-        cells.update((r,c) for r in rr for c in cc)
-    for r,c in cells: assert 0<=r<dem.shape[0] and 0<=c<dem.shape[1]
-    return cells
-legs={}
-for i,j in itertools.permutations(nodes,2):
-    ni,nj=nodes[i],nodes[j]; cells=crossed_cells(grid(ni),grid(nj)); zs=[float(dem[r,c]) for r,c in cells]
-    assert min(zs)>-1000 and all(math.isfinite(z) for z in zs)
-    H=max(zs)+50
-    legs[i,j]=dict(start=i,end=j,distance_m=math.hypot(nj['x_m']-ni['x_m'],nj['y_m']-ni['y_m']),terrain_max_m=max(zs),cruise_m=H,up_m=H-ni['work_z'],down_m=H-nj['work_z'],cells=len(cells))
-    assert legs[i,j]['up_m']>=0 and legs[i,j]['down_m']>=0
-save('q1_legs.csv',list(legs.values()))
-save('q1_nodes.csv',[dict(id=k,**v) for k,v in nodes.items()])
+
+
+def source(name):
+    found = list(SRC.rglob(name))
+    if len(found) != 1:
+        raise ValueError(f"Expected exactly one {name}: {found}")
+    return found[0]
+
+
+# DEM path: shared UTM-straight-line traversal (identical to Q2/Q3), reading the .mat.
+terrain = Terrain(source('镇龙乡及周边30米DEM.mat'))
+legs = {}
+for i, j in itertools.permutations(nodes, 2):
+    ni, nj = nodes[i], nodes[j]
+    peak, count = terrain.maximum((ni['x_m'], ni['y_m']), (nj['x_m'], nj['y_m']))
+    H = peak + 50
+    legs[i, j] = dict(start=i, end=j,
+                      distance_m=math.hypot(nj['x_m'] - ni['x_m'], nj['y_m'] - ni['y_m']),
+                      terrain_max_m=peak, cruise_m=H,
+                      up_m=H - ni['work_z'], down_m=H - nj['work_z'], cells=count)
+    assert legs[i, j]['up_m'] >= 0 and legs[i, j]['down_m'] >= 0
+save('q1_legs.csv', list(legs.values()))
+save('q1_nodes.csv', [dict(id=k, **v) for k, v in nodes.items()])
 def leg_perf(i,j,k,q):
     g=models[k];l=legs[i,j]
     assert -1e-9<=q<=g['Q']+1e-9

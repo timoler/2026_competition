@@ -34,9 +34,9 @@
 ## 3. 数据处理
 
 - 原始来源：协调人应将官方 `D题` 文件夹原样放置于 `data/raw/D题/`；程序也允许通过第一个命令行参数指定其他只读路径。
-- 输入：节点与服务区、物资需求与逐箱清单、运输无人机参数、30米DEM GeoTIFF。
+- 输入：节点与服务区、物资需求与逐箱清单、运输无人机参数、30米DEM（.mat，与 Q2 同一份）。
 - 规模：1个中心、15个服务区、3种机型、80个货箱；货箱总质量758 kg、总体积2.011 m³。
-- 水平坐标：WGS84 / UTM Zone 49N（EPSG:32649），与 Q2/Q3 统一；DEM 仍为 WGS84（EPSG:4326），按像元中心解释；直线穿越像元采用边界切分并保守计入接触像元。
+- 水平坐标：WGS84 / UTM Zone 49N（EPSG:32649），与 Q2/Q3 统一；DEM 为 WGS84（EPSG:4326），航段按 UTM 直线逆投影至 DEM 栅格、以边界切分保守计入接触像元（复用 Q2/code/prepare_data.py.Terrain，与 Q2 完全一致）。
 - 数据校验：`results/q1_source_hashes.json` 记录本次运行所用原始文件SHA-256，但不上传原件副本。
 
 主要输出：
@@ -49,7 +49,7 @@
 
 ## 4. 运行方式
 
-已运行环境：Python 3.12.14、NumPy 2.3.5、Pillow 12.3.0、openpyxl 3.1.5。算法为确定性枚举与动态规划，无随机种子。
+已运行环境：Python 3.12.14、NumPy、SciPy、openpyxl、pyproj、mpmath。算法为确定性枚举与动态规划，无随机种子。
 
 ```bash
 python -m pip install -r Q1/code/requirements.txt
