@@ -1,0 +1,125 @@
+{
+  "geometry": {
+    "max_distance_diff_m": -0.692,
+    "max_distance_diff_site": "S012",
+    "max_distance_diff_pct": -0.0094,
+    "max_dem_diff_m": 0.0,
+    "max_dem_diff_site": ""
+  },
+  "model_comparison": [
+    {
+      "reserve": "0.1",
+      "priority": "时间_架次_能耗",
+      "old_trips": "18",
+      "new_trips": "18",
+      "old_energy_kwh": 59.13226032599277,
+      "new_energy_kwh": 59.130796486658255,
+      "energy_diff_kwh": -0.001464,
+      "energy_diff_pct": -0.0025,
+      "old_operation_s": 32776.5167822769,
+      "new_operation_s": 32776.09267694372,
+      "operation_diff_s": -0.424
+    },
+    {
+      "reserve": "0.15",
+      "priority": "时间_架次_能耗",
+      "old_trips": "18",
+      "new_trips": "18",
+      "old_energy_kwh": 59.13226032599277,
+      "new_energy_kwh": 59.130796486658255,
+      "energy_diff_kwh": -0.001464,
+      "energy_diff_pct": -0.0025,
+      "old_operation_s": 32776.5167822769,
+      "new_operation_s": 32776.09267694372,
+      "operation_diff_s": -0.424
+    },
+    {
+      "reserve": "0.2",
+      "priority": "时间_架次_能耗",
+      "old_trips": "18",
+      "new_trips": "18",
+      "old_energy_kwh": 59.13226032599277,
+      "new_energy_kwh": 59.130796486658255,
+      "energy_diff_kwh": -0.001464,
+      "energy_diff_pct": -0.0025,
+      "old_operation_s": 32776.5167822769,
+      "new_operation_s": 32776.09267694372,
+      "operation_diff_s": -0.424
+    },
+    {
+      "reserve": "0.2",
+      "priority": "架次_时间_能耗",
+      "old_trips": "18",
+      "new_trips": "18",
+      "old_energy_kwh": 59.13226032599277,
+      "new_energy_kwh": 59.130796486658255,
+      "energy_diff_kwh": -0.001464,
+      "energy_diff_pct": -0.0025,
+      "old_operation_s": 32776.5167822769,
+      "new_operation_s": 32776.09267694372,
+      "operation_diff_s": -0.424
+    },
+    {
+      "reserve": "0.2",
+      "priority": "架次_能耗_时间",
+      "old_trips": "18",
+      "new_trips": "18",
+      "old_energy_kwh": 59.13226032599277,
+      "new_energy_kwh": 59.130796486658255,
+      "energy_diff_kwh": -0.001464,
+      "energy_diff_pct": -0.0025,
+      "old_operation_s": 32776.5167822769,
+      "new_operation_s": 32776.09267694372,
+      "operation_diff_s": -0.424
+    },
+    {
+      "reserve": "0.2",
+      "priority": "能耗_架次_时间",
+      "old_trips": "19",
+      "new_trips": "19",
+      "old_energy_kwh": 59.03487773780201,
+      "new_energy_kwh": 59.03341380679974,
+      "energy_diff_kwh": -0.001464,
+      "energy_diff_pct": -0.0025,
+      "old_operation_s": 34440.48875202747,
+      "new_operation_s": 34440.065206685635,
+      "operation_diff_s": -0.424
+    },
+    {
+      "reserve": "0.25",
+      "priority": "时间_架次_能耗",
+      "old_trips": "19",
+      "new_trips": "19",
+      "old_energy_kwh": 61.165654738860425,
+      "new_energy_kwh": 61.16420277947536,
+      "energy_diff_kwh": -0.001452,
+      "energy_diff_pct": -0.0024,
+      "old_operation_s": 34560.15844562943,
+      "new_operation_s": 34559.740688117025,
+      "operation_diff_s": -0.418
+    },
+    {
+      "reserve": "0.3",
+      "priority": "时间_架次_能耗",
+      "old_trips": "20",
+      "new_trips": "20",
+      "old_energy_kwh": 67.2287315236232,
+      "new_energy_kwh": 67.22708633206148,
+      "energy_diff_kwh": -0.001645,
+      "energy_diff_pct": -0.0024,
+      "old_operation_s": 36586.686323583126,
+      "new_operation_s": 36586.26912606206,
+      "operation_diff_s": -0.417
+    }
+  ],
+  "trips_changed": false,
+  "max_energy_diff_pct": 0.0025,
+  "max_operation_diff_s": 0.424,
+  "max_payload": {
+    "reachability_flips": [],
+    "max_payload_diff_kg": 0.013853,
+    "max_payload_diff_site": "S012/C@0.3"
+  },
+  "batch_identical": true,
+  "verdict": "CASE A"
+}
