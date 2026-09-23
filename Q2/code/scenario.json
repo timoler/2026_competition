@@ -1,0 +1,15 @@
+{
+  "status": "PROVISIONAL_ASSUMPTIONS_NOT_OFFICIAL_FINAL",
+  "version": "q2-scenario-v1",
+  "horizontal_model": "Euse*d/(L0-(L0-LF)*(cargo/Q)^1.5)",
+  "climb_model": "(empty_mass_including_battery+cargo)*g*h/(eta*3.6e6)",
+  "horizontal_multiplier": 1.0,
+  "climb_multiplier": 1.0,
+  "gravity_mps2": 9.80665,
+  "turnaround_s": 0.0,
+  "reserve_override": null,
+  "delivery_event": "handover_complete",
+  "battery_occupancy_from": "preparation_start",
+  "charging": "unlimited_parallel_same_type_full_before_reuse",
+  "objective": ["hard_feasibility", "weighted_soft_lateness", "makespan_s", "energy_kwh", "trip_count"]
+}

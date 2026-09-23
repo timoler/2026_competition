@@ -1,0 +1,371 @@
+[
+  {
+    "trip_id": "T001",
+    "drone_id": "U07",
+    "battery_id": "BAT-C-01",
+    "box_ids": [
+      "S006-WAT-01",
+      "S006-MED-01",
+      "S006-WAT-02",
+      "S006-HYG-01",
+      "S006-WAT-03"
+    ],
+    "route": [
+      "S006"
+    ],
+    "preparation_start_s": 0.0
+  },
+  {
+    "trip_id": "T002",
+    "drone_id": "U05",
+    "battery_id": "BAT-B-01",
+    "box_ids": [
+      "S014-MED-01",
+      "S014-WAT-01",
+      "S014-FOD-01"
+    ],
+    "route": [
+      "S014"
+    ],
+    "preparation_start_s": 0.0
+  },
+  {
+    "trip_id": "T003",
+    "drone_id": "U08",
+    "battery_id": "BAT-C-02",
+    "box_ids": [
+      "S007-MED-01",
+      "S007-WAT-01",
+      "S007-WAT-02",
+      "S007-FOD-01",
+      "S007-HYG-01"
+    ],
+    "route": [
+      "S007"
+    ],
+    "preparation_start_s": 0.0
+  },
+  {
+    "trip_id": "T004",
+    "drone_id": "U06",
+    "battery_id": "BAT-B-02",
+    "box_ids": [
+      "S013-MED-01",
+      "S013-WAT-01",
+      "S013-FOD-01"
+    ],
+    "route": [
+      "S013"
+    ],
+    "preparation_start_s": 0.0
+  },
+  {
+    "trip_id": "T005",
+    "drone_id": "U07",
+    "battery_id": "BAT-C-03",
+    "box_ids": [
+      "S001-MED-01",
+      "S001-MED-02",
+      "S001-WAT-01",
+      "S001-WAT-07",
+      "S001-WAT-04",
+      "S001-WAT-08"
+    ],
+    "route": [
+      "S001"
+    ],
+    "preparation_start_s": 1495.5595259403467
+  },
+  {
+    "trip_id": "T006",
+    "drone_id": "U01",
+    "battery_id": "BAT-A-01",
+    "box_ids": [
+      "S010-WAT-01",
+      "S010-MED-01"
+    ],
+    "route": [
+      "S010"
+    ],
+    "preparation_start_s": 0.0
+  },
+  {
+    "trip_id": "T007",
+    "drone_id": "U08",
+    "battery_id": "BAT-C-04",
+    "box_ids": [
+      "S002-MED-01",
+      "S002-WAT-01",
+      "S002-WAT-03",
+      "S002-WAT-04",
+      "S002-FOD-02",
+      "S002-WAT-02"
+    ],
+    "route": [
+      "S002"
+    ],
+    "preparation_start_s": 1907.5754478361766
+  },
+  {
+    "trip_id": "T008",
+    "drone_id": "U06",
+    "battery_id": "BAT-B-03",
+    "box_ids": [
+      "S012-WAT-01",
+      "S012-MED-01",
+      "S012-FOD-01"
+    ],
+    "route": [
+      "S012"
+    ],
+    "preparation_start_s": 1510.4702802929446
+  },
+  {
+    "trip_id": "T009",
+    "drone_id": "U02",
+    "battery_id": "BAT-A-02",
+    "box_ids": [
+      "S015-MED-01",
+      "S015-FOD-01"
+    ],
+    "route": [
+      "S015"
+    ],
+    "preparation_start_s": 0.0
+  },
+  {
+    "trip_id": "T010",
+    "drone_id": "U03",
+    "battery_id": "BAT-A-03",
+    "box_ids": [
+      "S008-WAT-02",
+      "S008-MED-01"
+    ],
+    "route": [
+      "S008"
+    ],
+    "preparation_start_s": 0.0
+  },
+  {
+    "trip_id": "T011",
+    "drone_id": "U07",
+    "battery_id": "BAT-C-01",
+    "box_ids": [
+      "S004-WAT-01",
+      "S004-MED-01",
+      "S004-FOD-01",
+      "S004-WAT-02",
+      "S004-HYG-01",
+      "S004-WAT-03"
+    ],
+    "route": [
+      "S004"
+    ],
+    "preparation_start_s": 2993.392351884103
+  },
+  {
+    "trip_id": "T012",
+    "drone_id": "U08",
+    "battery_id": "BAT-C-02",
+    "box_ids": [
+      "S003-MED-01",
+      "S003-WAT-01",
+      "S003-WAT-04",
+      "S003-WAT-03",
+      "S003-FOD-01",
+      "S003-HYG-01",
+      "S003-FOD-02"
+    ],
+    "route": [
+      "S003"
+    ],
+    "preparation_start_s": 4015.387466474885
+  },
+  {
+    "trip_id": "T013",
+    "drone_id": "U05",
+    "battery_id": "BAT-B-04",
+    "box_ids": [
+      "S011-WAT-01",
+      "S011-MED-01",
+      "S011-FOD-01"
+    ],
+    "route": [
+      "S011"
+    ],
+    "preparation_start_s": 1869.7521946190163
+  },
+  {
+    "trip_id": "T014",
+    "drone_id": "U05",
+    "battery_id": "BAT-B-02",
+    "box_ids": [
+      "S009-WAT-01",
+      "S009-MED-01",
+      "S009-FOD-01"
+    ],
+    "route": [
+      "S009"
+    ],
+    "preparation_start_s": 3058.175844730675
+  },
+  {
+    "trip_id": "T015",
+    "drone_id": "U07",
+    "battery_id": "BAT-C-03",
+    "box_ids": [
+      "S005-WAT-01",
+      "S005-WAT-02",
+      "S005-HYG-01"
+    ],
+    "route": [
+      "S005"
+    ],
+    "preparation_start_s": 5294.453418477328
+  },
+  {
+    "trip_id": "T016",
+    "drone_id": "U04",
+    "battery_id": "BAT-A-04",
+    "box_ids": [
+      "S001-WAT-03",
+      "S001-FOD-03"
+    ],
+    "route": [
+      "S001"
+    ],
+    "preparation_start_s": 0.0
+  },
+  {
+    "trip_id": "T017",
+    "drone_id": "U06",
+    "battery_id": "BAT-B-01",
+    "box_ids": [
+      "S002-FOD-01",
+      "S002-HYG-01"
+    ],
+    "route": [
+      "S002"
+    ],
+    "preparation_start_s": 3463.8834966823283
+  },
+  {
+    "trip_id": "T018",
+    "drone_id": "U04",
+    "battery_id": "BAT-A-05",
+    "box_ids": [
+      "S001-WAT-02",
+      "S001-FOD-01"
+    ],
+    "route": [
+      "S001"
+    ],
+    "preparation_start_s": 1250.9011452644886
+  },
+  {
+    "trip_id": "T019",
+    "drone_id": "U01",
+    "battery_id": "BAT-A-06",
+    "box_ids": [
+      "S003-WAT-02",
+      "S006-FOD-01"
+    ],
+    "route": [
+      "S006",
+      "S003"
+    ],
+    "preparation_start_s": 1654.8593983215953
+  },
+  {
+    "trip_id": "T020",
+    "drone_id": "U02",
+    "battery_id": "BAT-A-04",
+    "box_ids": [
+      "S001-WAT-05",
+      "S001-FOD-02"
+    ],
+    "route": [
+      "S001"
+    ],
+    "preparation_start_s": 2121.350476532388
+  },
+  {
+    "trip_id": "T021",
+    "drone_id": "U03",
+    "battery_id": "BAT-A-01",
+    "box_ids": [
+      "S010-FOD-01",
+      "S001-WAT-06"
+    ],
+    "route": [
+      "S001",
+      "S010"
+    ],
+    "preparation_start_s": 2719.5822252265916
+  },
+  {
+    "trip_id": "T022",
+    "drone_id": "U05",
+    "battery_id": "BAT-B-04",
+    "box_ids": [
+      "S008-HYG-01",
+      "S005-FOD-01"
+    ],
+    "route": [
+      "S005",
+      "S008"
+    ],
+    "preparation_start_s": 4616.618092125082
+  },
+  {
+    "trip_id": "T023",
+    "drone_id": "U04",
+    "battery_id": "BAT-A-02",
+    "box_ids": [
+      "S005-MED-01",
+      "S005-WAT-03"
+    ],
+    "route": [
+      "S005"
+    ],
+    "preparation_start_s": 3159.7226809070917
+  },
+  {
+    "trip_id": "T024",
+    "drone_id": "U06",
+    "battery_id": "BAT-B-03",
+    "box_ids": [
+      "S001-HYG-02",
+      "S001-HYG-01"
+    ],
+    "route": [
+      "S001"
+    ],
+    "preparation_start_s": 5292.558427753864
+  },
+  {
+    "trip_id": "T025",
+    "drone_id": "U02",
+    "battery_id": "BAT-A-05",
+    "box_ids": [
+      "S008-WAT-01",
+      "S008-FOD-01"
+    ],
+    "route": [
+      "S008"
+    ],
+    "preparation_start_s": 3372.2516217968764
+  },
+  {
+    "trip_id": "T026",
+    "drone_id": "U01",
+    "battery_id": "BAT-A-03",
+    "box_ids": [
+      "S015-WAT-01"
+    ],
+    "route": [
+      "S015"
+    ],
+    "preparation_start_s": 4239.208147471937
+  }
+]
