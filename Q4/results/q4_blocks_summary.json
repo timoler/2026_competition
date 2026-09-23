@@ -128,7 +128,7 @@
       ]
     }
   ],
-  "relay_sharing": {
+  "relay_served_blocks": {
     "R02": [
       "B01",
       "B02",

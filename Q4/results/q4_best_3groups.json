@@ -1,6 +1,197 @@
 {
   "k": 3,
-  "feasible": false,
-  "reason": "relay_sharing_constraint_infeasible",
-  "detail": "中继R01/R02共享关联把11个不可拆块强制同组，剩余仅1个块无法构成3个非空组"
+  "feasible": true,
+  "n_candidates": 86526,
+  "groups": [
+    {
+      "group_id": 1,
+      "blocks": [
+        "B01",
+        "B02",
+        "B03",
+        "B04",
+        "B05",
+        "B06",
+        "B07",
+        "B09",
+        "B10",
+        "B11"
+      ],
+      "service_ids": [
+        "S001",
+        "S010",
+        "S002",
+        "S003",
+        "S006",
+        "S004",
+        "S005",
+        "S008",
+        "S007",
+        "S009",
+        "S012",
+        "S013",
+        "S014"
+      ],
+      "n_sites": 13,
+      "n_boxes": 74,
+      "n_trips": 23,
+      "occupancy_s": 41472.69,
+      "transport_energy_kwh": 65.545431,
+      "relay_service_s": 9344.8,
+      "relay_energy_kwh": 3.536087,
+      "transport_drones": {
+        "C": 2,
+        "B": 2,
+        "A": 4
+      },
+      "batteries": {
+        "C": 4,
+        "B": 4,
+        "A": 6
+      },
+      "relay_drones": 2,
+      "relay_modules": 2
+    },
+    {
+      "group_id": 2,
+      "blocks": [
+        "B08"
+      ],
+      "service_ids": [
+        "S011"
+      ],
+      "n_sites": 1,
+      "n_boxes": 3,
+      "n_trips": 1,
+      "occupancy_s": 1188.42,
+      "transport_energy_kwh": 1.073934,
+      "relay_service_s": 0,
+      "relay_energy_kwh": 0,
+      "transport_drones": {
+        "B": 1
+      },
+      "batteries": {
+        "B": 1
+      },
+      "relay_drones": 0,
+      "relay_modules": 0
+    },
+    {
+      "group_id": 3,
+      "blocks": [
+        "B12"
+      ],
+      "service_ids": [
+        "S015"
+      ],
+      "n_sites": 1,
+      "n_boxes": 3,
+      "n_trips": 2,
+      "occupancy_s": 3877.21,
+      "transport_energy_kwh": 4.821605,
+      "relay_service_s": 5795.2,
+      "relay_energy_kwh": 2.17124,
+      "transport_drones": {
+        "A": 1
+      },
+      "batteries": {
+        "A": 1
+      },
+      "relay_drones": 1,
+      "relay_modules": 1
+    }
+  ],
+  "total_resources": {
+    "drones": {
+      "C": 2,
+      "B": 3,
+      "A": 5
+    },
+    "batteries": {
+      "C": 4,
+      "B": 5,
+      "A": 7
+    },
+    "relay_drones": 3,
+    "relay_modules": 3
+  },
+  "resource_gap": {
+    "drones": {
+      "A": 1,
+      "B": 1,
+      "C": 0
+    },
+    "batteries": {
+      "A": 1,
+      "B": 1,
+      "C": 0
+    },
+    "relay_drones": 1,
+    "relay_modules": 0
+  },
+  "gap_sum": 5,
+  "total_resources_sum": 32,
+  "workload_imbalance": 1.0,
+  "top10": [
+    {
+      "partition": "{B01,B02,B03,B04,B05,B06,B07,B09,B10,B11}|{B08}|{B12}",
+      "gap": 5,
+      "total_resources": 32,
+      "imbalance": 1.0
+    },
+    {
+      "partition": "{B01,B02,B03,B04,B05,B06,B07,B09,B10,B12}|{B08}|{B11}",
+      "gap": 5,
+      "total_resources": 32,
+      "imbalance": 1.0
+    },
+    {
+      "partition": "{B01,B02,B03,B04,B05,B06,B07,B09,B11,B12}|{B08}|{B10}",
+      "gap": 5,
+      "total_resources": 32,
+      "imbalance": 1.0
+    },
+    {
+      "partition": "{B01,B02,B03,B04,B05,B06,B07,B10,B11,B12}|{B08}|{B09}",
+      "gap": 5,
+      "total_resources": 32,
+      "imbalance": 1.0
+    },
+    {
+      "partition": "{B01,B02,B03,B04,B05,B07,B09,B10,B11,B12}|{B06}|{B08}",
+      "gap": 5,
+      "total_resources": 32,
+      "imbalance": 1.0
+    },
+    {
+      "partition": "{B01,B02,B03,B05,B06,B07,B09,B10,B11,B12}|{B04}|{B08}",
+      "gap": 5,
+      "total_resources": 32,
+      "imbalance": 1.0
+    },
+    {
+      "partition": "{B01,B02,B03,B05,B07,B09,B10,B11,B12}|{B04,B06}|{B08}",
+      "gap": 5,
+      "total_resources": 32,
+      "imbalance": 1.0
+    },
+    {
+      "partition": "{B01,B02,B03,B04,B05,B06,B09,B10,B11,B12}|{B07}|{B08}",
+      "gap": 5,
+      "total_resources": 33,
+      "imbalance": 1.0
+    },
+    {
+      "partition": "{B01,B02,B03,B04,B05,B06,B09,B11,B12}|{B07,B10}|{B08}",
+      "gap": 5,
+      "total_resources": 33,
+      "imbalance": 1.0
+    },
+    {
+      "partition": "{B01,B02,B03,B05,B07,B08,B09,B10,B11,B12}|{B04}|{B06}",
+      "gap": 5,
+      "total_resources": 33,
+      "imbalance": 1.0
+    }
+  ]
 }

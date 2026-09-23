@@ -70,24 +70,15 @@ def fig_partition_maps():
     best2 = json.loads((OUT / "q4_best_2groups.json").read_text(encoding="utf-8"))
     group_sites = [g["service_ids"] for g in best2["groups"]]
     fig, ax = plt.subplots(figsize=(8, 7))
-    draw_map(ax, group_sites, "2 任务组分区（组1=11块14区，组2=S011）")
+    draw_map(ax, group_sites, "2 任务组最优分区")
     fig.tight_layout()
     fig.savefig(FIG / "q4_partition_map_2groups.png", dpi=150)
     plt.close(fig)
 
-    # 3-group: infeasible — show relay-sharing component (11 blocks forced together)
+    best3 = json.loads((OUT / "q4_best_3groups.json").read_text(encoding="utf-8"))
+    group_sites3 = [g["service_ids"] for g in best3["groups"]]
     fig, ax = plt.subplots(figsize=(8, 7))
-    blocks = json.loads((OUT / "q4_blocks_summary.json").read_text(encoding="utf-8"))
-    rs = blocks["relay_sharing"]
-    # relay-served blocks (union of R01/R02) -> one forced group
-    forced = set()
-    for rid, blist in rs.items():
-        for b in blist:
-            forced.add(b)
-    forced_sites = [s for blk in blocks["blocks"] if blk["block_id"] in forced for s in blk["service_ids"]]
-    free_sites = [s for blk in blocks["blocks"] if blk["block_id"] not in forced for s in blk["service_ids"]]
-    draw_map(ax, [forced_sites, free_sites],
-             "3 任务组不可行：中继共享关联把 11 块强制同组，仅剩 S011（无法构成 3 组）")
+    draw_map(ax, group_sites3, "3 任务组最优分区")
     fig.tight_layout()
     fig.savefig(FIG / "q4_partition_map_3groups.png", dpi=150)
     plt.close(fig)
@@ -116,7 +107,7 @@ def fig_resource_comparison():
     ax.set_xticks(x)
     ax.set_xticklabels(labels)
     ax.set_ylabel("资源数量")
-    ax.set_title("资源配置对比（3组不可行）")
+    ax.set_title("资源配置对比（Q3集中式 vs 2组 vs 3组）")
     ax.legend(fontsize=8)
     ax.grid(axis="y", alpha=0.3)
     fig.tight_layout()
@@ -149,7 +140,7 @@ def fig_workload():
         axes[2].text(i, v + 0.5, f"{v:.1f}", ha="center", fontsize=8)
     for ax in axes:
         ax.grid(axis="y", alpha=0.3)
-    fig.suptitle("组间工作量对比（2组严重不均衡，3组不可行）")
+    fig.suptitle("组间工作量对比（2组/3组）")
     fig.tight_layout()
     fig.savefig(FIG / "q4_workload_balance.png", dpi=150)
     plt.close(fig)

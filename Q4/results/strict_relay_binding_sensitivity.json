@@ -1,0 +1,43 @@
+{
+  "interpretation": "shared relay sortie => its served service blocks must be co-grouped (strict)",
+  "relay_connected_components": [
+    [
+      "B01",
+      "B02",
+      "B03",
+      "B04",
+      "B05",
+      "B06",
+      "B07",
+      "B09",
+      "B10",
+      "B11",
+      "B12"
+    ],
+    [
+      "B08"
+    ]
+  ],
+  "n_components": 2,
+  "feasible_2groups": true,
+  "feasible_3groups": false,
+  "strict_2groups": {
+    "group1": [
+      "B01",
+      "B02",
+      "B03",
+      "B04",
+      "B05",
+      "B06",
+      "B07",
+      "B09",
+      "B10",
+      "B11",
+      "B12"
+    ],
+    "group2": [
+      "B08"
+    ]
+  },
+  "note": "严格解释下2组退化为大组件+S011，3组不可行（中继连通组件仅2个，不足以构成3个非空组）"
+}

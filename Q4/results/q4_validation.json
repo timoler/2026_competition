@@ -7,9 +7,9 @@
       "detail": ""
     },
     {
-      "check": "no_empty_group",
+      "check": "resource_recomputation_matches",
       "pass": true,
-      "detail": ""
+      "detail": "mismatch=[]"
     },
     {
       "check": "multi_site_trips_co_grouped",
@@ -17,7 +17,7 @@
       "detail": ""
     },
     {
-      "check": "relay_sharing_compatible",
+      "check": "no_empty_group",
       "pass": true,
       "detail": ""
     },
@@ -32,11 +32,6 @@
       "detail": ""
     },
     {
-      "check": "resource_recomputation_matches",
-      "pass": true,
-      "detail": "mismatch=[]"
-    },
-    {
       "check": "resources_nonnegative",
       "pass": true,
       "detail": ""
@@ -44,7 +39,7 @@
     {
       "check": "gap_calculation_correct",
       "pass": true,
-      "detail": "drones=1 batt=1 relay=0 modules=0"
+      "detail": "gap_sum=2"
     },
     {
       "check": "2group_reproducible",
@@ -52,7 +47,12 @@
       "detail": ""
     },
     {
-      "check": "3group_infeasible_reproducible",
+      "check": "3group_reproducible",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "strict_binding_sensitivity_present",
       "pass": true,
       "detail": ""
     }
