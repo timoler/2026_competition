@@ -1,5 +1,7 @@
 """Reproducible multi-start insertion heuristic; no global optimality claim."""
 import argparse
+import csv
+import datetime
 import hashlib
 import itertools
 import json
@@ -10,6 +12,14 @@ import time
 from pathlib import Path
 
 from transport_core import Model, DEFAULT_RESULTS, DEFAULT_CONFIG, charge_time, write_csv
+
+
+def write_csv_allow_empty(path, records, fieldnames):
+    """Write a table with its header even when there are no rows (no stale leftovers)."""
+    with Path(path).open("w", encoding="utf-8-sig", newline="") as f:
+        w = csv.DictWriter(f, fieldnames=fieldnames, lineterminator="\n")
+        w.writeheader()
+        w.writerows(records)
 
 
 def objective(trips):
@@ -240,7 +250,8 @@ def export(model, trips, out, run_info):
 def main():
     p = argparse.ArgumentParser()
     p.add_argument("--inputs", type=Path, default=DEFAULT_RESULTS / "q2_inputs.json")
-    p.add_argument("--config", type=Path, default=DEFAULT_CONFIG)
+    p.add_argument("--config", type=Path, required=True,
+                   help="formal scenario config (Q2/code/scenario.json); explicit binding required, no silent default")
     p.add_argument("--output", type=Path, default=DEFAULT_RESULTS)
     p.add_argument("--seeds", type=int, default=256)
     p.add_argument("--max-stops", type=int, default=4)
@@ -249,8 +260,11 @@ def main():
     args = p.parse_args()
     begin = time.perf_counter()
     model = Model(args.inputs, args.config)
-    run = dict(python=platform.python_version(), inputs_sha256=hashlib.sha256(args.inputs.read_bytes()).hexdigest(),
+    run = dict(python=platform.python_version(),
+               inputs_sha256=hashlib.sha256(args.inputs.read_bytes()).hexdigest(),
+               config_path=str(args.config.resolve()),
                config_sha256=hashlib.sha256(args.config.read_bytes()).hexdigest(),
+               timestamp=datetime.datetime.now().astimezone().isoformat(timespec="seconds"),
                algorithm="multi-start greedy insertion", seed_start=20260923,
                attempts_per_method=args.seeds, max_stops=args.max_stops,
                improvement_iterations=args.improve_iterations)
@@ -289,8 +303,11 @@ def main():
             raise RuntimeError("No feasible schedule found; not proof of infeasibility")
         run["before_improvement_objective"] = objective(best)
         trips, improvements = improve(model, best, args.improve_iterations, args.max_stops)
-        if improvements:
-            write_csv(args.output / "q2_improvement.csv", improvements)
+        # Always (re)write the improvement log, even when empty, so a fresh run
+        # cannot leave a stale q2_improvement.csv from a previous run behind.
+        write_csv_allow_empty(args.output / "q2_improvement.csv", improvements,
+                              ["iteration", "weighted_soft_lateness_s", "makespan_s",
+                               "energy_kwh", "trips"])
         run["accepted_improvements"] = len(improvements)
     run["elapsed_s"] = time.perf_counter() - begin
     run["code_sha256"] = {path.name: hashlib.sha256(path.read_bytes()).hexdigest()

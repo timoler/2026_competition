@@ -1,0 +1,14 @@
+{
+  "n_legs": 240,
+  "max_distance_diff_m": 0.0,
+  "max_terrain_max_diff_m": 0.0,
+  "max_cruise_diff_m": 0.0,
+  "max_up_diff_m": 0.0,
+  "max_down_diff_m": 0.0,
+  "discrete_results": {
+    "trips_unchanged": true,
+    "max_energy_diff_kwh": 0.0,
+    "max_operation_diff_s": 0.0,
+    "conclusion": "CASE A: geometry identical (0 difference), discrete decisions unchanged"
+  }
+}
