@@ -1,6 +1,7 @@
-"""Q1 reproducible exact grouped-count DP; numpy, Pillow, openpyxl required.
+"""Q1 reproducible exact grouped-count DP; numpy, Pillow, openpyxl, pyproj required.
 Usage: python solve_q1.py '/path/to/D题'
-Energy decompositions and local projection are declared modeling assumptions.
+Horizontal coordinates use WGS84 / UTM Zone 49N (EPSG:32649), shared with Q2/Q3.
+Energy decompositions remain declared modeling assumptions.
 """
 from pathlib import Path
 import sys, math, csv, json, hashlib, itertools
@@ -8,6 +9,7 @@ from functools import lru_cache
 import numpy as np
 from PIL import Image
 import openpyxl
+from pyproj import Transformer
 
 SRC = Path(sys.argv[1]) if len(sys.argv)>1 else Path(__file__).resolve().parents[2] / 'data/raw/D题'
 OUT = Path(__file__).resolve().parents[1] / 'results'
@@ -30,13 +32,11 @@ models={r[0]:dict(zip(keys,r)) for r in mr[2:5]}
 boxes=[dict(zip(['id','site','kind','mass','volume','first','deadline','expected','priority'],r)) for r in rows('物资需求与配送时限.xlsx',1)[1:] if r[0]]
 assert len(boxes)==80 and len({b['id'] for b in boxes})==80
 
-# WGS84 local affine metric projection, origin O01. Chosen approximation, not UTM.
-o=nodes['O01']; phi=math.radians(o['lat']);a=6378137.; e2=6.6943799901413165e-3
-N=a/math.sqrt(1-e2*math.sin(phi)**2); M=a*(1-e2)/(1-e2*math.sin(phi)**2)**1.5
-for key,n in nodes.items():
-    n['x']=N*math.cos(phi)*math.radians(n['lon']-o['lon'])
-    n['y']=M*math.radians(n['lat']-o['lat'])
-    n['work_z']=n['z']+(0 if key=='O01' else 30)
+# Horizontal coordinates: WGS84 / UTM Zone 49N (EPSG:32649), same convention as Q2/Q3.
+utm = Transformer.from_crs(4326, 32649, always_xy=True)
+for key, n in nodes.items():
+    n['x_m'], n['y_m'] = utm.transform(n['lon'], n['lat'])
+    n['work_z'] = n['z'] + (0 if key == 'O01' else 30)
 im=Image.open(next(SRC.rglob('*.tif')));dem=np.asarray(im);tag=im.tag_v2
 sx,sy,_=tag[33550]; _,_,_,lon0,lat0,_=tag[33922]
 assert tag[34735][-1]==4326 and 1025 in tag[34735]
@@ -64,7 +64,7 @@ for i,j in itertools.permutations(nodes,2):
     ni,nj=nodes[i],nodes[j]; cells=crossed_cells(grid(ni),grid(nj)); zs=[float(dem[r,c]) for r,c in cells]
     assert min(zs)>-1000 and all(math.isfinite(z) for z in zs)
     H=max(zs)+50
-    legs[i,j]=dict(start=i,end=j,distance_m=math.hypot(nj['x']-ni['x'],nj['y']-ni['y']),terrain_max_m=max(zs),cruise_m=H,up_m=H-ni['work_z'],down_m=H-nj['work_z'],cells=len(cells))
+    legs[i,j]=dict(start=i,end=j,distance_m=math.hypot(nj['x_m']-ni['x_m'],nj['y_m']-ni['y_m']),terrain_max_m=max(zs),cruise_m=H,up_m=H-ni['work_z'],down_m=H-nj['work_z'],cells=len(cells))
     assert legs[i,j]['up_m']>=0 and legs[i,j]['down_m']>=0
 save('q1_legs.csv',list(legs.values()))
 save('q1_nodes.csv',[dict(id=k,**v) for k,v in nodes.items()])
