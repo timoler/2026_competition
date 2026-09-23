@@ -1,7 +1,7 @@
 {
-  "total_window_s": 36338.32,
-  "total_outage_s": 13381.0,
-  "coverage": 0.631766,
-  "blackout_interval_count": 20,
+  "total_window_s": 36351.0,
+  "total_outage_s": 13413.0,
+  "coverage": 0.631014,
+  "blackout_interval_count": 25,
   "affected_trips": 19
 }

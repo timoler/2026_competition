@@ -17,6 +17,7 @@ from config import Q2_RESULTS, RESULTS, load_scenario, TERRAIN_CACHE, resolve_de
 from terrain import Terrain, node_bbox_utm
 from communication import LinkBudget, Connectivity
 from trajectory import TransportTrajectory
+from check_core import independent_los_occluded, independent_link_budget, link_ok, _dist3
 
 
 def write_csv(path, records):
@@ -52,6 +53,8 @@ def detect_blackouts(step_s: float = 1.0) -> tuple[list[dict], dict]:
     sc = load_scenario()
     terr, conn = load_terrain_and_connectivity(sc)
     tj = TransportTrajectory(Q2_RESULTS)
+    fsp, lobs, th_direct, _, _ = independent_link_budget(sc)
+    g01 = conn.g01
 
     intervals = []
     per_trip = {}
@@ -65,15 +68,18 @@ def detect_blackouts(step_s: float = 1.0) -> tuple[list[dict], dict]:
         run_pos_start = None
         run_reason = None
         total_outage = 0.0
+        n_samples = 0
         while t < t1 + 1e-9:
             s = tj.position(trip_id, t)
             if s["phase"] == "finished":
                 t += step_s
                 continue
+            n_samples += 1
             p = (s["x"], s["y"], s["altitude_m"])
-            det = conn.direct_detail(p)
-            if not det["ok"]:
-                reason = "link_budget" if not det["occluded"] else "terrain_occlusion"
+            dkm = _dist3(p, g01) / 1000.0
+            occluded = independent_los_occluded(terr, p[0], p[1], p[2], g01[0], g01[1], g01[2])
+            if not link_ok(fsp, lobs, th_direct, dkm, occluded):
+                reason = "link_budget" if not occluded else "terrain_occlusion"
                 if run_start is None:
                     run_start = t
                     run_pos_start = f"{s['lon']:.7f},{s['lat']:.7f},{s['altitude_m']:.2f}"
@@ -99,9 +105,9 @@ def detect_blackouts(step_s: float = 1.0) -> tuple[list[dict], dict]:
                                   start_position=run_pos_start, end_position=run_pos_end,
                                   reason=run_reason))
             total_outage += dur
-        per_trip[trip_id] = dict(drone_id=drone, window_s=round(t1 - t0, 3),
+        per_trip[trip_id] = dict(drone_id=drone, window_s=round(n_samples * step_s, 3),
                                  outage_s=round(total_outage, 3),
-                                 coverage=round(1 - total_outage / (t1 - t0), 6))
+                                 coverage=round(1 - total_outage / (n_samples * step_s), 6))
 
     total_window = sum(v["window_s"] for v in per_trip.values())
     total_outage = sum(v["outage_s"] for v in per_trip.values())
@@ -117,6 +123,8 @@ def build_baseline_table(step_s: float = 5.0) -> list[dict]:
     sc = load_scenario()
     terr, conn = load_terrain_and_connectivity(sc)
     tj = TransportTrajectory(Q2_RESULTS)
+    fsp, lobs, th_direct, _, _ = independent_link_budget(sc)
+    g01 = conn.g01
     rows = []
     for trip_id, trip in tj.trips().items():
         t0 = float(trip["takeoff_s"])
@@ -127,13 +135,16 @@ def build_baseline_table(step_s: float = 5.0) -> list[dict]:
             if s["phase"] == "finished":
                 t += step_s
                 continue
-            det = conn.direct_detail((s["x"], s["y"], s["altitude_m"]))
-            mode = "direct" if det["ok"] else "outage"
-            reason = "" if det["ok"] else ("link_budget" if not det["occluded"] else "terrain_occlusion")
+            p = (s["x"], s["y"], s["altitude_m"])
+            dkm = _dist3(p, g01) / 1000.0
+            occluded = independent_los_occluded(terr, p[0], p[1], p[2], g01[0], g01[1], g01[2])
+            ok = link_ok(fsp, lobs, th_direct, dkm, occluded)
+            mode = "direct" if ok else "outage"
+            reason = "" if ok else ("link_budget" if not occluded else "terrain_occlusion")
             rows.append(dict(time_s=round(t, 3), trip_id=trip_id, drone_id=trip["drone_id"],
                              x=round(s["x"], 3), y=round(s["y"], 3),
                              altitude_m=round(s["altitude_m"], 3), phase=s["phase"],
-                             connected=int(det["ok"]), mode=mode, reason=reason))
+                             connected=int(ok), mode=mode, reason=reason))
             t += step_s
     rows.sort(key=lambda r: (r["time_s"], r["trip_id"]))
     return rows

@@ -17,44 +17,62 @@ import numpy as np
 
 from config import RESULTS, load_scenario
 from relay import RelayProblem, COV_CACHE, write_csv
-from schedule import verify_schedule, _sortie_rows
+from schedule import _sortie_rows
+from check_core import independent_los_occluded, independent_link_budget, link_ok, _dist3
 
 
 def outage_metrics(rp, sorties, step_s=1.0):
-    """Return (coverage, outage_total_s, longest_s, affected_trips, samples)."""
-    active = [(r["service_start_s"], r["service_end_s"],
-               (r["hover_x_m"], r["hover_y_m"], r["hover_altitude_m"]))
+    """Return (coverage, outage_s, longest_s, affected_trips, total_samples).
+
+    Same statistical convention as validate.py: 1 s sample counting on the
+    [takeoff_s, return_s] window, independent 10 m LOS sampler + link budget.
+    """
+    fsp, lobs, th_direct, th_access, _ = independent_link_budget(rp.sc)
+    terr = rp.terr
+    g01 = rp.g01
+    active = [(float(r["service_start_s"]), float(r["service_end_s"]),
+               (float(r["hover_x_m"]), float(r["hover_y_m"]), float(r["hover_altitude_m"])))
               for r in sorties]
     tj = rp.tj
-    # per trip outage tracking
     per_trip = {}
+    total = 0
     for trip_id, trip in tj.trips().items():
         t0, t1 = float(trip["takeoff_s"]), float(trip["return_s"])
         t = t0
-        run = 0.0
-        longest = 0.0
-        total = 0.0
-        cur = 0.0
+        cur = 0
+        trip_uncov = 0
+        trip_longest = 0
         while t < t1:
             st = tj.position(trip_id, t)
             if st["phase"] == "finished":
-                t += step_s; continue
+                t += step_s
+                continue
             p = (st["x"], st["y"], st["altitude_m"])
-            ok = rp.conn.direct_ok(p) or any(
-                a <= t < b and rp.conn.access_ok(p, (x, y, z)) for (a, b, (x, y, z)) in active)
+            total += 1
+            dkm = _dist3(p, g01) / 1000.0
+            ok = link_ok(fsp, lobs, th_direct, dkm,
+                         independent_los_occluded(terr, p[0], p[1], p[2], g01[0], g01[1], g01[2]))
             if not ok:
-                cur += step_s
-                total += step_s
-                longest = max(longest, cur)
+                for (a, b, rp_) in active:
+                    if a <= t < b:
+                        dkm2 = _dist3(p, rp_) / 1000.0
+                        if link_ok(fsp, lobs, th_access, dkm2,
+                                   independent_los_occluded(terr, p[0], p[1], p[2],
+                                                            rp_[0], rp_[1], rp_[2])):
+                            ok = True
+                            break
+            if not ok:
+                cur += 1
+                trip_uncov += 1
+                trip_longest = max(trip_longest, cur)
             else:
-                cur = 0.0
+                cur = 0
             t += step_s
-        per_trip[trip_id] = (total, longest, t1 - t0)
-    tot_outage = sum(v[0] for v in per_trip.values())
-    tot_window = sum(v[2] for v in per_trip.values())
+        per_trip[trip_id] = (trip_uncov, trip_longest)
+    uncovered = sum(v[0] for v in per_trip.values())
     longest = max(v[1] for v in per_trip.values())
     affected = sum(1 for v in per_trip.values() if v[0] > 0)
-    return (1 - tot_outage / tot_window), tot_outage, longest, affected, tot_window
+    return (1 - uncovered / total), float(uncovered), float(longest), affected, total
 
 
 def relay_metrics(sorties):
