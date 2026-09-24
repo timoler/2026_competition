@@ -69,25 +69,18 @@ def fig1():
                                    gridspec_kw={"height_ratios": [1, 2.2]})
 
     # --- relay sorties ---
-    ylabels = []
     for i, r in enumerate(relay):
         y = len(relay) - 1 - i
-        prep, to, ss, se, ret = (float(r["prep_start_s"]), float(r["takeoff_s"]),
-                                 float(r["service_start_s"]), float(r["service_end_s"]),
-                                 float(r["return_s"]))
+        prep, ss, se, ret = (float(r["prep_start_s"]), float(r["service_start_s"]),
+                             float(r["service_end_s"]), float(r["return_s"]))
         color = BLUE if r["relay_id"] == "R01" else ORANGE
-        # prep + outbound flight (light)
-        ax1.barh(y, ss - prep, left=prep, height=0.55, color=LIGHT, edgecolor="white", linewidth=0.3)
-        # service (colored)
-        ax1.barh(y, se - ss, left=ss, height=0.55, color=color, edgecolor="white", linewidth=0.3)
-        # return flight (light)
-        ax1.barh(y, ret - se, left=se, height=0.55, color=LIGHT, edgecolor="white", linewidth=0.3)
-        ax1.text(prep - 60, y, f"{r['sortie_id']} / {r['relay_id']}",
-                 ha="right", va="center", fontsize=9, color=INK)
-        ylabels.append(f"{r['sortie_id']} / {r['relay_id']}")
-    ax1.set_yticks([])
+        ax1.barh(y, ss - prep, left=prep, height=0.5, color=LIGHT, edgecolor="white", linewidth=0.3)
+        ax1.barh(y, se - ss, left=ss, height=0.5, color=color, edgecolor="white", linewidth=0.3)
+        ax1.barh(y, ret - se, left=se, height=0.5, color=LIGHT, edgecolor="white", linewidth=0.3)
+    ax1.set_yticks([len(relay) - 1 - i for i in range(len(relay))])
+    ax1.set_yticklabels([f"{r['sortie_id']}  {r['relay_id']}" for r in relay], fontsize=9)
     ax1.set_ylabel("中继架次", fontsize=9)
-    ax1.set_ylim(-0.6, len(relay) - 0.4)
+    ax1.set_ylim(-0.5, len(relay) - 0.5)
     # legend for relay panel
     import matplotlib.patches as mpatches
     ax1.legend(handles=[mpatches.Patch(color=LIGHT, label="准备/转场"),
@@ -112,7 +105,7 @@ def fig1():
                         mpatches.Patch(color=BLUE, label="R01 保障"),
                         mpatches.Patch(color=ORANGE, label="R02 保障"),
                         mpatches.Patch(color=VIOLET, label="R01+R02 保障")],
-               loc="upper right", frameon=False, fontsize=8, ncol=4)
+               loc="upper right", frameon=False, fontsize=8, ncol=2)
     fig.tight_layout()
     fig.savefig(FIG / "q3_fig1_joint_timeline.png", dpi=300)
     plt.close(fig)
