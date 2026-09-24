@@ -72,29 +72,59 @@
       "detail": "mismatch=[]"
     },
     {
+      "check": "enum_2groups_all_candidates_recomputed",
+      "pass": true,
+      "detail": "independently enumerated 2047 unique partitions"
+    },
+    {
+      "check": "enum_2groups_submitted_plan_is_global_lexicographic_optimum",
+      "pass": true,
+      "detail": "independent minimum=2/29/1.000000000; submitted=2/29/1.000000000"
+    },
+    {
+      "check": "enum_2groups_candidate_count_matches_best_json",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "enum_2groups_csv_rows_recompute_correctly",
+      "pass": true,
+      "detail": "recomputed 2047/2047 saved candidates"
+    },
+    {
       "check": "enum_2groups_csv_sorted",
       "pass": true,
-      "detail": "2047 rows"
+      "detail": "2047 saved rows"
     },
     {
-      "check": "enum_2groups_first_is_best",
+      "check": "enum_2groups_csv_is_full_unique_enumeration",
       "pass": true,
-      "detail": "csv_first=(gap 2, res 29, imb 1.000000)"
+      "detail": "saved 2047 rows for 2047 candidates"
     },
     {
-      "check": "enum_2groups_total_enumerated",
+      "check": "enum_3groups_all_candidates_recomputed",
       "pass": true,
-      "detail": "2047 rows"
+      "detail": "independently enumerated 86526 unique partitions"
+    },
+    {
+      "check": "enum_3groups_submitted_plan_is_global_lexicographic_optimum",
+      "pass": true,
+      "detail": "independent minimum=4/32/1.000000000; submitted=4/32/1.000000000"
+    },
+    {
+      "check": "enum_3groups_candidate_count_matches_best_json",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "enum_3groups_csv_rows_recompute_correctly",
+      "pass": true,
+      "detail": "recomputed 1000/1000 saved candidates"
     },
     {
       "check": "enum_3groups_csv_sorted",
       "pass": true,
-      "detail": "1000 rows"
-    },
-    {
-      "check": "enum_3groups_first_is_best",
-      "pass": true,
-      "detail": "csv_first=(gap 4, res 32, imb 1.000000)"
+      "detail": "1000 saved rows"
     },
     {
       "check": "enum_3groups_total_enumerated",
@@ -105,6 +135,11 @@
       "check": "enum_3groups_saved_top_n",
       "pass": true,
       "detail": "saved_top_n=1000, csv_rows=1000"
+    },
+    {
+      "check": "enum_3groups_csv_matches_global_top_1000_objectives",
+      "pass": true,
+      "detail": "saved objective sequence compared with independently sorted full enumeration"
     },
     {
       "check": "trip_count_unchanged",
@@ -120,6 +155,11 @@
       "check": "gap_calculation_correct",
       "pass": true,
       "detail": "gap_sum=2"
+    },
+    {
+      "check": "inventory_export_matches_independent_inputs",
+      "pass": true,
+      "detail": ""
     },
     {
       "check": "2group_reproducible",

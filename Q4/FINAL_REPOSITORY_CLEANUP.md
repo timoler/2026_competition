@@ -17,7 +17,7 @@
 | `Q4/方法与口径.md` | 文档 | 修正「CV」错误表述 |
 | `Q4/code/validate.py` | 验证器 | 修正 docstring 项数错误；新增分区合法性与枚举一致性独立检查；失败时非零退出码 |
 | `Q4/results/q4_rerun_manifest.json` | 复现证据 | 用真实 SHA-256 重新生成（修复失效 hash） |
-| `Q4/results/q4_validation.json` | 验证输出 | 因新增检查合理变化（11 → 27 项，全部 PASS） |
+| `Q4/results/q4_validation.json` | 验证输出 | 因新增独立穷举与逐行复算检查合理变化（11 → 35 项，全部 PASS） |
 | `Q4/FINAL_REPOSITORY_CLEANUP.md` | 报告 | 本文档 |
 
 未改动：`q4_solve.py`、Q1/Q2/Q3 核心代码、`q4_best_*.json`、任何 CSV/JSON 正式结果。
@@ -63,12 +63,14 @@
 
 ## 7. 枚举结果一致性验证
 
-- 2 组：CSV 2047 行（= 全量枚举数），`enum_2groups_total_enumerated` PASS
+- 2 组：CSV 2047 行（= 全量枚举数），独立重算 2047 个候选并通过唯一性检查
 - 3 组：summary `total_enumerated=86526`、`saved_top_n=1000`，CSV 1000 行，均 PASS
 - 排序：2 组与 3 组 CSV 均按 `(gap_sum, total_resources, imbalance)` 非降序排列，`csv_sorted` PASS
-- 首项一致：CSV 首行分别等于 `q4_best_2groups.json`（gap 2 / res 29 / imb 1.0）与 `q4_best_3groups.json`（gap 4 / res 32 / imb 1.0），`first_is_best` PASS
+- 逐行复算：2 组 CSV 2047/2047 行、3 组 CSV 1000/1000 行的目标值与独立重算一致。
+- 独立最优性：验证器不调用 `q4_solve.py`，而是重新生成全部合法分区、重算资源与字典序目标；提交的 2 组和 3 组方案均达到独立枚举得到的字典序最优值。
+- Top1000：3 组 CSV 的 1000 行逐行复算通过，并与独立全量枚举排序后的前 1000 个目标值逐项一致。
 
-> 说明：这只证明「保存结果与求解器枚举/排序输出一致」，是**独立验证器检查的结果一致性**，不是第二套穷举最优性证明。
+> 说明：上述“最优”仅针对固定 Q3 调度、固定资源核算和既定 `(gap_sum, total_resources, imbalance)` 字典序目标；不等同于所有可能调度模型下的全局最优。
 
 ## 8. manifest 更新
 
@@ -90,7 +92,7 @@
 ## 9. Q4 验证最终状态
 
 - `OVERALL: PASS`
-- 检查项数：**27**（原 11 + 新增 16）
+- 检查项数：**35**（原 11 + 新增独立枚举、逐行复算及库存一致性检查）
 - 退出码：**0**
 - `q4_validation.json` 与重跑输出逐字段一致
 

@@ -13,17 +13,20 @@ PASS boolean):
   - partition legality per plan: service-area complete coverage + uniqueness,
     no empty group, atomic-block integrity, multi-site-trip co-grouping;
   - resource non-negativity per plan;
-  - enumeration-consistency: saved candidate CSVs sorted by the official
-    lexicographic key and their first row matching the submitted best values,
-    plus the 3-group summary's total_enumerated / saved_top_n.
+  - exhaustive optimality check: independently enumerate every legal 2/3-group
+    partition, recompute its resources and lexicographic objective, then verify
+    the selected plans and saved candidate CSVs against those results.
 """
 from __future__ import annotations
 
 import csv
 import json
 import sys
-from collections import defaultdict
+from collections import Counter, defaultdict
 from pathlib import Path
+
+# 本程序及代码是在人工智能工具辅助下完成的：OpenAI Codex，GPT-5（公开发布日期：2025-08-07；
+# 运行构建标识未公开），OpenAI；本次验证器修订日期：2026-09-24。
 
 REPO = Path(__file__).resolve().parents[2]
 Q2R = REPO / "Q2" / "results"
@@ -68,6 +71,12 @@ def main():
             relay_trips[sortie].add(r["trip_id"])
     q2 = json.loads((Q2R / "q2_inputs.json").read_text(encoding="utf-8"))
     type_charge = {t["type_id"]: t["full_charge_s"] for t in q2["types"].values()}
+    inventory = dict(
+        drones=Counter(q2["drones"].values()),
+        batteries=Counter(q2["batteries"].values()),
+        relay_drones=2,
+        relay_modules=6,
+    )
 
     # blocks
     edges = defaultdict(set)
@@ -132,9 +141,100 @@ def main():
             else:
                 avail.append(0.0); i = len(avail) - 1
             avail[i] = e + charge_time(soc, 1800.0)
-        return dict(drones=drones, batteries=batteries,
-                    relay_drones=len(set(s["relay_id"] for s in sorties)),
-                    relay_modules=len(avail))
+        return dict(
+            n_trips=len(g_trips),
+            n_boxes=sum(len(t["box_ids"]) for t in g_trips),
+            occupancy_s=sum(t["ret"] - t["prep"] for t in g_trips),
+            energy=sum(t["energy"] for t in g_trips),
+            relay_service_s=sum(s["service_end"] - s["service_start"] for s in sorties),
+            drones=drones,
+            batteries=batteries,
+            relay_drones=len(set(s["relay_id"] for s in sorties)),
+            relay_modules=len(avail),
+        )
+
+    def encode_partition(groups):
+        return "|".join("{" + ",".join(f"B{i + 1:02d}" for i in group) + "}" for group in groups)
+
+    def decode_partition(value, k):
+        try:
+            groups = []
+            for part in value.split("|"):
+                if len(part) < 3 or part[0] != "{" or part[-1] != "}":
+                    return None
+                body = part[1:-1]
+                if not body:
+                    return None
+                group = []
+                for token in body.split(","):
+                    if len(token) < 2 or token[0] != "B":
+                        return None
+                    block_id = int(token[1:]) - 1
+                    if not 0 <= block_id < len(blocks):
+                        return None
+                    group.append(block_id)
+                if len(group) != len(set(group)):
+                    return None
+                groups.append(tuple(sorted(group)))
+            flat = [b for group in groups for b in group]
+            if (len(groups) != k or any(not group for group in groups)
+                    or sorted(flat) != list(range(len(blocks)))
+                    or len(flat) != len(set(flat))):
+                return None
+            return tuple(groups)
+        except (TypeError, ValueError):
+            return None
+
+    def score_partition(groups):
+        group_accounts = [account(group) for group in groups]
+        total_drones = Counter()
+        total_batteries = Counter()
+        relay_drones = relay_modules = 0
+        for group in group_accounts:
+            total_drones.update(group["drones"])
+            total_batteries.update(group["batteries"])
+            relay_drones += group["relay_drones"]
+            relay_modules += group["relay_modules"]
+
+        gap = sum(max(0, total_drones[t] - inventory["drones"][t]) for t in "ABC")
+        gap += sum(max(0, total_batteries[t] - inventory["batteries"][t]) for t in "ABC")
+        gap += max(0, relay_drones - inventory["relay_drones"])
+        gap += max(0, relay_modules - inventory["relay_modules"])
+        total_resources = (sum(total_drones.values()) + sum(total_batteries.values())
+                           + relay_drones + relay_modules)
+
+        # Reproduce the documented per-candidate normalization and equal weights.
+        metrics = ("n_trips", "occupancy_s", "energy", "n_boxes", "relay_service_s")
+        group_work = [0.0] * len(group_accounts)
+        for metric in metrics:
+            values = [group[metric] for group in group_accounts]
+            lo, hi = min(values), max(values)
+            for i, value in enumerate(values):
+                group_work[i] += 0.2 * ((value - lo) / (hi - lo) if hi > lo else 0.0)
+        imbalance = max(group_work) - min(group_work)
+        return gap, total_resources, imbalance
+
+    def enumerate_partitions(n_blocks, k):
+        # Restricted-growth strings generate each unlabeled set partition once.
+        assignment = [0] * n_blocks
+
+        def visit(position, used_groups):
+            if position == n_blocks:
+                if used_groups == k:
+                    groups = [[] for _ in range(k)]
+                    for block_id, group_id in enumerate(assignment):
+                        groups[group_id].append(block_id)
+                    yield tuple(tuple(group) for group in groups)
+                return
+            remaining = n_blocks - position - 1
+            for group_id in range(min(used_groups + 1, k)):
+                next_used = max(used_groups, group_id + 1)
+                if next_used + remaining < k:
+                    continue
+                assignment[position] = group_id
+                yield from visit(position + 1, next_used)
+
+        yield from visit(0, 0)
 
     # ------------------------------------------------------------------
     # 最终分区方案验证（2 组 / 3 组分别独立验证，避免循环变量残留）
@@ -198,29 +298,86 @@ def main():
     check("resource_recomputation_matches", not mismatches, f"mismatch={mismatches[:5]}")
 
     # ------------------------------------------------------------------
-    # 枚举一致性复核（轻量）：保存候选 CSV 按字典序非降、首项与 best 一致、
-    # 3 组 summary 的枚举/保存计数与 CSV 行数一致。
+    # 独立穷举复核：不调用 q4_solve，重新生成所有无标签分区并重算目标值。
     # ------------------------------------------------------------------
     for k in (2, 3):
-        rows = list(csv.DictReader((OUT / f"q4_all_partitions_{k}groups.csv").open(encoding="utf-8-sig")))
-        key = [(int(r["gap"]), int(r["total_resources"]), float(r["imbalance"])) for r in rows]
-        sorted_ok = all(key[i] <= key[i + 1] for i in range(len(key) - 1))
+        expected_count = {2: 2047, 3: 86526}[k]
+        scored = []
+        candidate_ids = set()
+        for groups in enumerate_partitions(len(blocks), k):
+            partition_id = encode_partition(groups)
+            candidate_ids.add(partition_id)
+            scored.append((score_partition(groups), partition_id))
+        scored.sort(key=lambda item: item[0])
+        best_score = scored[0][0]
+        check(f"enum_{k}groups_all_candidates_recomputed",
+              len(scored) == expected_count and len(candidate_ids) == expected_count,
+              f"independently enumerated {len(scored)} unique partitions")
+
         b = best[k]
-        first_ok = (key[0][0] == b["gap_sum"]
-                    and key[0][1] == b["total_resources_sum"]
-                    and abs(key[0][2] - b["workload_imbalance"]) < 1e-9)
-        check(f"enum_{k}groups_csv_sorted", sorted_ok, f"{len(rows)} rows")
-        check(f"enum_{k}groups_first_is_best", first_ok,
-              f"csv_first=(gap {key[0][0]}, res {key[0][1]}, imb {key[0][2]:.6f})")
+        submitted_groups = tuple(
+            tuple(sorted(int(block[1:]) - 1 for block in group["blocks"]))
+            for group in b["groups"]
+        )
+        submitted_id = encode_partition(submitted_groups)
+        submitted_score = score_partition(submitted_groups)
+        submitted_is_candidate = submitted_id in candidate_ids
+        optimum_matches = (submitted_is_candidate
+                           and submitted_score[:2] == best_score[:2]
+                           and abs(submitted_score[2] - best_score[2]) <= 1e-10
+                           and b["gap_sum"] == best_score[0]
+                           and b["total_resources_sum"] == best_score[1]
+                           and abs(b["workload_imbalance"] - round(best_score[2], 6)) <= 5e-7)
+        check(f"enum_{k}groups_submitted_plan_is_global_lexicographic_optimum",
+              optimum_matches,
+              f"independent minimum={best_score[0]}/{best_score[1]}/{best_score[2]:.9f}; "
+              f"submitted={submitted_score[0]}/{submitted_score[1]}/{submitted_score[2]:.9f}")
+        check(f"enum_{k}groups_candidate_count_matches_best_json",
+              b.get("n_candidates") == expected_count)
+
+        rows = read_csv(OUT / f"q4_all_partitions_{k}groups.csv")
+        row_ids = [row.get("partition", "") for row in rows]
+        csv_objectives = []
+        row_values_match = True
+        for row, partition_id in zip(rows, row_ids):
+            groups = decode_partition(partition_id, k)
+            if groups is None or partition_id not in candidate_ids:
+                row_values_match = False
+                continue
+            objective = score_partition(groups)
+            csv_objectives.append((objective[0], objective[1], round(objective[2], 6)))
+            if (int(row["gap"]) != objective[0]
+                    or int(row["total_resources"]) != objective[1]
+                    or abs(float(row["imbalance"]) - objective[2]) > 5e-7):
+                row_values_match = False
+        actual_keys = [(int(row["gap"]), int(row["total_resources"]), float(row["imbalance"]))
+                       for row in rows]
+        sorted_ok = all(actual_keys[i] <= actual_keys[i + 1]
+                        for i in range(len(actual_keys) - 1))
+        check(f"enum_{k}groups_csv_rows_recompute_correctly", row_values_match,
+              f"recomputed {len(csv_objectives)}/{len(rows)} saved candidates")
+        check(f"enum_{k}groups_csv_sorted", sorted_ok, f"{len(rows)} saved rows")
+
         if k == 2:
-            check("enum_2groups_total_enumerated", len(rows) == 2047, f"{len(rows)} rows")
+            check("enum_2groups_csv_is_full_unique_enumeration",
+                  len(rows) == expected_count and len(set(row_ids)) == expected_count
+                  and set(row_ids) == candidate_ids,
+                  f"saved {len(rows)} rows for {expected_count} candidates")
         else:
             summ = json.loads((OUT / "q4_all_partitions_3groups_summary.json").read_text(encoding="utf-8"))
-            check("enum_3groups_total_enumerated", summ.get("total_enumerated") == 86526,
+            check("enum_3groups_total_enumerated", summ.get("total_enumerated") == expected_count,
                   f"total_enumerated={summ.get('total_enumerated')}")
             check("enum_3groups_saved_top_n",
-                  summ.get("saved_top_n") == 1000 and len(rows) == 1000,
+                  summ.get("saved_top_n") == 1000 and len(rows) == 1000
+                  and len(set(row_ids)) == 1000,
                   f"saved_top_n={summ.get('saved_top_n')}, csv_rows={len(rows)}")
+            expected_top_keys = [
+                (objective[0], objective[1], round(objective[2], 6))
+                for objective, _ in scored[:1000]
+            ]
+            check("enum_3groups_csv_matches_global_top_1000_objectives",
+                  csv_objectives == expected_top_keys,
+                  "saved objective sequence compared with independently sorted full enumeration")
 
     # Q3 不变
     check("trip_count_unchanged", len(trips) == 26)
@@ -237,11 +394,18 @@ def main():
     tot_r = sum(g["relay_drones"] for g in b2["groups"])
     tot_m = sum(g["relay_modules"] for g in b2["groups"])
     gap_ok = (b2["gap_sum"] ==
-              max(0, tot_d - sum(inv["transport_drones"].values())) +
-              max(0, tot_b - sum(inv["batteries"].values())) +
-              max(0, tot_r - inv["relay_drones"]) +
-              max(0, tot_m - inv["relay_energy_modules"]))
+              max(0, tot_d - sum(inventory["drones"].values())) +
+              max(0, tot_b - sum(inventory["batteries"].values())) +
+              max(0, tot_r - inventory["relay_drones"]) +
+              max(0, tot_m - inventory["relay_modules"]))
     check("gap_calculation_correct", gap_ok, f"gap_sum={b2['gap_sum']}")
+    inventory_matches = (
+        inv["transport_drones"] == dict(inventory["drones"])
+        and inv["batteries"] == dict(inventory["batteries"])
+        and inv["relay_drones"] == inventory["relay_drones"]
+        and inv["relay_energy_modules"] == inventory["relay_modules"]
+    )
+    check("inventory_export_matches_independent_inputs", inventory_matches)
 
     # 复现性
     b3 = best[3]
