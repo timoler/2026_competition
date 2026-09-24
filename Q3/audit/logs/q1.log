@@ -1,0 +1,9 @@
+[PASS] utm_coordinates 
+[PASS] leg_geometry_independent max dist diff=0.00e+00 m, max dem diff=0.00e+00 m
+[PASS] max_payload_independent 
+[PASS] batches_mass_volume_energy_time_reserve 166 trip records
+[PASS] submission_rows 
+[PASS] submission_numeric_fields 
+[PASS] default_summary 
+
+OVERALL: PASS

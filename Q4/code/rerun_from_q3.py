@@ -1,4 +1,4 @@
-"""Reproducible Q4 re-run on top of the Q3 strict-feasibility (3-relay) schedule.
+"""Reproducible Q4 re-run on top of the Q3 two-relay (3-sortie) schedule.
 
 Q4 does NOT re-optimise Q3 and does not change any Q2/Q3 spatio-temporal
 arrangement: it only partitions the 15 service areas (built from multi-site
@@ -28,9 +28,6 @@ Q3R = REPO / "Q3" / "results"
 OUT = REPO / "Q4" / "results"
 CODE = REPO / "Q4" / "code"
 
-# Q3 严格可行性复算的正式提交：三架增配中继(R01/R02/R03)达 100% 连续通信。
-Q3_SOURCE_COMMIT = "274c67789d50c52ed58121c256f65b4598d5629d"
-
 # Q4 的真实输入依赖（只读，不得改动）。
 INPUT_FILES = [
     Q2R / "q2_trips.csv",
@@ -44,6 +41,18 @@ def sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def q3_source_commit() -> str:
+    """Last commit that touched the Q3 relay schedule (Q4's relay input)."""
+    try:
+        out = subprocess.check_output(
+            ["git", "log", "-1", "--format=%H", "--", "Q3/results/q3_relay_schedule.csv"],
+            cwd=REPO, text=True,
+        ).strip()
+        return out or "unavailable"
+    except Exception:  # pragma: no cover - git absent
+        return "unavailable"
+
+
 def run_py(args):
     print("\n>", " ".join(map(str, args)), flush=True)
     subprocess.run(list(map(str, args)), cwd=REPO, check=True)
@@ -51,14 +60,15 @@ def run_py(args):
 
 def main() -> int:
     t0 = time.perf_counter()
+    q3_commit = q3_source_commit()
     manifest = {
-        "q3_source_commit": Q3_SOURCE_COMMIT,
+        "q3_source_commit": q3_commit,
         "input_files_sha256": {
             p.relative_to(REPO).as_posix(): sha256(p) for p in INPUT_FILES
         },
     }
 
-    # 当前分支 HEAD（本轮在 q4 分支，含已合并的 Q3 提交）。
+    # 当前分支 HEAD。
     try:
         manifest["q4_head_at_run"] = subprocess.check_output(
             ["git", "rev-parse", "HEAD"], cwd=REPO, text=True
@@ -67,14 +77,15 @@ def main() -> int:
         manifest["q4_head_at_run"] = "unavailable"
 
     # 确认 Q3 来源提交确在当前历史中（避免基于旧 Q3 结果重跑）。
-    try:
-        subprocess.check_call(
-            ["git", "merge-base", "--is-ancestor", Q3_SOURCE_COMMIT, "HEAD"],
-            cwd=REPO,
-        )
-        manifest["q3_commit_in_history"] = True
-    except subprocess.CalledProcessError:
-        manifest["q3_commit_in_history"] = False
+    if q3_commit != "unavailable":
+        try:
+            subprocess.check_call(
+                ["git", "merge-base", "--is-ancestor", q3_commit, "HEAD"],
+                cwd=REPO,
+            )
+            manifest["q3_commit_in_history"] = True
+        except subprocess.CalledProcessError:
+            manifest["q3_commit_in_history"] = False
 
     # 1) 实际入口：分区枚举 + 资源核算 + 输出全部结果。
     run_py([sys.executable, "-X", "utf8", str(CODE / "q4_solve.py")])

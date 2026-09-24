@@ -1,0 +1,193 @@
+{
+  "before_csv_total_kwh": 4.702102,
+  "before_e4_total_kwh": 4.702222,
+  "before_difference_kwh": 0.00011999999999989797,
+  "formal_west_end_s": 6902.0,
+  "legacy_validator_derived_end_s": 6902.392351884103,
+  "extra_service_s": 0.3923518841029363,
+  "extra_service_energy_kwh": 0.00011988529792034166,
+  "old_validator_reproduced_kwh": 4.702222,
+  "legacy_fixed_window_unrounded_kwh": 4.7021016778038565,
+  "duplicate_return_climb_removed_kwh": 0.19336808485380536,
+  "link_build_added_kwh": 0.027500000000000004,
+  "corrected_total_kwh": 4.536233592950051,
+  "sorties": [
+    {
+      "sortie_id": "S01",
+      "relay_id": "R01",
+      "phases": [
+        {
+          "phase": "out_ascent",
+          "duration_s": 198.127536,
+          "energy_kwh": 0.07046255234797592
+        },
+        {
+          "phase": "out_cruise",
+          "duration_s": 407.55056599544264,
+          "energy_kwh": 0.13018976413743305
+        },
+        {
+          "phase": "out_descent",
+          "duration_s": 0.0,
+          "energy_kwh": 0.0
+        },
+        {
+          "phase": "link_build",
+          "duration_s": 30.0,
+          "energy_kwh": 0.009166666666666667
+        },
+        {
+          "phase": "service",
+          "duration_s": 7018.5,
+          "energy_kwh": 2.1445416666666666
+        },
+        {
+          "phase": "back_ascent",
+          "duration_s": 0.0,
+          "energy_kwh": 0.0
+        },
+        {
+          "phase": "back_cruise",
+          "duration_s": 407.55056599544264,
+          "energy_kwh": 0.13018976413743305
+        },
+        {
+          "phase": "back_descent",
+          "duration_s": 264.170048,
+          "energy_kwh": 0.0
+        }
+      ],
+      "distance_m": 6113.25848993164,
+      "terrain_peak_m": 626.5867309570312,
+      "terrain_cells": 280,
+      "legacy_sampled_peak_m": 620.2101440429688,
+      "cruise_altitude_m": 920.210144,
+      "flight_out_s": 605.6781019954426,
+      "flight_back_s": 671.7206139954426,
+      "energy_kwh": 2.484550413956175,
+      "return_soc": 0.2235779956386953,
+      "reserve_margin_kwh": 0.07544958604382535,
+      "calculated_return_s": 8506.220613995443,
+      "agl_m": 299.99999995703126,
+      "legacy_unrounded_energy_kwh": 2.5458462996374847
+    },
+    {
+      "sortie_id": "S02",
+      "relay_id": "R02",
+      "phases": [
+        {
+          "phase": "out_ascent",
+          "duration_s": 133.6617995,
+          "energy_kwh": 0.047535803121245154
+        },
+        {
+          "phase": "out_cruise",
+          "duration_s": 261.1527247181145,
+          "energy_kwh": 0.08342378706273101
+        },
+        {
+          "phase": "out_descent",
+          "duration_s": 0.0,
+          "energy_kwh": 0.0
+        },
+        {
+          "phase": "link_build",
+          "duration_s": 30.0,
+          "energy_kwh": 0.009166666666666667
+        },
+        {
+          "phase": "service",
+          "duration_s": 4006.0,
+          "energy_kwh": 1.2240555555555557
+        },
+        {
+          "phase": "back_ascent",
+          "duration_s": 0.0,
+          "energy_kwh": 0.0
+        },
+        {
+          "phase": "back_cruise",
+          "duration_s": 261.1527247181145,
+          "energy_kwh": 0.08342378706273101
+        },
+        {
+          "phase": "back_descent",
+          "duration_s": 178.21573266666667,
+          "energy_kwh": 0.0
+        }
+      ],
+      "distance_m": 3917.2908707717174,
+      "terrain_peak_m": 388.0718994140625,
+      "terrain_cells": 153,
+      "legacy_sampled_peak_m": 388.0718994140625,
+      "cruise_altitude_m": 662.347198,
+      "flight_out_s": 394.81452421811446,
+      "flight_back_s": 439.36845738478115,
+      "energy_kwh": 1.4476055994689294,
+      "return_soc": 0.5476232501659596,
+      "reserve_margin_kwh": 1.112394400531071,
+      "calculated_return_s": 5190.368457384781,
+      "agl_m": 299.9999995136719,
+      "legacy_unrounded_energy_kwh": 1.485974735923508
+    },
+    {
+      "sortie_id": "S03",
+      "relay_id": "R02",
+      "phases": [
+        {
+          "phase": "out_ascent",
+          "duration_s": 211.92560125,
+          "energy_kwh": 0.07536972938458386
+        },
+        {
+          "phase": "out_cruise",
+          "duration_s": 610.5557654370892,
+          "energy_kwh": 0.19503864729240347
+        },
+        {
+          "phase": "out_descent",
+          "duration_s": 0.0,
+          "energy_kwh": 0.0
+        },
+        {
+          "phase": "link_build",
+          "duration_s": 30.0,
+          "energy_kwh": 0.009166666666666667
+        },
+        {
+          "phase": "service",
+          "duration_s": 423.6999999999998,
+          "energy_kwh": 0.12946388888888885
+        },
+        {
+          "phase": "back_ascent",
+          "duration_s": 0.0,
+          "energy_kwh": 0.0
+        },
+        {
+          "phase": "back_cruise",
+          "duration_s": 610.5557654370892,
+          "energy_kwh": 0.19503864729240347
+        },
+        {
+          "phase": "back_descent",
+          "duration_s": 282.56746833333335,
+          "energy_kwh": 0.0
+        }
+      ],
+      "distance_m": 9158.336481556338,
+      "terrain_peak_m": 730.6567993164062,
+      "terrain_cells": 420,
+      "legacy_sampled_peak_m": 730.6567993164062,
+      "cruise_altitude_m": 975.402405,
+      "flight_out_s": 822.4813666870892,
+      "flight_back_s": 893.1232337704225,
+      "energy_kwh": 0.6040775795249463,
+      "return_soc": 0.8112257563984543,
+      "reserve_margin_kwh": 1.955922420475054,
+      "calculated_return_s": 7795.123233770422,
+      "agl_m": 300.0000002148438,
+      "legacy_unrounded_energy_kwh": 0.6702806422428635
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+test_actual_fail_stays_fail (__main__.FinalizeFailures) ... ok
+test_coverage_forgery_rejected (__main__.FinalizeFailures) ... ok
+test_directional_flight_and_link_build_energy (__main__.FinalizeFailures) ... ok
+test_exit_code_mismatch_rejected (__main__.FinalizeFailures) ... ok
+test_fail_cannot_be_promoted_to_pass (__main__.FinalizeFailures) ... ok
+test_missing_checks_rejected (__main__.FinalizeFailures) ... ok
+test_missing_output_invalidates_old_pass (__main__.FinalizeFailures) ... Traceback (most recent call last):
+  File "E:\GitHub_Project\2026_competition\Q3\code\finalize_e4_q3.py", line 110, in main
+    report=json.loads((scratch/'e4_final_validation.json').read_text(encoding='utf-8'))
+  File "E:\Miniconda3\lib\pathlib.py", line 1194, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+  File "E:\Miniconda3\lib\pathlib.py", line 1180, in open
+    return io.open(self, mode, buffering, encoding, errors, newline,
+  File "E:\Miniconda3\lib\pathlib.py", line 1038, in _opener
+    return self._accessor.open(self, flags, mode)
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\陈佳政\\AppData\\Local\\Temp\\q3-validation-m1fyytbr\\e4_final_validation.json'
+ok
+test_missing_sensitivity_rejected (__main__.FinalizeFailures) ... ok
+test_real_missing_input_without_site_packages (__main__.FinalizeFailures) ... ok
+test_stale_identity_rejected (__main__.FinalizeFailures) ... ok
+test_subprocess_exception_invalidates_old_success_table (__main__.FinalizeFailures) ... Traceback (most recent call last):
+  File "E:\GitHub_Project\2026_competition\Q3\code\finalize_e4_q3.py", line 108, in main
+    run=subprocess.run(cmd,text=True,encoding='utf-8',errors='replace',stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
+  File "E:\Miniconda3\lib\unittest\mock.py", line 1092, in __call__
+    return self._mock_call(*args, **kwargs)
+  File "E:\Miniconda3\lib\unittest\mock.py", line 1096, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+  File "E:\Miniconda3\lib\unittest\mock.py", line 1151, in _execute_mock_call
+    raise effect
+OSError: injected launch failure
+ok
+
+----------------------------------------------------------------------
+Ran 11 tests in 0.974s
+
+OK

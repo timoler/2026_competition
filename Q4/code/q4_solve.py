@@ -66,10 +66,12 @@ def load():
                           service_start=float(r["service_start_s"]),
                           service_end=float(r["service_end_s"]),
                           soc=float(r["return_soc"]), energy=float(r["energy_kwh"])))
+    # 中继架次按 sortie_id（provider 字段，S01/S02/S03）归属；R02 的两次架次 S02/S03 分开统计。
     relay_trips = defaultdict(set)
     for r in read_csv(Q3R / "q3_communication_links.csv"):
-        if r["mode"] == "relay" and r["relay_id"]:
-            relay_trips[r["relay_id"]].add(r["trip_id"])
+        sortie = (r.get("sortie_id") or r.get("provider") or "").strip()
+        if sortie and sortie != "G01":
+            relay_trips[sortie].add(r["trip_id"])
     q2 = json.loads((Q2R / "q2_inputs.json").read_text(encoding="utf-8"))
     type_charge = {t["type_id"]: t["full_charge_s"] for t in q2["types"].values()}
     inv = dict(transport_drones=Counter(q2["drones"].values()),
@@ -148,7 +150,7 @@ def main():
         group_trips = [t for t in trips if any(b in block_ids for b in tb[t["trip_id"]])]
         tids = {t["trip_id"] for t in group_trips}
         # relay sorties serving this group = those with any served trip in group
-        sorties = [s for s in relay if any(t in tids for t in relay_trips[s["relay_id"]])]
+        sorties = [s for s in relay if any(t in tids for t in relay_trips[s["sortie_id"]])]
         physical_relays = len(set(s["relay_id"] for s in sorties))
         return dict(
             n_trips=len(group_trips),

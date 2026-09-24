@@ -171,10 +171,12 @@ class RelayProblem:
         flight_out = climb_t + cruise_t + descent_t
         g = self.sc["model"]["gravity_mps2"]
         climb_e = k["takeoff_mass_kg"] * g * climb / k["ascent_efficiency"] / 3.6e6
+        back_climb_e = k["takeoff_mass_kg"] * g * descent / k["ascent_efficiency"] / 3.6e6
         cruise_e = k["cruise_power_kw"] * cruise_t / 3600.0
-        # round trip flight (out+back): back has no climb beyond same altitude
-        flight_back = flight_out  # symmetric
-        flight_energy = 2 * (climb_e + cruise_e)
+        # directional round trip: the return leg climbs from the hover altitude
+        # (not O01), so its climb is `descent` and its descent is `climb`.
+        flight_back = descent / k["ascent_mps"] + cruise_t + climb / k["descent_mps"]
+        flight_energy = climb_e + back_climb_e + 2 * cruise_e
         hover_e = k["hover_power_kw"] * service_s / 3600.0
         comm_e = k["comm_power_kw"] * service_s / 3600.0
         energy = flight_energy + hover_e + comm_e

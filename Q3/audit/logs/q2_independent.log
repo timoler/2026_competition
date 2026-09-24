@@ -1,0 +1,221 @@
+{
+  "scope": "Independent review of frozen Q2 files; provisional scenario only",
+  "snapshot_sha256": {
+    "Q2/code/prepare_data.py": "811160d20831ce2ba7bc6896bb735f2f04f213304d77fcf5da26fc3a1ff62f2e",
+    "Q2/code/transport_core.py": "0e93769c35a2259f0d9fbcb8a9115f96b4914ee9b0e56e2ba9401bc376d7267f",
+    "Q2/code/solve.py": "6616a4b063c9b64e3328a006a6d3e7260a6072b428a357d27233c03e3c07ec4f",
+    "Q2/code/validate.py": "a9821ea9a6f9cb44cf55c69c8bad874d4a40fe40184de278f2012af05ea25bf4",
+    "Q2/code/utm_interval.py": "81f0d860006bc719afce22080169add4d1e581bb1039786a69d9e97273753deb",
+    "Q2/code/scenario.json": "e89874b7ac425a9965cd533fea122687f3631aeffdc4f1ee1bd453f05fb857d0",
+    "Q2/results/q2_battery_schedule.csv": "c1fe192a72d300aa2cc664e1c45c93b49108e311defd5f4ea3d9477dac1f7022",
+    "Q2/results/q2_boxes.csv": "489632fe298c92be5b5bc7ca1123db5f32daa0d7cde94bab35c1a9bff14ee7d5",
+    "Q2/results/q2_deliveries.csv": "c6051f5a68a65f50d11d0d9cf418c239412c174af7900d617f37463c02feb883",
+    "Q2/results/q2_drone_schedule.csv": "4620304a30027a38f398f426f42481bbcf8033a3f9815b0af382d1ce41559f81",
+    "Q2/results/q2_geometry.csv": "0456275ba35e293235980ecfdec83c8797155a3fe24168db1a8e6ed4f6920bf0",
+    "Q2/results/q2_improvement.csv": "9f06cbdc48c911a33f6f87ff77296955c9ba89e103d42dfcf111406cf2805a29",
+    "Q2/results/q2_input_manifest.csv": "a1aeae3e5495ca11724f8edd7b3ae42dfb07b36637f0f7c7787c134c2903f570",
+    "Q2/results/q2_inputs.json": "d195b84436270ab3e41f589138240c3d56c8315583a2877aa416cf938778e070",
+    "Q2/results/q2_nodes.csv": "ddf8858c43c95bbd928b470860ae8c841d0757d9d36006eec7041f995e0bcbd5",
+    "Q2/results/q2_plan.json": "37fc197599e378999ba6ec06e654941b0ac0ba974b18eebbae237b6f41f1fc8a",
+    "Q2/results/q2_run.json": "555876319bef82ead53995fa8f6ee785db2658cc1e1fb0f4d6fe1b1b423ff1f3",
+    "Q2/results/q2_scenario.json": "1986b40280721a7ccd07f10102a031407bf2c9200a99b2ccc601c6049f7d18d2",
+    "Q2/results/q2_search_history.csv": "d465c2f559fcc15797e368ff8cbbd02dcc7634ee4fff34d06e033568db265ceb",
+    "Q2/results/q2_segments.csv": "654828bcb043474e5b714981f42ba4be540f6a9016a92e945120ee55d3248d2a",
+    "Q2/results/q2_summary.csv": "796369d8cf9e8fac8dcd326a0318c408416b4d52066127d39d8cb66fcc4c42a6",
+    "Q2/results/q2_trips.csv": "42cabfa241e561dfb680176013fdfd1a56238e161d5bae68b32815fb4cf41616",
+    "Q2/results/q2_types.csv": "3cf3395d535b14fe551a2bf7f308559f956df1de50204a68d2f57d2f479dfcca",
+    "Q2/results/q2_validation.json": "de6a15aa9334f03a63002720c52f7a3ef93c5fda76a0ee22e54acca9a95621e6"
+  },
+  "run_code_hash_mismatches": [
+    "solve.py"
+  ],
+  "run_inputs_hash_matches": false,
+  "schedule": {
+    "metrics": {
+      "scenario_status": "PROVISIONAL_ASSUMPTIONS_NOT_OFFICIAL_FINAL",
+      "total_boxes": 80,
+      "hard_deadline_boxes": 31,
+      "total_trips": 26,
+      "multipoint_trips": 3,
+      "total_energy_kwh": 71.44096897841617,
+      "makespan_s": 6973.648576672872,
+      "weighted_soft_lateness_s": 0.0,
+      "late_boxes": 0,
+      "min_return_soc": 0.2094894732576289,
+      "total_operation_s": 46538.32228004905
+    },
+    "segments": 55,
+    "hard_minimum_slack": [
+      205.10854284446896,
+      "S002-MED-01"
+    ],
+    "soft_minimum_slack": [
+      1.8438688078308587,
+      "S001-WAT-06"
+    ],
+    "reserve_minimum_margin_kwh": [
+      0.07591578606103111,
+      "T012"
+    ],
+    "resources": {
+      "drone": {
+        "resources": 8,
+        "reuse_pairs": 18,
+        "minimum_gap_s": -6.821210263296962e-13,
+        "cross_drone_reuses": 0
+      },
+      "battery": {
+        "resources": 14,
+        "reuse_pairs": 12,
+        "minimum_gap_s": -9.094947017729282e-13,
+        "cross_drone_reuses": 7
+      }
+    },
+    "multipoint_routes": [
+      {
+        "trip_id": "T019",
+        "route": [
+          "O01",
+          "S006",
+          "S003",
+          "O01"
+        ],
+        "loads_kg": [
+          22,
+          14,
+          0
+        ]
+      },
+      {
+        "trip_id": "T021",
+        "route": [
+          "O01",
+          "S001",
+          "S010",
+          "O01"
+        ],
+        "loads_kg": [
+          22,
+          8,
+          0
+        ]
+      },
+      {
+        "trip_id": "T022",
+        "route": [
+          "O01",
+          "S005",
+          "S008",
+          "O01"
+        ],
+        "loads_kg": [
+          14,
+          6,
+          0
+        ]
+      }
+    ],
+    "max_errors": {
+      "takeoff_mass": 0.0,
+      "takeoff_volume": 0.0,
+      "preparation_start": 0.0,
+      "takeoff": 0.0,
+      "geometry_distance_m": 9.094947017729282e-13,
+      "segment_distance_m": 9.094947017729282e-13,
+      "geometry_ascent_m": 0.0,
+      "segment_ascent_m": 0.0,
+      "geometry_descent_m": 0.0,
+      "segment_descent_m": 0.0,
+      "geometry_cruise_altitude_m": 0.0,
+      "segment_cruise_altitude_m": 0.0,
+      "geometry_terrain_max_m": 0.0,
+      "segment_terrain_max_m": 0.0,
+      "remaining_cargo": 0.0,
+      "ascent_start": 2.2737367544323206e-13,
+      "ascent_end": 4.547473508864641e-13,
+      "cruise_start": 4.547473508864641e-13,
+      "cruise_end": 6.821210263296962e-13,
+      "descent_start": 6.821210263296962e-13,
+      "descent_end": 6.821210263296962e-13,
+      "handover_start": 6.821210263296962e-13,
+      "handover_end": 6.821210263296962e-13,
+      "delivery_complete": 2.2737367544323206e-13,
+      "delivery_arrival": 2.2737367544323206e-13,
+      "lateness": 0.0,
+      "segment_energy": 4.440892098500626e-16,
+      "return_cargo": 0.0,
+      "return_time": 6.821210263296962e-13,
+      "flight_time": 2.2737367544323206e-13,
+      "handover_time": 1.1368683772161603e-13,
+      "trip_energy": 8.881784197001252e-16,
+      "return_soc": 1.1102230246251565e-16,
+      "drone_occupancy": 0.0,
+      "drone_available": 6.821210263296962e-13,
+      "battery_occupancy": 0.0,
+      "battery_available": 9.094947017729282e-13,
+      "summary_total_boxes": 0.0,
+      "summary_hard_deadline_boxes": 0.0,
+      "summary_total_trips": 0.0,
+      "summary_multipoint_trips": 0.0,
+      "summary_total_energy_kwh": 0.0,
+      "summary_makespan_s": 0.0,
+      "summary_weighted_soft_lateness_s": 0.0,
+      "summary_late_boxes": 0.0,
+      "summary_min_return_soc": 0.0,
+      "summary_total_operation_s": 7.275957614183426e-12
+    }
+  },
+  "trajectory": {
+    "boundaries": 246,
+    "midpoint_checks": 194,
+    "maximum_boundary_change_m": 1.5297959584879895e-05,
+    "maximum_midpoint_error_m": 1.9199706733309015e-09
+  },
+  "interfaces": {
+    "reserve_override": {
+      "reachable": false,
+      "max_payload_kg": null
+    },
+    "semantics_rejected": [
+      "horizontal_model",
+      "climb_model",
+      "delivery_event",
+      "battery_occupancy_from",
+      "charging",
+      "objective"
+    ],
+    "summary_mutations_rejected": [
+      "scenario_status",
+      "total_boxes",
+      "hard_deadline_boxes",
+      "total_trips",
+      "multipoint_trips",
+      "total_energy_kwh",
+      "makespan_s",
+      "weighted_soft_lateness_s",
+      "late_boxes",
+      "min_return_soc",
+      "total_operation_s"
+    ]
+  },
+  "terrain": {
+    "paths": 120,
+    "step_m": 0.25,
+    "sample_count": 2801104,
+    "maximum_peak_difference_m": 0.0,
+    "differing_paths": [],
+    "derivative_points": 600,
+    "reverse_sign_checks": 120,
+    "minimum_signed_numerator_interval_margin": 6.5274248053832736e-06,
+    "maximum_scalar_vs_proj_longitude_error_deg": 4.263256414560601e-14,
+    "dem_sha256": "c68703e0cc8f94f4bd52ff6e9974b66a2dae33865f0723ad71c04b6694bf4fbf",
+    "limitation": "Dense samples are not a supercover proof. Sixth-order truncation derivative bounds are not supplied."
+  },
+  "local_search": {
+    "replayed": false,
+    "accepted_steps": 16,
+    "history_lexicographically_decreases": true
+  },
+  "files_changed_during_audit": [],
+  "status": "PASS_UNDER_DECLARED_SCENARIO_WITH_DOCUMENTED_LIMITATIONS"
+}

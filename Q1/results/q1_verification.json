@@ -19,10 +19,20 @@
     {
       "check": "batches_mass_volume_energy_time_reserve",
       "pass": true,
-      "detail": "148 trip records"
+      "detail": "166 trip records"
     },
     {
       "check": "submission_rows",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "submission_numeric_fields",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "default_summary",
       "pass": true,
       "detail": ""
     }

@@ -1,5 +1,7 @@
-"""Run strict Q3 search, fine-grid validation and LOS sensitivity.
-Uses the versioned cropped DEM cache; does not rerun or modify Q2.
+"""Official fixed-plan entry: fresh independent validation and publication.
+No optimization; historical experiments are not formal result generators.
 """
-from strict_feasibility import main
-if __name__=='__main__':main()
+import sys
+from finalize_e4_q3 import main
+if __name__ == "__main__":
+    sys.exit(main())

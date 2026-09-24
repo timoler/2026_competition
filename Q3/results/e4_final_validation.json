@@ -1,29 +1,1221 @@
 {
-  "transport_constraints": "PASS",
-  "battery_constraints": "PASS",
-  "relay_constraints": "PASS",
-  "communication_1s_10m": "PASS",
-  "los_15m": true,
-  "los_10m": true,
-  "los_5m": true,
-  "temporal_sensitivity": true,
+  "status": "PASS",
+  "overall_pass": true,
+  "strict_feasible": true,
+  "checks": [
+    {
+      "check": "fixed_physical_sorties",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "check": "unique_sorties",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "check": "three_distinct_components",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "check": "transport_native_DEM_geometry",
+      "pass_": true,
+      "detail": {
+        "paths": 240,
+        "errors": []
+      }
+    },
+    {
+      "check": "transport_independent_arithmetic",
+      "pass_": true,
+      "detail": {
+        "metrics": {
+          "scenario_status": "PROVISIONAL_ASSUMPTIONS_NOT_OFFICIAL_FINAL",
+          "total_boxes": 80,
+          "hard_deadline_boxes": 31,
+          "total_trips": 26,
+          "multipoint_trips": 3,
+          "total_energy_kwh": 71.44096897841617,
+          "makespan_s": 8197.648576672873,
+          "weighted_soft_lateness_s": 0.0,
+          "late_boxes": 0,
+          "min_return_soc": 0.2094894732576289,
+          "total_operation_s": 46538.32228004905
+        },
+        "segments": 55,
+        "hard_minimum_slack": [
+          205.10854284446896,
+          "S002-MED-01"
+        ],
+        "soft_minimum_slack": [
+          1.8438688078308587,
+          "S001-WAT-06"
+        ],
+        "reserve_minimum_margin_kwh": [
+          0.07591578606103111,
+          "T012"
+        ],
+        "resources": {
+          "drone": {
+            "resources": 8,
+            "reuse_pairs": 18,
+            "minimum_gap_s": -6.821210263296962e-13,
+            "cross_drone_reuses": 0
+          },
+          "battery": {
+            "resources": 14,
+            "reuse_pairs": 12,
+            "minimum_gap_s": -9.094947017729282e-13,
+            "cross_drone_reuses": 8
+          }
+        },
+        "multipoint_routes": [
+          {
+            "trip_id": "T019",
+            "route": [
+              "O01",
+              "S006",
+              "S003",
+              "O01"
+            ],
+            "loads_kg": [
+              22,
+              14,
+              0
+            ]
+          },
+          {
+            "trip_id": "T021",
+            "route": [
+              "O01",
+              "S001",
+              "S010",
+              "O01"
+            ],
+            "loads_kg": [
+              22,
+              8,
+              0
+            ]
+          },
+          {
+            "trip_id": "T022",
+            "route": [
+              "O01",
+              "S005",
+              "S008",
+              "O01"
+            ],
+            "loads_kg": [
+              14,
+              6,
+              0
+            ]
+          }
+        ],
+        "max_errors": {
+          "takeoff_mass": 0.0,
+          "takeoff_volume": 0.0,
+          "preparation_start": 0.0,
+          "takeoff": 0.0,
+          "geometry_distance_m": 9.094947017729282e-13,
+          "segment_distance_m": 9.094947017729282e-13,
+          "geometry_ascent_m": 0.0,
+          "segment_ascent_m": 0.0,
+          "geometry_descent_m": 0.0,
+          "segment_descent_m": 0.0,
+          "geometry_cruise_altitude_m": 0.0,
+          "segment_cruise_altitude_m": 0.0,
+          "geometry_terrain_max_m": 0.0,
+          "segment_terrain_max_m": 0.0,
+          "remaining_cargo": 0.0,
+          "ascent_start": 2.2737367544323206e-13,
+          "ascent_end": 4.547473508864641e-13,
+          "cruise_start": 4.547473508864641e-13,
+          "cruise_end": 6.821210263296962e-13,
+          "descent_start": 6.821210263296962e-13,
+          "descent_end": 6.821210263296962e-13,
+          "handover_start": 6.821210263296962e-13,
+          "handover_end": 6.821210263296962e-13,
+          "delivery_complete": 2.2737367544323206e-13,
+          "delivery_arrival": 2.2737367544323206e-13,
+          "lateness": 0.0,
+          "segment_energy": 4.440892098500626e-16,
+          "return_cargo": 0.0,
+          "return_time": 6.821210263296962e-13,
+          "flight_time": 2.2737367544323206e-13,
+          "handover_time": 1.1368683772161603e-13,
+          "trip_energy": 8.881784197001252e-16,
+          "return_soc": 1.1102230246251565e-16,
+          "drone_occupancy": 0.0,
+          "drone_available": 6.821210263296962e-13,
+          "battery_occupancy": 0.0,
+          "battery_available": 1.8189894035458565e-12,
+          "summary_total_boxes": 0.0,
+          "summary_hard_deadline_boxes": 0.0,
+          "summary_total_trips": 0.0,
+          "summary_multipoint_trips": 0.0,
+          "summary_total_energy_kwh": 0.0,
+          "summary_makespan_s": 0.0,
+          "summary_weighted_soft_lateness_s": 0.0,
+          "summary_late_boxes": 0.0,
+          "summary_min_return_soc": 0.0,
+          "summary_total_operation_s": 0.0
+        }
+      }
+    },
+    {
+      "check": "transport_trajectory_boundaries",
+      "pass_": true,
+      "detail": {
+        "boundaries": 246,
+        "midpoint_checks": 194,
+        "maximum_boundary_change_m": 1.5297959584879895e-05,
+        "maximum_midpoint_error_m": 1.862645149230957e-09
+      }
+    },
+    {
+      "check": "transport_export_T001",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "check": "transport_export_T002",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "check": "transport_export_T003",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "check": "transport_export_T004",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "check": "transport_export_T005",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "check": "transport_export_T006",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "check": "transport_export_T007",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "check": "transport_export_T008",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "check": "transport_export_T009",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "check": "transport_export_T010",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "check": "transport_export_T011",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "check": "transport_export_T012",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "check": "transport_export_T013",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "check": "transport_export_T014",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "check": "transport_export_T015",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "check": "transport_export_T016",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "check": "transport_export_T017",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "check": "transport_export_T018",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "check": "transport_export_T019",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "check": "transport_export_T020",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "check": "transport_export_T021",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "check": "transport_export_T022",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "check": "transport_export_T023",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "check": "transport_export_T024",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "check": "transport_export_T025",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "check": "transport_export_T026",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "check": "S01_energy_reserve",
+      "pass_": true,
+      "detail": {
+        "sortie_id": "S01",
+        "relay_id": "R01",
+        "phases": [
+          {
+            "phase": "out_ascent",
+            "duration_s": 198.127536,
+            "energy_kwh": 0.07046255234797592
+          },
+          {
+            "phase": "out_cruise",
+            "duration_s": 407.55056599544264,
+            "energy_kwh": 0.13018976413743305
+          },
+          {
+            "phase": "out_descent",
+            "duration_s": 0.0,
+            "energy_kwh": 0.0
+          },
+          {
+            "phase": "link_build",
+            "duration_s": 30.0,
+            "energy_kwh": 0.009166666666666667
+          },
+          {
+            "phase": "service",
+            "duration_s": 7018.5,
+            "energy_kwh": 2.1445416666666666
+          },
+          {
+            "phase": "back_ascent",
+            "duration_s": 0.0,
+            "energy_kwh": 0.0
+          },
+          {
+            "phase": "back_cruise",
+            "duration_s": 407.55056599544264,
+            "energy_kwh": 0.13018976413743305
+          },
+          {
+            "phase": "back_descent",
+            "duration_s": 264.170048,
+            "energy_kwh": 0.0
+          }
+        ],
+        "distance_m": 6113.25848993164,
+        "terrain_peak_m": 626.5867309570312,
+        "terrain_cells": 280,
+        "legacy_sampled_peak_m": 620.2101440429688,
+        "cruise_altitude_m": 920.210144,
+        "flight_out_s": 605.6781019954426,
+        "flight_back_s": 671.7206139954426,
+        "energy_kwh": 2.484550413956175,
+        "return_soc": 0.2235779956386953,
+        "reserve_margin_kwh": 0.07544958604382535,
+        "calculated_return_s": 8506.220613995443,
+        "agl_m": 299.99999995703126,
+        "legacy_unrounded_energy_kwh": 2.5458462996374847
+      }
+    },
+    {
+      "check": "S01_agl",
+      "pass_": true,
+      "detail": 299.99999995703126
+    },
+    {
+      "check": "S01_nonnegative_order",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "check": "S01_departure",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "check": "S01_arrival",
+      "pass_": true,
+      "detail": {
+        "calculated": 816.0000000004426,
+        "scheduled": 816.0
+      }
+    },
+    {
+      "check": "S01_return_time",
+      "pass_": true,
+      "detail": {
+        "calculated": 8506.220613995443,
+        "scheduled": 8506.220613995
+      }
+    },
+    {
+      "check": "S02_energy_reserve",
+      "pass_": true,
+      "detail": {
+        "sortie_id": "S02",
+        "relay_id": "R02",
+        "phases": [
+          {
+            "phase": "out_ascent",
+            "duration_s": 133.6617995,
+            "energy_kwh": 0.047535803121245154
+          },
+          {
+            "phase": "out_cruise",
+            "duration_s": 261.1527247181145,
+            "energy_kwh": 0.08342378706273101
+          },
+          {
+            "phase": "out_descent",
+            "duration_s": 0.0,
+            "energy_kwh": 0.0
+          },
+          {
+            "phase": "link_build",
+            "duration_s": 30.0,
+            "energy_kwh": 0.009166666666666667
+          },
+          {
+            "phase": "service",
+            "duration_s": 4006.0,
+            "energy_kwh": 1.2240555555555557
+          },
+          {
+            "phase": "back_ascent",
+            "duration_s": 0.0,
+            "energy_kwh": 0.0
+          },
+          {
+            "phase": "back_cruise",
+            "duration_s": 261.1527247181145,
+            "energy_kwh": 0.08342378706273101
+          },
+          {
+            "phase": "back_descent",
+            "duration_s": 178.21573266666667,
+            "energy_kwh": 0.0
+          }
+        ],
+        "distance_m": 3917.2908707717174,
+        "terrain_peak_m": 388.0718994140625,
+        "terrain_cells": 153,
+        "legacy_sampled_peak_m": 388.0718994140625,
+        "cruise_altitude_m": 662.347198,
+        "flight_out_s": 394.81452421811446,
+        "flight_back_s": 439.36845738478115,
+        "energy_kwh": 1.4476055994689294,
+        "return_soc": 0.5476232501659596,
+        "reserve_margin_kwh": 1.112394400531071,
+        "calculated_return_s": 5145.368457384781,
+        "agl_m": 299.9999995136719,
+        "legacy_unrounded_energy_kwh": 1.485974735923508
+      }
+    },
+    {
+      "check": "S02_agl",
+      "pass_": true,
+      "detail": 299.9999995136719
+    },
+    {
+      "check": "S02_nonnegative_order",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "check": "S02_departure",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "check": "S02_arrival",
+      "pass_": true,
+      "detail": {
+        "calculated": 700.0000000001145,
+        "scheduled": 700.0
+      }
+    },
+    {
+      "check": "S02_return_time",
+      "pass_": true,
+      "detail": {
+        "calculated": 5145.368457384781,
+        "scheduled": 5145.368457385
+      }
+    },
+    {
+      "check": "S03_energy_reserve",
+      "pass_": true,
+      "detail": {
+        "sortie_id": "S03",
+        "relay_id": "R02",
+        "phases": [
+          {
+            "phase": "out_ascent",
+            "duration_s": 211.92560125,
+            "energy_kwh": 0.07536972938458386
+          },
+          {
+            "phase": "out_cruise",
+            "duration_s": 610.5557654370892,
+            "energy_kwh": 0.19503864729240347
+          },
+          {
+            "phase": "out_descent",
+            "duration_s": 0.0,
+            "energy_kwh": 0.0
+          },
+          {
+            "phase": "link_build",
+            "duration_s": 30.0,
+            "energy_kwh": 0.009166666666666667
+          },
+          {
+            "phase": "service",
+            "duration_s": 423.6999999999998,
+            "energy_kwh": 0.12946388888888885
+          },
+          {
+            "phase": "back_ascent",
+            "duration_s": 0.0,
+            "energy_kwh": 0.0
+          },
+          {
+            "phase": "back_cruise",
+            "duration_s": 610.5557654370892,
+            "energy_kwh": 0.19503864729240347
+          },
+          {
+            "phase": "back_descent",
+            "duration_s": 282.56746833333335,
+            "energy_kwh": 0.0
+          }
+        ],
+        "distance_m": 9158.336481556338,
+        "terrain_peak_m": 730.6567993164062,
+        "terrain_cells": 420,
+        "legacy_sampled_peak_m": 730.6567993164062,
+        "cruise_altitude_m": 975.402405,
+        "flight_out_s": 822.4813666870892,
+        "flight_back_s": 893.1232337704225,
+        "energy_kwh": 0.6040775795249463,
+        "return_soc": 0.8112257563984543,
+        "reserve_margin_kwh": 1.955922420475054,
+        "calculated_return_s": 7795.123233770422,
+        "agl_m": 300.0000002148438,
+        "legacy_unrounded_energy_kwh": 0.6702806422428635
+      }
+    },
+    {
+      "check": "S03_agl",
+      "pass_": true,
+      "detail": 300.0000002148438
+    },
+    {
+      "check": "S03_nonnegative_order",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "check": "S03_departure",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "check": "S03_arrival",
+      "pass_": true,
+      "detail": {
+        "calculated": 6478.300000000089,
+        "scheduled": 6478.3
+      }
+    },
+    {
+      "check": "S03_return_time",
+      "pass_": true,
+      "detail": {
+        "calculated": 7795.123233770422,
+        "scheduled": 7795.12323377
+      }
+    },
+    {
+      "check": "R02_physical_turnaround",
+      "pass_": true,
+      "detail": {
+        "previous": "S02",
+        "next": "S03",
+        "next_prep_s": 5445.818633313,
+        "physically_available_s": 5445.368457384781,
+        "gap_s": 0.4501759282184139
+      }
+    },
+    {
+      "check": "transport_cruise_clearance",
+      "pass_": true,
+      "detail": {
+        "samples": 21233,
+        "minimum_agl_m": 50.0,
+        "all_phases_min_agl_m": -1.0255401611328097,
+        "note": "Node working altitudes use attachment elevations; ground endpoints are not cruise clearance tests."
+      }
+    },
+    {
+      "check": "communication_1.0s_15.0m",
+      "pass_": true,
+      "detail": {
+        "time_step_s": 1.0,
+        "los_spacing_m": 15.0,
+        "total_samples": 36351,
+        "uncovered_samples": 0,
+        "coverage": 1.0,
+        "outage_sample_seconds": 0.0,
+        "interruption_count": 0,
+        "longest_outage_sample_seconds": 0,
+        "backhaul": {
+          "S01": true,
+          "S02": true,
+          "S03": true
+        },
+        "status": "PASS"
+      }
+    },
+    {
+      "check": "communication_1.0s_10.0m",
+      "pass_": true,
+      "detail": {
+        "time_step_s": 1.0,
+        "los_spacing_m": 10.0,
+        "total_samples": 36351,
+        "uncovered_samples": 0,
+        "coverage": 1.0,
+        "outage_sample_seconds": 0.0,
+        "interruption_count": 0,
+        "longest_outage_sample_seconds": 0,
+        "backhaul": {
+          "S01": true,
+          "S02": true,
+          "S03": true
+        },
+        "status": "PASS"
+      }
+    },
+    {
+      "check": "communication_1.0s_5.0m",
+      "pass_": true,
+      "detail": {
+        "time_step_s": 1.0,
+        "los_spacing_m": 5.0,
+        "total_samples": 36351,
+        "uncovered_samples": 0,
+        "coverage": 1.0,
+        "outage_sample_seconds": 0.0,
+        "interruption_count": 0,
+        "longest_outage_sample_seconds": 0,
+        "backhaul": {
+          "S01": true,
+          "S02": true,
+          "S03": true
+        },
+        "status": "PASS"
+      }
+    },
+    {
+      "check": "communication_0.5s_10.0m",
+      "pass_": true,
+      "detail": {
+        "time_step_s": 0.5,
+        "los_spacing_m": 10.0,
+        "total_samples": 72690,
+        "uncovered_samples": 0,
+        "coverage": 1.0,
+        "outage_sample_seconds": 0.0,
+        "interruption_count": 0,
+        "longest_outage_sample_seconds": 0,
+        "backhaul": {
+          "S01": true,
+          "S02": true,
+          "S03": true
+        },
+        "status": "PASS"
+      }
+    },
+    {
+      "check": "communication_0.25s_10.0m",
+      "pass_": true,
+      "detail": {
+        "time_step_s": 0.25,
+        "los_spacing_m": 10.0,
+        "total_samples": 145366,
+        "uncovered_samples": 0,
+        "coverage": 1.0,
+        "outage_sample_seconds": 0.0,
+        "interruption_count": 0,
+        "longest_outage_sample_seconds": 0,
+        "backhaul": {
+          "S01": true,
+          "S02": true,
+          "S03": true
+        },
+        "status": "PASS"
+      }
+    }
+  ],
   "physical_relay_count": 2,
-  "relay_component_count": 3,
   "relay_sortie_count": 3,
-  "uncovered_samples": 0,
+  "relay_component_count": 3,
+  "energy_kwh": 4.536233592950051,
+  "relay_total_energy_kwh": 4.536233592950051,
+  "legacy_fixed_window_unrounded_kwh": 4.7021016778038565,
+  "relay_sorties": [
+    {
+      "sortie_id": "S01",
+      "relay_id": "R01",
+      "phases": [
+        {
+          "phase": "out_ascent",
+          "duration_s": 198.127536,
+          "energy_kwh": 0.07046255234797592
+        },
+        {
+          "phase": "out_cruise",
+          "duration_s": 407.55056599544264,
+          "energy_kwh": 0.13018976413743305
+        },
+        {
+          "phase": "out_descent",
+          "duration_s": 0.0,
+          "energy_kwh": 0.0
+        },
+        {
+          "phase": "link_build",
+          "duration_s": 30.0,
+          "energy_kwh": 0.009166666666666667
+        },
+        {
+          "phase": "service",
+          "duration_s": 7018.5,
+          "energy_kwh": 2.1445416666666666
+        },
+        {
+          "phase": "back_ascent",
+          "duration_s": 0.0,
+          "energy_kwh": 0.0
+        },
+        {
+          "phase": "back_cruise",
+          "duration_s": 407.55056599544264,
+          "energy_kwh": 0.13018976413743305
+        },
+        {
+          "phase": "back_descent",
+          "duration_s": 264.170048,
+          "energy_kwh": 0.0
+        }
+      ],
+      "distance_m": 6113.25848993164,
+      "terrain_peak_m": 626.5867309570312,
+      "terrain_cells": 280,
+      "legacy_sampled_peak_m": 620.2101440429688,
+      "cruise_altitude_m": 920.210144,
+      "flight_out_s": 605.6781019954426,
+      "flight_back_s": 671.7206139954426,
+      "energy_kwh": 2.484550413956175,
+      "return_soc": 0.2235779956386953,
+      "reserve_margin_kwh": 0.07544958604382535,
+      "calculated_return_s": 8506.220613995443,
+      "agl_m": 299.99999995703126,
+      "legacy_unrounded_energy_kwh": 2.5458462996374847
+    },
+    {
+      "sortie_id": "S02",
+      "relay_id": "R02",
+      "phases": [
+        {
+          "phase": "out_ascent",
+          "duration_s": 133.6617995,
+          "energy_kwh": 0.047535803121245154
+        },
+        {
+          "phase": "out_cruise",
+          "duration_s": 261.1527247181145,
+          "energy_kwh": 0.08342378706273101
+        },
+        {
+          "phase": "out_descent",
+          "duration_s": 0.0,
+          "energy_kwh": 0.0
+        },
+        {
+          "phase": "link_build",
+          "duration_s": 30.0,
+          "energy_kwh": 0.009166666666666667
+        },
+        {
+          "phase": "service",
+          "duration_s": 4006.0,
+          "energy_kwh": 1.2240555555555557
+        },
+        {
+          "phase": "back_ascent",
+          "duration_s": 0.0,
+          "energy_kwh": 0.0
+        },
+        {
+          "phase": "back_cruise",
+          "duration_s": 261.1527247181145,
+          "energy_kwh": 0.08342378706273101
+        },
+        {
+          "phase": "back_descent",
+          "duration_s": 178.21573266666667,
+          "energy_kwh": 0.0
+        }
+      ],
+      "distance_m": 3917.2908707717174,
+      "terrain_peak_m": 388.0718994140625,
+      "terrain_cells": 153,
+      "legacy_sampled_peak_m": 388.0718994140625,
+      "cruise_altitude_m": 662.347198,
+      "flight_out_s": 394.81452421811446,
+      "flight_back_s": 439.36845738478115,
+      "energy_kwh": 1.4476055994689294,
+      "return_soc": 0.5476232501659596,
+      "reserve_margin_kwh": 1.112394400531071,
+      "calculated_return_s": 5145.368457384781,
+      "agl_m": 299.9999995136719,
+      "legacy_unrounded_energy_kwh": 1.485974735923508
+    },
+    {
+      "sortie_id": "S03",
+      "relay_id": "R02",
+      "phases": [
+        {
+          "phase": "out_ascent",
+          "duration_s": 211.92560125,
+          "energy_kwh": 0.07536972938458386
+        },
+        {
+          "phase": "out_cruise",
+          "duration_s": 610.5557654370892,
+          "energy_kwh": 0.19503864729240347
+        },
+        {
+          "phase": "out_descent",
+          "duration_s": 0.0,
+          "energy_kwh": 0.0
+        },
+        {
+          "phase": "link_build",
+          "duration_s": 30.0,
+          "energy_kwh": 0.009166666666666667
+        },
+        {
+          "phase": "service",
+          "duration_s": 423.6999999999998,
+          "energy_kwh": 0.12946388888888885
+        },
+        {
+          "phase": "back_ascent",
+          "duration_s": 0.0,
+          "energy_kwh": 0.0
+        },
+        {
+          "phase": "back_cruise",
+          "duration_s": 610.5557654370892,
+          "energy_kwh": 0.19503864729240347
+        },
+        {
+          "phase": "back_descent",
+          "duration_s": 282.56746833333335,
+          "energy_kwh": 0.0
+        }
+      ],
+      "distance_m": 9158.336481556338,
+      "terrain_peak_m": 730.6567993164062,
+      "terrain_cells": 420,
+      "legacy_sampled_peak_m": 730.6567993164062,
+      "cruise_altitude_m": 975.402405,
+      "flight_out_s": 822.4813666870892,
+      "flight_back_s": 893.1232337704225,
+      "energy_kwh": 0.6040775795249463,
+      "return_soc": 0.8112257563984543,
+      "reserve_margin_kwh": 1.955922420475054,
+      "calculated_return_s": 7795.123233770422,
+      "agl_m": 300.0000002148438,
+      "legacy_unrounded_energy_kwh": 0.6702806422428635
+    }
+  ],
+  "transport": {
+    "metrics": {
+      "scenario_status": "PROVISIONAL_ASSUMPTIONS_NOT_OFFICIAL_FINAL",
+      "total_boxes": 80,
+      "hard_deadline_boxes": 31,
+      "total_trips": 26,
+      "multipoint_trips": 3,
+      "total_energy_kwh": 71.44096897841617,
+      "makespan_s": 8197.648576672873,
+      "weighted_soft_lateness_s": 0.0,
+      "late_boxes": 0,
+      "min_return_soc": 0.2094894732576289,
+      "total_operation_s": 46538.32228004905
+    },
+    "segments": 55,
+    "hard_minimum_slack": [
+      205.10854284446896,
+      "S002-MED-01"
+    ],
+    "soft_minimum_slack": [
+      1.8438688078308587,
+      "S001-WAT-06"
+    ],
+    "reserve_minimum_margin_kwh": [
+      0.07591578606103111,
+      "T012"
+    ],
+    "resources": {
+      "drone": {
+        "resources": 8,
+        "reuse_pairs": 18,
+        "minimum_gap_s": -6.821210263296962e-13,
+        "cross_drone_reuses": 0
+      },
+      "battery": {
+        "resources": 14,
+        "reuse_pairs": 12,
+        "minimum_gap_s": -9.094947017729282e-13,
+        "cross_drone_reuses": 8
+      }
+    },
+    "multipoint_routes": [
+      {
+        "trip_id": "T019",
+        "route": [
+          "O01",
+          "S006",
+          "S003",
+          "O01"
+        ],
+        "loads_kg": [
+          22,
+          14,
+          0
+        ]
+      },
+      {
+        "trip_id": "T021",
+        "route": [
+          "O01",
+          "S001",
+          "S010",
+          "O01"
+        ],
+        "loads_kg": [
+          22,
+          8,
+          0
+        ]
+      },
+      {
+        "trip_id": "T022",
+        "route": [
+          "O01",
+          "S005",
+          "S008",
+          "O01"
+        ],
+        "loads_kg": [
+          14,
+          6,
+          0
+        ]
+      }
+    ],
+    "max_errors": {
+      "takeoff_mass": 0.0,
+      "takeoff_volume": 0.0,
+      "preparation_start": 0.0,
+      "takeoff": 0.0,
+      "geometry_distance_m": 9.094947017729282e-13,
+      "segment_distance_m": 9.094947017729282e-13,
+      "geometry_ascent_m": 0.0,
+      "segment_ascent_m": 0.0,
+      "geometry_descent_m": 0.0,
+      "segment_descent_m": 0.0,
+      "geometry_cruise_altitude_m": 0.0,
+      "segment_cruise_altitude_m": 0.0,
+      "geometry_terrain_max_m": 0.0,
+      "segment_terrain_max_m": 0.0,
+      "remaining_cargo": 0.0,
+      "ascent_start": 2.2737367544323206e-13,
+      "ascent_end": 4.547473508864641e-13,
+      "cruise_start": 4.547473508864641e-13,
+      "cruise_end": 6.821210263296962e-13,
+      "descent_start": 6.821210263296962e-13,
+      "descent_end": 6.821210263296962e-13,
+      "handover_start": 6.821210263296962e-13,
+      "handover_end": 6.821210263296962e-13,
+      "delivery_complete": 2.2737367544323206e-13,
+      "delivery_arrival": 2.2737367544323206e-13,
+      "lateness": 0.0,
+      "segment_energy": 4.440892098500626e-16,
+      "return_cargo": 0.0,
+      "return_time": 6.821210263296962e-13,
+      "flight_time": 2.2737367544323206e-13,
+      "handover_time": 1.1368683772161603e-13,
+      "trip_energy": 8.881784197001252e-16,
+      "return_soc": 1.1102230246251565e-16,
+      "drone_occupancy": 0.0,
+      "drone_available": 6.821210263296962e-13,
+      "battery_occupancy": 0.0,
+      "battery_available": 1.8189894035458565e-12,
+      "summary_total_boxes": 0.0,
+      "summary_hard_deadline_boxes": 0.0,
+      "summary_total_trips": 0.0,
+      "summary_multipoint_trips": 0.0,
+      "summary_total_energy_kwh": 0.0,
+      "summary_makespan_s": 0.0,
+      "summary_weighted_soft_lateness_s": 0.0,
+      "summary_late_boxes": 0.0,
+      "summary_min_return_soc": 0.0,
+      "summary_total_operation_s": 0.0
+    }
+  },
+  "communication": {
+    "time_step_s": 1.0,
+    "los_spacing_m": 10.0,
+    "total_samples": 36351,
+    "uncovered_samples": 0,
+    "coverage": 1.0,
+    "outage_sample_seconds": 0.0,
+    "interruption_count": 0,
+    "longest_outage_sample_seconds": 0,
+    "backhaul": {
+      "S01": true,
+      "S02": true,
+      "S03": true
+    },
+    "status": "PASS"
+  },
+  "los_sensitivity": [
+    {
+      "time_step_s": 1.0,
+      "los_spacing_m": 15.0,
+      "total_samples": 36351,
+      "uncovered_samples": 0,
+      "coverage": 1.0,
+      "outage_sample_seconds": 0.0,
+      "interruption_count": 0,
+      "longest_outage_sample_seconds": 0,
+      "backhaul": {
+        "S01": true,
+        "S02": true,
+        "S03": true
+      },
+      "status": "PASS"
+    },
+    {
+      "time_step_s": 1.0,
+      "los_spacing_m": 10.0,
+      "total_samples": 36351,
+      "uncovered_samples": 0,
+      "coverage": 1.0,
+      "outage_sample_seconds": 0.0,
+      "interruption_count": 0,
+      "longest_outage_sample_seconds": 0,
+      "backhaul": {
+        "S01": true,
+        "S02": true,
+        "S03": true
+      },
+      "status": "PASS"
+    },
+    {
+      "time_step_s": 1.0,
+      "los_spacing_m": 5.0,
+      "total_samples": 36351,
+      "uncovered_samples": 0,
+      "coverage": 1.0,
+      "outage_sample_seconds": 0.0,
+      "interruption_count": 0,
+      "longest_outage_sample_seconds": 0,
+      "backhaul": {
+        "S01": true,
+        "S02": true,
+        "S03": true
+      },
+      "status": "PASS"
+    }
+  ],
+  "temporal_sensitivity": [
+    {
+      "time_step_s": 0.5,
+      "los_spacing_m": 10.0,
+      "total_samples": 72690,
+      "uncovered_samples": 0,
+      "coverage": 1.0,
+      "outage_sample_seconds": 0.0,
+      "interruption_count": 0,
+      "longest_outage_sample_seconds": 0,
+      "backhaul": {
+        "S01": true,
+        "S02": true,
+        "S03": true
+      },
+      "status": "PASS"
+    },
+    {
+      "time_step_s": 0.25,
+      "los_spacing_m": 10.0,
+      "total_samples": 145366,
+      "uncovered_samples": 0,
+      "coverage": 1.0,
+      "outage_sample_seconds": 0.0,
+      "interruption_count": 0,
+      "longest_outage_sample_seconds": 0,
+      "backhaul": {
+        "S01": true,
+        "S02": true,
+        "S03": true
+      },
+      "status": "PASS"
+    }
+  ],
+  "transport_total_energy_kwh": 71.44096897841617,
+  "transport_makespan": 8197.648576672873,
+  "scheduled_joint_makespan": 8506.220613995,
+  "calculated_joint_makespan": 8506.220613995443,
   "coverage": 1.0,
-  "overdue_boxes": 0,
-  "joint_makespan": 8440.2,
-  "transport_makespan": 8197.649,
-  "relay_makespan": 8440.2,
-  "transport_total_energy_kwh": 71.440968978,
-  "relay_total_energy_kwh": 4.702222,
-  "r01_energy_kwh": 2.545846,
-  "r01_return_soc": 0.204423125,
-  "r02_south_energy_kwh": 1.485975,
-  "r02_south_return_soc": 0.535632813,
-  "r02_west_energy_kwh": 0.670401,
-  "r02_west_return_soc": 0.790499687,
-  "r02_west_service_start": 6478.3,
-  "overall_pass": true
+  "uncovered_samples": 0,
+  "total_samples": 36351,
+  "qualification": "Discrete per-trip t=takeoff+k*step < return; left closed/right open; not continuous-time proof.",
+  "energy_convention": "Directional round trip + link-building hover/radio + service hover/radio; descent zero; no early rounding.",
+  "provenance": {
+    "input_sha256": {
+      "E:\\GitHub_Project\\2026_competition\\Q3\\results\\q3_official_plan.json": "cd6786155a8389ba484482b4a7d24d00d0ee11b1492622c9ce072b3618b24a17",
+      "E:\\GitHub_Project\\2026_competition\\Q3\\results\\q3_transport_schedule.csv": "873073027d6fbb43c2bd449253e50badf828f58f6236b48e32ebf9c5aff325be",
+      "E:\\GitHub_Project\\2026_competition\\Q3\\results\\q3_terrain_cache.npz": "7e63b91f2adc5241b4ab586b9b72ba66e4426b8b57299ef8993104dfbbd5023e",
+      "E:\\GitHub_Project\\2026_competition\\Q3\\code\\scenario.json": "1a21fd95b5627d3218d0e4de1c939e1ff744d421f21adec1af0daac8abdbc6f6",
+      "E:\\GitHub_Project\\2026_competition\\Q2\\code\\independent_audit.py": "2fc2cd17a99bbe825924139bd7cc70322a4f7570bf8f62e8c945c653c38b3a0f",
+      "E:\\GitHub_Project\\2026_competition\\Q2\\code\\make_figures.py": "fcdb498ff4b5f292917ef180660b7ad0c27efb9c6bdac3767740cccf4c0537e0",
+      "E:\\GitHub_Project\\2026_competition\\Q2\\code\\prepare_data.py": "811160d20831ce2ba7bc6896bb735f2f04f213304d77fcf5da26fc3a1ff62f2e",
+      "E:\\GitHub_Project\\2026_competition\\Q2\\code\\solve.py": "6616a4b063c9b64e3328a006a6d3e7260a6072b428a357d27233c03e3c07ec4f",
+      "E:\\GitHub_Project\\2026_competition\\Q2\\code\\test_transport.py": "237624e2c47028b4f634c94d818dc83036700269bd4e5f44082faefbefe695c8",
+      "E:\\GitHub_Project\\2026_competition\\Q2\\code\\transport_core.py": "0e93769c35a2259f0d9fbcb8a9115f96b4914ee9b0e56e2ba9401bc376d7267f",
+      "E:\\GitHub_Project\\2026_competition\\Q2\\code\\utm_interval.py": "81f0d860006bc719afce22080169add4d1e581bb1039786a69d9e97273753deb",
+      "E:\\GitHub_Project\\2026_competition\\Q2\\code\\validate.py": "a9821ea9a6f9cb44cf55c69c8bad874d4a40fe40184de278f2012af05ea25bf4",
+      "E:\\GitHub_Project\\2026_competition\\Q3\\code\\analyze_two_relay_failures.py": "a3c72b56d2d0a2561af969d42037e78bb090c7de341ffabdedd8ca24e0e2cf15",
+      "E:\\GitHub_Project\\2026_competition\\Q3\\code\\baseline.py": "9141ee99e41926f4c811da8ef09f9ac65fd95bb39da115c2b066e2f3dc015d7d",
+      "E:\\GitHub_Project\\2026_competition\\Q3\\code\\build_official_transport.py": "1724a22618a4bbc3c64e7dfc9f54f5d15b80d93d82879075a6096a2a23ab0391",
+      "E:\\GitHub_Project\\2026_competition\\Q3\\code\\check_core.py": "df9d3d236b8625c424defe8ead641659a964c30c986fab16f2a5e9b2903297cb",
+      "E:\\GitHub_Project\\2026_competition\\Q3\\code\\communication.py": "b8cf9c0c268043873d4e9126a31edb40196024b5a7c4beb56a31d84e03550d3c",
+      "E:\\GitHub_Project\\2026_competition\\Q3\\code\\config.py": "072ea0ac5a35d5c3640c99b9581af5dd81637b0b9d7d17ec10c88d357a237881",
+      "E:\\GitHub_Project\\2026_competition\\Q3\\code\\experiment_e4_joint_reschedule.py": "3af4868e245fa0fe904176ed29cfa94dfbe760a80f1958040c8dd8105da0eafb",
+      "E:\\GitHub_Project\\2026_competition\\Q3\\code\\experiment_two_relay_100.py": "3b69295e19ff0eddf53a655bd13e9794ce22e8c0eba80b2d349722a2ba1dffef",
+      "E:\\GitHub_Project\\2026_competition\\Q3\\code\\finalize_e4_q3.py": "1a98f1d38f1a4aacbb050b1d31fb56225c3b8ca4389da41fcafe2784714ca9fa",
+      "E:\\GitHub_Project\\2026_competition\\Q3\\code\\generate_q3_links.py": "a8298c583dedebf4b582e55025520997d7f4196ce66ca28e30aa69d02e4969a9",
+      "E:\\GitHub_Project\\2026_competition\\Q3\\code\\make_figures.py": "8dabdce3610e8862e38709a946e894f9db0e64f79c38f4be1af468874e3fcd31",
+      "E:\\GitHub_Project\\2026_competition\\Q3\\code\\relay.py": "ef9633dcd0a257d9de26c12649b7e50c1bc745c3889a69cb0b6364019bcbf3bf",
+      "E:\\GitHub_Project\\2026_competition\\Q3\\code\\schedule.py": "5047706bb739eb2fae815baf11e69a7559a08f2c3dabbfdb60db465173c560a7",
+      "E:\\GitHub_Project\\2026_competition\\Q3\\code\\sensitivity.py": "c64b0ca139bd4e566852288c2d0bf9dac005a03834acec76cace05efaf490dc7",
+      "E:\\GitHub_Project\\2026_competition\\Q3\\code\\solve.py": "a8298c583dedebf4b582e55025520997d7f4196ce66ca28e30aa69d02e4969a9",
+      "E:\\GitHub_Project\\2026_competition\\Q3\\code\\strict_feasibility.py": "2d69eb53aa67062ea5cf7476c466d009e96f8407e9eb49e2e982943d3f92be13",
+      "E:\\GitHub_Project\\2026_competition\\Q3\\code\\summary.py": "a8298c583dedebf4b582e55025520997d7f4196ce66ca28e30aa69d02e4969a9",
+      "E:\\GitHub_Project\\2026_competition\\Q3\\code\\terrain.py": "65fc1c9fbf78fb930f99c18626ee1235c2ffdbce2961e2b5a924d2163b68bd9e",
+      "E:\\GitHub_Project\\2026_competition\\Q3\\code\\test_finalize_e4_q3.py": "7c7bb62a7dfa683d13a4d7d16705bbaf380a218dc4664fb35a68ffd6144f2b6b",
+      "E:\\GitHub_Project\\2026_competition\\Q3\\code\\timeline.py": "dfb772408f4877ce3916a370884dab04fb097fc94b668edcf52f6bda6e634ca4",
+      "E:\\GitHub_Project\\2026_competition\\Q3\\code\\trajectory.py": "807118d934de585c5fec1915591101bd838d6769c7fd509b8841faea40e9d627",
+      "E:\\GitHub_Project\\2026_competition\\Q3\\code\\validate.py": "a8298c583dedebf4b582e55025520997d7f4196ce66ca28e30aa69d02e4969a9",
+      "E:\\GitHub_Project\\2026_competition\\Q3\\code\\validate_two_relay_experiment.py": "4ba8337c9f8e33894e8c8438879ab3d5fd213ba91a080221dc1957edb7d39915",
+      "E:\\GitHub_Project\\2026_competition\\Q3\\code\\validation_io.py": "7c828388fdcf5e4603cf91f27f3418ee874dc1bce177f610946b4fd2a8974102",
+      "E:\\GitHub_Project\\2026_competition\\Q2\\results\\q2_inputs.json": "d195b84436270ab3e41f589138240c3d56c8315583a2877aa416cf938778e070",
+      "E:\\GitHub_Project\\2026_competition\\Q2\\results\\q2_scenario.json": "1986b40280721a7ccd07f10102a031407bf2c9200a99b2ccc601c6049f7d18d2",
+      "E:\\GitHub_Project\\2026_competition\\Q2\\results\\q2_trips.csv": "42cabfa241e561dfb680176013fdfd1a56238e161d5bae68b32815fb4cf41616"
+    },
+    "command": [
+      "E:\\Miniconda3\\python.exe",
+      "E:\\GitHub_Project\\2026_competition\\Q3\\code\\validate_two_relay_experiment.py",
+      "--plan",
+      "E:\\GitHub_Project\\2026_competition\\Q3\\results\\q3_official_plan.json",
+      "--transport",
+      "E:\\GitHub_Project\\2026_competition\\Q3\\results\\q3_transport_schedule.csv",
+      "--output",
+      "C:\\Users\\陈佳政\\AppData\\Local\\Temp\\q3-validation-smvkpwj_"
+    ],
+    "git_head": "afba25c976360f32f4a49d7e8cb0af64b63f0e79",
+    "python": "3.9.23",
+    "packages": {
+      "numpy": "1.26.4",
+      "scipy": "1.13.1",
+      "pyproj": "3.6.1",
+      "mpmath": "1.3.0"
+    },
+    "parameters": {
+      "time_steps_s": [
+        1,
+        0.5,
+        0.25
+      ],
+      "los_spacings_m": [
+        15,
+        10,
+        5
+      ],
+      "los_clearance_m": 0,
+      "baseline_display_time_tolerance_s": 0.050001,
+      "position_tolerance_m": 1e-05,
+      "interval": "takeoff inclusive, return exclusive; service left closed/right open",
+      "coverage_condition": "nominal fixed service windows; physical timing is checked separately and can FAIL"
+    },
+    "started_utc": "2026-09-24T04:31:24.832084+00:00",
+    "finished_utc": "2026-09-24T04:31:51.471935+00:00"
+  }
 }

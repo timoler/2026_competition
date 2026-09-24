@@ -1,40 +1,442 @@
 {
+  "arithmetic": {
+    "metrics": {
+      "scenario_status": "PROVISIONAL_ASSUMPTIONS_NOT_OFFICIAL_FINAL",
+      "total_boxes": 80,
+      "hard_deadline_boxes": 31,
+      "total_trips": 26,
+      "multipoint_trips": 3,
+      "total_energy_kwh": 71.44096897841617,
+      "makespan_s": 8197.648576672873,
+      "weighted_soft_lateness_s": 0.0,
+      "late_boxes": 0,
+      "min_return_soc": 0.2094894732576289,
+      "total_operation_s": 46538.32228004905
+    },
+    "segments": 55,
+    "hard_minimum_slack": [
+      205.10854284446896,
+      "S002-MED-01"
+    ],
+    "soft_minimum_slack": [
+      1.8438688078308587,
+      "S001-WAT-06"
+    ],
+    "reserve_minimum_margin_kwh": [
+      0.07591578606103111,
+      "T012"
+    ],
+    "resources": {
+      "drone": {
+        "resources": 8,
+        "reuse_pairs": 18,
+        "minimum_gap_s": -6.821210263296962e-13,
+        "cross_drone_reuses": 0
+      },
+      "battery": {
+        "resources": 14,
+        "reuse_pairs": 12,
+        "minimum_gap_s": -9.094947017729282e-13,
+        "cross_drone_reuses": 8
+      }
+    },
+    "multipoint_routes": [
+      {
+        "trip_id": "T019",
+        "route": [
+          "O01",
+          "S006",
+          "S003",
+          "O01"
+        ],
+        "loads_kg": [
+          22,
+          14,
+          0
+        ]
+      },
+      {
+        "trip_id": "T021",
+        "route": [
+          "O01",
+          "S001",
+          "S010",
+          "O01"
+        ],
+        "loads_kg": [
+          22,
+          8,
+          0
+        ]
+      },
+      {
+        "trip_id": "T022",
+        "route": [
+          "O01",
+          "S005",
+          "S008",
+          "O01"
+        ],
+        "loads_kg": [
+          14,
+          6,
+          0
+        ]
+      }
+    ],
+    "max_errors": {
+      "takeoff_mass": 0.0,
+      "takeoff_volume": 0.0,
+      "preparation_start": 0.0,
+      "takeoff": 0.0,
+      "geometry_distance_m": 9.094947017729282e-13,
+      "segment_distance_m": 9.094947017729282e-13,
+      "geometry_ascent_m": 0.0,
+      "segment_ascent_m": 0.0,
+      "geometry_descent_m": 0.0,
+      "segment_descent_m": 0.0,
+      "geometry_cruise_altitude_m": 0.0,
+      "segment_cruise_altitude_m": 0.0,
+      "geometry_terrain_max_m": 0.0,
+      "segment_terrain_max_m": 0.0,
+      "remaining_cargo": 0.0,
+      "ascent_start": 2.2737367544323206e-13,
+      "ascent_end": 4.547473508864641e-13,
+      "cruise_start": 4.547473508864641e-13,
+      "cruise_end": 6.821210263296962e-13,
+      "descent_start": 6.821210263296962e-13,
+      "descent_end": 6.821210263296962e-13,
+      "handover_start": 6.821210263296962e-13,
+      "handover_end": 6.821210263296962e-13,
+      "delivery_complete": 2.2737367544323206e-13,
+      "delivery_arrival": 2.2737367544323206e-13,
+      "lateness": 0.0,
+      "segment_energy": 4.440892098500626e-16,
+      "return_cargo": 0.0,
+      "return_time": 6.821210263296962e-13,
+      "flight_time": 2.2737367544323206e-13,
+      "handover_time": 1.1368683772161603e-13,
+      "trip_energy": 8.881784197001252e-16,
+      "return_soc": 1.1102230246251565e-16,
+      "drone_occupancy": 0.0,
+      "drone_available": 6.821210263296962e-13,
+      "battery_occupancy": 0.0,
+      "battery_available": 1.8189894035458565e-12,
+      "summary_total_boxes": 0.0,
+      "summary_hard_deadline_boxes": 0.0,
+      "summary_total_trips": 0.0,
+      "summary_multipoint_trips": 0.0,
+      "summary_total_energy_kwh": 0.0,
+      "summary_makespan_s": 0.0,
+      "summary_weighted_soft_lateness_s": 0.0,
+      "summary_late_boxes": 0.0,
+      "summary_min_return_soc": 0.0,
+      "summary_total_operation_s": 0.0
+    }
+  },
+  "trajectory": {
+    "boundaries": 246,
+    "midpoint_checks": 194,
+    "maximum_boundary_change_m": 1.5297959584879895e-05,
+    "maximum_midpoint_error_m": 1.862645149230957e-09
+  },
   "checks": [
     {
-      "check": "deadlines",
+      "check": "transport_native_DEM_geometry",
       "pass_": true,
-      "detail": "overdue=[]"
+      "detail": {
+        "paths": 240,
+        "errors": []
+      }
     },
     {
-      "check": "box_coverage_exactly_once",
+      "check": "transport_independent_arithmetic",
       "pass_": true,
-      "detail": "80/80 unique"
+      "detail": {
+        "metrics": {
+          "scenario_status": "PROVISIONAL_ASSUMPTIONS_NOT_OFFICIAL_FINAL",
+          "total_boxes": 80,
+          "hard_deadline_boxes": 31,
+          "total_trips": 26,
+          "multipoint_trips": 3,
+          "total_energy_kwh": 71.44096897841617,
+          "makespan_s": 8197.648576672873,
+          "weighted_soft_lateness_s": 0.0,
+          "late_boxes": 0,
+          "min_return_soc": 0.2094894732576289,
+          "total_operation_s": 46538.32228004905
+        },
+        "segments": 55,
+        "hard_minimum_slack": [
+          205.10854284446896,
+          "S002-MED-01"
+        ],
+        "soft_minimum_slack": [
+          1.8438688078308587,
+          "S001-WAT-06"
+        ],
+        "reserve_minimum_margin_kwh": [
+          0.07591578606103111,
+          "T012"
+        ],
+        "resources": {
+          "drone": {
+            "resources": 8,
+            "reuse_pairs": 18,
+            "minimum_gap_s": -6.821210263296962e-13,
+            "cross_drone_reuses": 0
+          },
+          "battery": {
+            "resources": 14,
+            "reuse_pairs": 12,
+            "minimum_gap_s": -9.094947017729282e-13,
+            "cross_drone_reuses": 8
+          }
+        },
+        "multipoint_routes": [
+          {
+            "trip_id": "T019",
+            "route": [
+              "O01",
+              "S006",
+              "S003",
+              "O01"
+            ],
+            "loads_kg": [
+              22,
+              14,
+              0
+            ]
+          },
+          {
+            "trip_id": "T021",
+            "route": [
+              "O01",
+              "S001",
+              "S010",
+              "O01"
+            ],
+            "loads_kg": [
+              22,
+              8,
+              0
+            ]
+          },
+          {
+            "trip_id": "T022",
+            "route": [
+              "O01",
+              "S005",
+              "S008",
+              "O01"
+            ],
+            "loads_kg": [
+              14,
+              6,
+              0
+            ]
+          }
+        ],
+        "max_errors": {
+          "takeoff_mass": 0.0,
+          "takeoff_volume": 0.0,
+          "preparation_start": 0.0,
+          "takeoff": 0.0,
+          "geometry_distance_m": 9.094947017729282e-13,
+          "segment_distance_m": 9.094947017729282e-13,
+          "geometry_ascent_m": 0.0,
+          "segment_ascent_m": 0.0,
+          "geometry_descent_m": 0.0,
+          "segment_descent_m": 0.0,
+          "geometry_cruise_altitude_m": 0.0,
+          "segment_cruise_altitude_m": 0.0,
+          "geometry_terrain_max_m": 0.0,
+          "segment_terrain_max_m": 0.0,
+          "remaining_cargo": 0.0,
+          "ascent_start": 2.2737367544323206e-13,
+          "ascent_end": 4.547473508864641e-13,
+          "cruise_start": 4.547473508864641e-13,
+          "cruise_end": 6.821210263296962e-13,
+          "descent_start": 6.821210263296962e-13,
+          "descent_end": 6.821210263296962e-13,
+          "handover_start": 6.821210263296962e-13,
+          "handover_end": 6.821210263296962e-13,
+          "delivery_complete": 2.2737367544323206e-13,
+          "delivery_arrival": 2.2737367544323206e-13,
+          "lateness": 0.0,
+          "segment_energy": 4.440892098500626e-16,
+          "return_cargo": 0.0,
+          "return_time": 6.821210263296962e-13,
+          "flight_time": 2.2737367544323206e-13,
+          "handover_time": 1.1368683772161603e-13,
+          "trip_energy": 8.881784197001252e-16,
+          "return_soc": 1.1102230246251565e-16,
+          "drone_occupancy": 0.0,
+          "drone_available": 6.821210263296962e-13,
+          "battery_occupancy": 0.0,
+          "battery_available": 1.8189894035458565e-12,
+          "summary_total_boxes": 0.0,
+          "summary_hard_deadline_boxes": 0.0,
+          "summary_total_trips": 0.0,
+          "summary_multipoint_trips": 0.0,
+          "summary_total_energy_kwh": 0.0,
+          "summary_makespan_s": 0.0,
+          "summary_weighted_soft_lateness_s": 0.0,
+          "summary_late_boxes": 0.0,
+          "summary_min_return_soc": 0.0,
+          "summary_total_operation_s": 0.0
+        }
+      }
     },
     {
-      "check": "uav_conflict",
+      "check": "transport_trajectory_boundaries",
       "pass_": true,
-      "detail": "conflict=[]"
+      "detail": {
+        "boundaries": 246,
+        "midpoint_checks": 194,
+        "maximum_boundary_change_m": 1.5297959584879895e-05,
+        "maximum_midpoint_error_m": 1.862645149230957e-09
+      }
     },
     {
-      "check": "uav_count_in_inventory",
+      "check": "transport_export_T001",
       "pass_": true,
-      "detail": "drone ids/types valid"
+      "detail": null
     },
     {
-      "check": "battery_conflict",
+      "check": "transport_export_T002",
       "pass_": true,
-      "detail": "conflict=[]"
+      "detail": null
     },
     {
-      "check": "battery_count_in_inventory",
+      "check": "transport_export_T003",
       "pass_": true,
-      "detail": "battery ids valid"
+      "detail": null
     },
     {
-      "check": "transport_energy_soc_unchanged",
+      "check": "transport_export_T004",
       "pass_": true,
-      "detail": "geometry unchanged"
+      "detail": null
+    },
+    {
+      "check": "transport_export_T005",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "check": "transport_export_T006",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "check": "transport_export_T007",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "check": "transport_export_T008",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "check": "transport_export_T009",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "check": "transport_export_T010",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "check": "transport_export_T011",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "check": "transport_export_T012",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "check": "transport_export_T013",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "check": "transport_export_T014",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "check": "transport_export_T015",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "check": "transport_export_T016",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "check": "transport_export_T017",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "check": "transport_export_T018",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "check": "transport_export_T019",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "check": "transport_export_T020",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "check": "transport_export_T021",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "check": "transport_export_T022",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "check": "transport_export_T023",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "check": "transport_export_T024",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "check": "transport_export_T025",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "check": "transport_export_T026",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "check": "transport_cruise_clearance",
+      "pass_": true,
+      "detail": {
+        "samples": 21233,
+        "minimum_agl_m": 50.0,
+        "all_phases_min_agl_m": -1.0255401611328097,
+        "note": "Node working altitudes use attachment elevations; ground endpoints are not cruise clearance tests."
+      }
     }
-  ],
-  "overdue_boxes": []
+  ]
 }

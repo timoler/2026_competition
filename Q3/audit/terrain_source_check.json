@@ -1,0 +1,8 @@
+{
+  "dem": "E:\\GitHub_Project\\2026_comp\\数据\\镇龙乡地理空间数据\\镇龙乡及周边地理数据\\数字高程模型数据（DEM）\\镇龙乡及周边30米DEM.mat",
+  "dem_sha256": "c68703e0cc8f94f4bd52ff6e9974b66a2dae33865f0723ad71c04b6694bf4fbf",
+  "cache_sha256": "7e63b91f2adc5241b4ab586b9b72ba66e4426b8b57299ef8993104dfbbd5023e",
+  "cache_exact_native_subset": true,
+  "row_offset": 421,
+  "column_offset": 381
+}

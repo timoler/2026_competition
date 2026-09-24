@@ -1,0 +1,334 @@
+[
+  {
+    "file": "Q1/README.md",
+    "purpose": "同步本次复核状态，保留模型结论边界"
+  },
+  {
+    "file": "Q1/code/verify.py",
+    "purpose": "补齐默认方案、分阶段时间、SOC、提交表数值、汇总与失败退出码；不改模型"
+  },
+  {
+    "file": "Q1/results/q1_verification.json",
+    "purpose": "本次166条记录和新增核对项的实际结果"
+  },
+  {
+    "file": "Q2/README.md",
+    "purpose": "说明本次独立重验及通信未纳入Q2；模型和结果逐字节不变"
+  },
+  {
+    "file": "Q3/E4_E5_TWO_RELAY_REPORT.md",
+    "purpose": "同步真实FAIL与能源/采样边界，旧实验显式标历史，Q4既存语句原样保留"
+  },
+  {
+    "file": "Q3/E4_FINAL_VALIDATION_REPORT.md",
+    "purpose": "同步真实FAIL与能源/采样边界，旧实验显式标历史，Q4既存语句原样保留"
+  },
+  {
+    "file": "Q3/METHOD_STRICT.md",
+    "purpose": "同步真实FAIL与能源/采样边界，旧实验显式标历史，Q4既存语句原样保留"
+  },
+  {
+    "file": "Q3/README.md",
+    "purpose": "同步真实FAIL与能源/采样边界，旧实验显式标历史，Q4既存语句原样保留"
+  },
+  {
+    "file": "Q3/TWO_RELAY_EXPERIMENT_REPORT.md",
+    "purpose": "同步真实FAIL与能源/采样边界，旧实验显式标历史，Q4既存语句原样保留"
+  },
+  {
+    "file": "Q3/code/finalize_e4_q3.py",
+    "purpose": "新临时目录启动验证、哈希绑定、真实状态汇总、FAIL/ERROR非零退出、统一派生正式结果"
+  },
+  {
+    "file": "Q3/code/generate_q3_links.py",
+    "purpose": "正式别名入口统一调用新finalize，避免旧调度或旧PASS覆盖"
+  },
+  {
+    "file": "Q3/code/solve.py",
+    "purpose": "正式别名入口统一调用新finalize，避免旧调度或旧PASS覆盖"
+  },
+  {
+    "file": "Q3/code/summary.py",
+    "purpose": "正式别名入口统一调用新finalize，避免旧调度或旧PASS覆盖"
+  },
+  {
+    "file": "Q3/code/validate.py",
+    "purpose": "正式别名入口统一调用新finalize，避免旧调度或旧PASS覆盖"
+  },
+  {
+    "file": "Q3/code/validate_two_relay_experiment.py",
+    "purpose": "正式固定输入、独立运输算术/DEM/轨迹、分阶段中继能源和时序、全网格通信重算"
+  },
+  {
+    "file": "Q3/figures/q3_blackout_timeline.png",
+    "purpose": "移至history_pre_audit原样保留（不是删除历史证据）"
+  },
+  {
+    "file": "Q3/figures/q3_comparison.png",
+    "purpose": "移至history_pre_audit原样保留（不是删除历史证据）"
+  },
+  {
+    "file": "Q3/figures/q3_relay_gantt.png",
+    "purpose": "移至history_pre_audit原样保留（不是删除历史证据）"
+  },
+  {
+    "file": "Q3/figures/q3_sensitivity.png",
+    "purpose": "移至history_pre_audit原样保留（不是删除历史证据）"
+  },
+  {
+    "file": "Q3/figures/q3_spatial_map.png",
+    "purpose": "移至history_pre_audit原样保留（不是删除历史证据）"
+  },
+  {
+    "file": "Q3/results/e4_blackout_intervals.csv",
+    "purpose": "从同一次真实独立验证生成正式明细、汇总或日志；旧敏感性表移入历史"
+  },
+  {
+    "file": "Q3/results/e4_communication_validation.json",
+    "purpose": "从同一次真实独立验证生成正式明细、汇总或日志；旧敏感性表移入历史"
+  },
+  {
+    "file": "Q3/results/e4_final_validation.json",
+    "purpose": "从同一次真实独立验证生成正式明细、汇总或日志；旧敏感性表移入历史"
+  },
+  {
+    "file": "Q3/results/e4_los_sensitivity.csv",
+    "purpose": "从同一次真实独立验证生成正式明细、汇总或日志；旧敏感性表移入历史"
+  },
+  {
+    "file": "Q3/results/e4_relay_validation.json",
+    "purpose": "从同一次真实独立验证生成正式明细、汇总或日志；旧敏感性表移入历史"
+  },
+  {
+    "file": "Q3/results/e4_temporal_sensitivity.csv",
+    "purpose": "从同一次真实独立验证生成正式明细、汇总或日志；旧敏感性表移入历史"
+  },
+  {
+    "file": "Q3/results/e4_transport_validation.json",
+    "purpose": "从同一次真实独立验证生成正式明细、汇总或日志；旧敏感性表移入历史"
+  },
+  {
+    "file": "Q3/results/q3_blackout_intervals.csv",
+    "purpose": "从同一次真实独立验证生成正式明细、汇总或日志；旧敏感性表移入历史"
+  },
+  {
+    "file": "Q3/results/q3_communication_links.csv",
+    "purpose": "从同一次真实独立验证生成正式明细、汇总或日志；旧敏感性表移入历史"
+  },
+  {
+    "file": "Q3/results/q3_final_blackout_intervals.csv",
+    "purpose": "从同一次真实独立验证生成正式明细、汇总或日志；旧敏感性表移入历史"
+  },
+  {
+    "file": "Q3/results/q3_final_schedule.csv",
+    "purpose": "从同一次真实独立验证生成正式明细、汇总或日志；旧敏感性表移入历史"
+  },
+  {
+    "file": "Q3/results/q3_final_validation.json",
+    "purpose": "从同一次真实独立验证生成正式明细、汇总或日志；旧敏感性表移入历史"
+  },
+  {
+    "file": "Q3/results/q3_los_resolution_sensitivity.csv",
+    "purpose": "从同一次真实独立验证生成正式明细、汇总或日志；旧敏感性表移入历史"
+  },
+  {
+    "file": "Q3/results/q3_relay_schedule.csv",
+    "purpose": "从同一次真实独立验证生成正式明细、汇总或日志；旧敏感性表移入历史"
+  },
+  {
+    "file": "Q3/results/q3_schedule_summary.json",
+    "purpose": "从同一次真实独立验证生成正式明细、汇总或日志；旧敏感性表移入历史"
+  },
+  {
+    "file": "Q3/results/q3_sensitivity.csv",
+    "purpose": "从同一次真实独立验证生成正式明细、汇总或日志；旧敏感性表移入历史"
+  },
+  {
+    "file": "Q3/results/q3_summary.csv",
+    "purpose": "从同一次真实独立验证生成正式明细、汇总或日志；旧敏感性表移入历史"
+  },
+  {
+    "file": "Q3/results/q3_transport_schedule.csv",
+    "purpose": "从同一次真实独立验证生成正式明细、汇总或日志；旧敏感性表移入历史"
+  },
+  {
+    "file": "Q3/results/q3_transport_timeline.csv",
+    "purpose": "从同一次真实独立验证生成正式明细、汇总或日志；旧敏感性表移入历史"
+  },
+  {
+    "file": "Q3/results/q3_validation.json",
+    "purpose": "从同一次真实独立验证生成正式明细、汇总或日志；旧敏感性表移入历史"
+  },
+  {
+    "file": "Q3/方法与口径.md",
+    "purpose": "同步真实FAIL与能源/采样边界，旧实验显式标历史，Q4既存语句原样保留"
+  },
+  {
+    "file": "README.md",
+    "purpose": "仅替换第三问边界条目，所有Q4内容保留"
+  },
+  {
+    "file": "Q3/audit/REVIEW.md",
+    "purpose": "审查输入状态、命令日志、负向测试、复现、差异与保护证据"
+  },
+  {
+    "file": "Q3/audit/before.json",
+    "purpose": "审查输入状态、命令日志、负向测试、复现、差异与保护证据"
+  },
+  {
+    "file": "Q3/audit/build_review_results.py",
+    "purpose": "审查输入状态、命令日志、负向测试、复现、差异与保护证据"
+  },
+  {
+    "file": "Q3/audit/changed_files.json",
+    "purpose": "审查输入状态、命令日志、负向测试、复现、差异与保护证据"
+  },
+  {
+    "file": "Q3/audit/check_final_consistency.py",
+    "purpose": "审查输入状态、命令日志、负向测试、复现、差异与保护证据"
+  },
+  {
+    "file": "Q3/audit/commands.json",
+    "purpose": "审查输入状态、命令日志、负向测试、复现、差异与保护证据"
+  },
+  {
+    "file": "Q3/audit/energy_reconciliation.json",
+    "purpose": "审查输入状态、命令日志、负向测试、复现、差异与保护证据"
+  },
+  {
+    "file": "Q3/audit/final_consistency.json",
+    "purpose": "审查输入状态、命令日志、负向测试、复现、差异与保护证据"
+  },
+  {
+    "file": "Q3/audit/logs/build_transport.log",
+    "purpose": "审查输入状态、命令日志、负向测试、复现、差异与保护证据"
+  },
+  {
+    "file": "Q3/audit/logs/failure_tests.log",
+    "purpose": "审查输入状态、命令日志、负向测试、复现、差异与保护证据"
+  },
+  {
+    "file": "Q3/audit/logs/git_diff_check.log",
+    "purpose": "审查输入状态、命令日志、负向测试、复现、差异与保护证据"
+  },
+  {
+    "file": "Q3/audit/logs/q1.log",
+    "purpose": "审查输入状态、命令日志、负向测试、复现、差异与保护证据"
+  },
+  {
+    "file": "Q3/audit/logs/q2.log",
+    "purpose": "审查输入状态、命令日志、负向测试、复现、差异与保护证据"
+  },
+  {
+    "file": "Q3/audit/logs/q2_independent.log",
+    "purpose": "审查输入状态、命令日志、负向测试、复现、差异与保护证据"
+  },
+  {
+    "file": "Q3/audit/logs/q3_finalize.log",
+    "purpose": "审查输入状态、命令日志、负向测试、复现、差异与保护证据"
+  },
+  {
+    "file": "Q3/audit/logs/q3_finalize_initial.log",
+    "purpose": "审查输入状态、命令日志、负向测试、复现、差异与保护证据"
+  },
+  {
+    "file": "Q3/audit/logs/q3_independent_reproduction.log",
+    "purpose": "审查输入状态、命令日志、负向测试、复现、差异与保护证据"
+  },
+  {
+    "file": "Q3/audit/protection_check.json",
+    "purpose": "审查输入状态、命令日志、负向测试、复现、差异与保护证据"
+  },
+  {
+    "file": "Q3/audit/reproduction.json",
+    "purpose": "审查输入状态、命令日志、负向测试、复现、差异与保护证据"
+  },
+  {
+    "file": "Q3/audit/run_review.py",
+    "purpose": "审查输入状态、命令日志、负向测试、复现、差异与保护证据"
+  },
+  {
+    "file": "Q3/audit/terrain_source_check.json",
+    "purpose": "审查输入状态、命令日志、负向测试、复现、差异与保护证据"
+  },
+  {
+    "file": "Q3/code/build_official_transport.py",
+    "purpose": "按既有两个平移量恢复Q3运输全精度时间，不搜索、不回写Q2"
+  },
+  {
+    "file": "Q3/code/test_finalize_e4_q3.py",
+    "purpose": "临时目录错误注入与非对称往返能源算例"
+  },
+  {
+    "file": "Q3/code/validation_io.py",
+    "purpose": "轻量I/O与输入哈希；科学依赖加载异常也能使finalize撤销旧成功状态"
+  },
+  {
+    "file": "Q3/figures/README.md",
+    "purpose": "同步真实FAIL与能源/采样边界，旧实验显式标历史，Q4既存语句原样保留"
+  },
+  {
+    "file": "Q3/figures/history_pre_audit/q3_blackout_timeline.png",
+    "purpose": "保存基准历史资料；非当前正式证据"
+  },
+  {
+    "file": "Q3/figures/history_pre_audit/q3_comparison.png",
+    "purpose": "保存基准历史资料；非当前正式证据"
+  },
+  {
+    "file": "Q3/figures/history_pre_audit/q3_relay_gantt.png",
+    "purpose": "保存基准历史资料；非当前正式证据"
+  },
+  {
+    "file": "Q3/figures/history_pre_audit/q3_sensitivity.png",
+    "purpose": "保存基准历史资料；非当前正式证据"
+  },
+  {
+    "file": "Q3/figures/history_pre_audit/q3_spatial_map.png",
+    "purpose": "保存基准历史资料；非当前正式证据"
+  },
+  {
+    "file": "Q3/results/e4_blackout_samples_0.25s.csv",
+    "purpose": "从同一次真实独立验证生成正式明细、汇总或日志；旧敏感性表移入历史"
+  },
+  {
+    "file": "Q3/results/e4_blackout_samples_0.5s.csv",
+    "purpose": "从同一次真实独立验证生成正式明细、汇总或日志；旧敏感性表移入历史"
+  },
+  {
+    "file": "Q3/results/history_pre_audit/e4_final_validation.json",
+    "purpose": "保存基准历史资料；非当前正式证据"
+  },
+  {
+    "file": "Q3/results/history_pre_audit/e4_temporal_sensitivity.csv",
+    "purpose": "保存基准历史资料；非当前正式证据"
+  },
+  {
+    "file": "Q3/results/history_pre_audit/q3_final_validation.json",
+    "purpose": "保存基准历史资料；非当前正式证据"
+  },
+  {
+    "file": "Q3/results/history_pre_audit/q3_relay_schedule.csv",
+    "purpose": "保存基准历史资料；非当前正式证据"
+  },
+  {
+    "file": "Q3/results/history_pre_audit/q3_sensitivity.csv",
+    "purpose": "保存基准历史资料；非当前正式证据"
+  },
+  {
+    "file": "Q3/results/history_pre_audit/q3_summary.csv",
+    "purpose": "保存基准历史资料；非当前正式证据"
+  },
+  {
+    "file": "Q3/results/q3_current_report.md",
+    "purpose": "从同一次真实独立验证生成正式明细、汇总或日志；旧敏感性表移入历史"
+  },
+  {
+    "file": "Q3/results/q3_official_plan.json",
+    "purpose": "从基准CSV冻结中继决策及运输调整，切断结果与验证循环依赖"
+  },
+  {
+    "file": "Q3/results/q3_validator_run.log",
+    "purpose": "从同一次真实独立验证生成正式明细、汇总或日志；旧敏感性表移入历史"
+  }
+]

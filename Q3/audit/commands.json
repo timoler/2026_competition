@@ -1,0 +1,100 @@
+[
+  {
+    "label": "q1",
+    "command": [
+      "E:\\Miniconda3\\python.exe",
+      "-B",
+      "Q1/code/verify.py",
+      "E:\\GitHub_Project\\2026_comp"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "started_utc": "2026-09-24T03:23:33.791546+00:00",
+    "finished_utc": "2026-09-24T03:23:43.732248+00:00",
+    "log": "Q3\\audit\\logs\\q1.log"
+  },
+  {
+    "label": "q2",
+    "command": [
+      "E:\\Miniconda3\\python.exe",
+      "-B",
+      "-c",
+      "import sys; sys.path.insert(0,'Q2/code'); from validate import validate; validate('Q2/results',save=False)"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "started_utc": "2026-09-24T03:23:43.733248+00:00",
+    "finished_utc": "2026-09-24T03:23:44.132761+00:00",
+    "log": "Q3\\audit\\logs\\q2.log"
+  },
+  {
+    "label": "q2_independent",
+    "command": [
+      "E:\\Miniconda3\\python.exe",
+      "-B",
+      "Q2/code/independent_audit.py",
+      "--dem",
+      "E:\\GitHub_Project\\2026_comp\\数据\\镇龙乡地理空间数据\\镇龙乡及周边地理数据\\数字高程模型数据（DEM）\\镇龙乡及周边30米DEM.mat",
+      "--skip-improve-replay"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "started_utc": "2026-09-24T03:23:44.132761+00:00",
+    "finished_utc": "2026-09-24T03:24:02.361682+00:00",
+    "log": "Q3\\audit\\logs\\q2_independent.log"
+  },
+  {
+    "label": "build_transport",
+    "command": [
+      "E:\\Miniconda3\\python.exe",
+      "-B",
+      "Q3/code/build_official_transport.py"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "started_utc": "2026-09-24T03:24:02.362682+00:00",
+    "finished_utc": "2026-09-24T03:24:02.422329+00:00",
+    "log": "Q3\\audit\\logs\\build_transport.log"
+  },
+  {
+    "label": "q3_finalize",
+    "command": [
+      "E:\\Miniconda3\\python.exe",
+      "-B",
+      "Q3/code/finalize_e4_q3.py"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "started_utc": "2026-09-24T03:24:02.422329+00:00",
+    "finished_utc": "2026-09-24T03:25:19.544492+00:00",
+    "log": "Q3\\audit\\logs\\q3_finalize.log"
+  },
+  {
+    "label": "failure_tests",
+    "command": [
+      "E:\\Miniconda3\\python.exe",
+      "-B",
+      "Q3/code/test_finalize_e4_q3.py"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "started_utc": "2026-09-24T03:25:19.545492+00:00",
+    "finished_utc": "2026-09-24T03:25:21.548377+00:00",
+    "log": "Q3\\audit\\logs\\failure_tests.log"
+  },
+  {
+    "label": "q3_independent_reproduction",
+    "command": [
+      "E:\\Miniconda3\\python.exe",
+      "-B",
+      "Q3/code/validate_two_relay_experiment.py",
+      "--output",
+      "C:\\Users\\陈佳政\\AppData\\Local\\Temp\\q3-reproduce-amwnpx3d"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "started_utc": "2026-09-24T03:25:21.554376+00:00",
+    "finished_utc": "2026-09-24T03:26:39.110311+00:00",
+    "log": "Q3\\audit\\logs\\q3_independent_reproduction.log"
+  }
+]

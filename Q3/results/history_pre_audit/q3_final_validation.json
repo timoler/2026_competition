@@ -1,0 +1,99 @@
+{
+  "status": "PASS",
+  "strict_feasible": true,
+  "time_step_s": 1,
+  "los_spacing_m": 10,
+  "total_samples": 36351,
+  "uncovered_samples": 0,
+  "outage_sample_seconds": 0,
+  "coverage": 1.0,
+  "max_relays": 2,
+  "physical_relay_count": 2,
+  "relay_sortie_count": 3,
+  "relay_component_count": 3,
+  "energy_kwh": 4.702102,
+  "robust_across_tested_los": true,
+  "qualification": "1-second per-trip grid; two physical relays (R01/R02), R02 flies two sequential sorties (south then west)",
+  "checks": [
+    {
+      "check": "q2_trajectories_match",
+      "pass_": true,
+      "detail": ""
+    },
+    {
+      "check": "relay_count",
+      "pass_": true,
+      "detail": ""
+    },
+    {
+      "check": "energy_components",
+      "pass_": true,
+      "detail": ""
+    },
+    {
+      "check": "relay_backhaul_R01",
+      "pass_": true,
+      "detail": ""
+    },
+    {
+      "check": "relay_agl_R01",
+      "pass_": true,
+      "detail": ""
+    },
+    {
+      "check": "relay_energy_R01",
+      "pass_": true,
+      "detail": ""
+    },
+    {
+      "check": "relay_soc_R01",
+      "pass_": true,
+      "detail": ""
+    },
+    {
+      "check": "relay_sequence_R01",
+      "pass_": true,
+      "detail": ""
+    },
+    {
+      "check": "relay_conflict_R01",
+      "pass_": true,
+      "detail": ""
+    },
+    {
+      "check": "relay_backhaul_R02",
+      "pass_": true,
+      "detail": ""
+    },
+    {
+      "check": "relay_agl_R02",
+      "pass_": true,
+      "detail": ""
+    },
+    {
+      "check": "relay_energy_R02",
+      "pass_": true,
+      "detail": ""
+    },
+    {
+      "check": "relay_soc_R02",
+      "pass_": true,
+      "detail": ""
+    },
+    {
+      "check": "relay_sequence_R02",
+      "pass_": true,
+      "detail": ""
+    },
+    {
+      "check": "relay_conflict_R02",
+      "pass_": true,
+      "detail": ""
+    },
+    {
+      "check": "continuous_connectivity",
+      "pass_": true,
+      "detail": ""
+    }
+  ]
+}

@@ -1,4 +1,4 @@
-﻿los_spacing_m,total_samples,uncovered_samples,coverage,max_continuous_outage,PASS
-15.0,36351,0,1.0,0,True
-10.0,36351,0,1.0,0,True
-5.0,36351,0,1.0,0,True
+﻿time_step_s,los_spacing_m,total_samples,uncovered_samples,coverage,outage_sample_seconds,interruption_count,longest_outage_sample_seconds,backhaul,status
+1.0,15.0,36351,0,1.0,0.0,0,0,"{'S01': True, 'S02': True, 'S03': True}",PASS
+1.0,10.0,36351,0,1.0,0.0,0,0,"{'S01': True, 'S02': True, 'S03': True}",PASS
+1.0,5.0,36351,0,1.0,0.0,0,0,"{'S01': True, 'S02': True, 'S03': True}",PASS

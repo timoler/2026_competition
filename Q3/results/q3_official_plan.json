@@ -1,0 +1,73 @@
+{
+  "version": "fixed-two-relay-v1",
+  "source_commit": "afba25c976360f32f4a49d7e8cb0af64b63f0e79",
+  "note": "Frozen two-relay decisions (R01 x1, R02 x2). S02 service window shifted earlier 45 s ([745,4751] -> [700,4706]) to resolve the R02 S02->S03 physical turnaround conflict and the T004 pre-745 s communication gap. Physical times recomputed with the directional flight model (return climbs from hover altitude).",
+  "relay_sorties": [
+    {
+      "sortie_id": "S01",
+      "relay_id": "R01",
+      "energy_component_id": "ERC-01",
+      "hover_x_m": 315675.158634,
+      "hover_y_m": 2550876.435495,
+      "hover_altitude_m": 920.210144,
+      "hover_lon": 109.2008451,
+      "hover_lat": 23.0562152,
+      "agl_m": 300.0,
+      "prep_start_s": 0.321898005,
+      "takeoff_s": 180.321898005,
+      "service_start_s": 816.0,
+      "service_end_s": 7834.5,
+      "return_s": 8506.220613995,
+      "flight_out_s": 605.678101995,
+      "flight_back_s": 671.720613995,
+      "service_duration_s": 7018.5
+    },
+    {
+      "sortie_id": "S02",
+      "relay_id": "R02",
+      "energy_component_id": "ERC-02",
+      "hover_x_m": 322575.158634,
+      "hover_y_m": 2546026.435495,
+      "hover_altitude_m": 662.347198,
+      "hover_lon": 109.26873,
+      "hover_lat": 23.0131753,
+      "agl_m": 300.0,
+      "prep_start_s": 95.185475782,
+      "takeoff_s": 275.185475782,
+      "service_start_s": 700.0,
+      "service_end_s": 4706.0,
+      "return_s": 5145.368457385,
+      "flight_out_s": 394.814524218,
+      "flight_back_s": 439.368457385,
+      "service_duration_s": 4006.0
+    },
+    {
+      "sortie_id": "S03",
+      "relay_id": "R02",
+      "energy_component_id": "ERC-03",
+      "hover_x_m": 314175.158634,
+      "hover_y_m": 2553526.435495,
+      "hover_altitude_m": 975.402405,
+      "hover_lon": 109.1858887,
+      "hover_lat": 23.0799743,
+      "agl_m": 300.0,
+      "prep_start_s": 5445.818633313,
+      "takeoff_s": 5625.818633313,
+      "service_start_s": 6478.3,
+      "service_end_s": 6902.0,
+      "return_s": 7795.12323377,
+      "flight_out_s": 822.481366687,
+      "flight_back_s": 893.12323377,
+      "service_duration_s": 423.7
+    }
+  ],
+  "transport_adjustments": {
+    "T011": {
+      "shift_s": 2320.0
+    },
+    "T015": {
+      "shift_s": 1224.0,
+      "drone_id": "U08"
+    }
+  }
+}

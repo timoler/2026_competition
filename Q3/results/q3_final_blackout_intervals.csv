@@ -1,1 +1,1 @@
-﻿trip_id,start_s,last_sample_s,end_exclusive_s,uncovered_samples
+﻿trip_id,start_s,last_sample_s,uncovered_samples,end_exclusive_s,sample_seconds

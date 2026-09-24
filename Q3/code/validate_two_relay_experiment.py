@@ -1,365 +1,221 @@
-"""Fully independent final validation of the E4 two-relay candidate.
-
-Decoupled from experiment_e4_joint_reschedule.py.  Does NOT read any coverage
-matrix / cached LOS / precomputed uncovered flags.  Rebuilds every transport
-trajectory from transport_core + DEM + communication params, applies the E4
-transport shifts (T011 +2320 s; T015 +1223 s, drone U07 -> U08) and the E4 relay
-schedule (R01 north; R02 south then west), then re-checks:
-  transport, battery, relay resource/energy, 1 s/10 m communication,
-  15/10/5 m LOS sensitivity, and 0.5 s temporal checks around critical windows.
-
-Only e4_* outputs are written.  Q2/Q3/Q4 formal results are untouched.
+﻿"""Independent fixed-plan validation. Never extends windows or reads finalize PASS.
+Exit 0: checks pass; 1: constraint failure; 2: missing input/exception.
 """
 from __future__ import annotations
-import csv, json, sys, math
-from collections import defaultdict
+import argparse,csv,hashlib,importlib.metadata,json,math,platform,shutil,subprocess,sys,tempfile
+from collections import Counter,defaultdict
+from datetime import datetime,timezone
 from pathlib import Path
 import numpy as np
+CODE=Path(__file__).resolve().parent
+REPO=CODE.parents[1]
+sys.path.insert(0,str(CODE))
+from config import RESULTS,Q2_RESULTS,load_scenario
+from terrain import Terrain
+from check_core import independent_link_budget,independent_los_occluded
+from trajectory import TransportTrajectory
+from transport_core import Model,Trajectory
+from solve import recompute,export
+from independent_audit import independent_schedule,trajectories
+from prepare_data import Terrain as ExactTerrain
+from validation_io import read_csv,dump,table,identity
 
-CODE = Path(__file__).resolve().parent
-sys.path.insert(0, str(CODE))
-from relay import RelayProblem
-from check_core import independent_link_budget, independent_los_occluded
-from config import RESULTS, Q2_RESULTS
+def exact_terrain(terrain):
+    """Use the Q2 native-cell traversal on the same versioned geographic crop."""
+    result=ExactTerrain.__new__(ExactTerrain)
+    for name in ('z','dx','west','dy','north','nodata','inverse'):
+        setattr(result,name,getattr(terrain,name))
+    result.native_utm=True
+    return result
 
-OUT = RESULTS
+def provenance(plan,transport):
+    return dict(input_sha256=identity(plan,transport),command=[sys.executable,*sys.argv],
+        git_head=subprocess.check_output(['git','rev-parse','HEAD'],cwd=REPO,text=True).strip(),
+        python=platform.python_version(),packages={n:importlib.metadata.version(n) for n in ('numpy','scipy','pyproj','mpmath')},
+        parameters=dict(time_steps_s=[1,.5,.25],los_spacings_m=[15,10,5],los_clearance_m=0,
+            baseline_display_time_tolerance_s=.050001,position_tolerance_m=.00001,
+            interval='takeoff inclusive, return exclusive; service left closed/right open',
+            coverage_condition='nominal fixed service windows; physical timing is checked separately and can FAIL'),
+        started_utc=datetime.now(timezone.utc).isoformat())
+def energy_and_phases(r,sc,terr,o):
+    """Directional flight, 30 s link-building hover/radio, service; no early rounding.
+    Terrain maximum uses native-cell traversal; descent energy is zero.
+    Return climb starts at hover altitude, not at O01 altitude.
+    """
+    k=sc['official_relay']; x,y,z=(float(r[n]) for n in ('hover_x_m','hover_y_m','hover_altitude_m'))
+    d=math.hypot(x-o['x_m'],y-o['y_m']); u=np.linspace(0,1,max(2,int(d/15)+1))
+    elev=terr.elevations(o['x_m']+(x-o['x_m'])*u,o['y_m']+(y-o['y_m'])*u)
+    if not np.all(np.isfinite(elev)) or np.any(elev==terr.nodata): raise ValueError('Invalid terrain')
+    peak,cells=exact_terrain(terr).maximum((o['x_m'],o['y_m']),(x,y))
+    h=max(peak+50,z); up=h-o['work_m']; down=h-z; cruise=d/k['cruise_mps']
+    factor=k['takeoff_mass_kg']*sc['model']['gravity_mps2']/k['ascent_efficiency']/3.6e6
+    phases=[]
+    for direction,a,b in [('out',up,down),('back',down,up)]:
+        phases.extend([dict(phase=direction+'_ascent',duration_s=a/k['ascent_mps'],energy_kwh=factor*a),
+            dict(phase=direction+'_cruise',duration_s=cruise,energy_kwh=k['cruise_power_kw']*cruise/3600),
+            dict(phase=direction+'_descent',duration_s=b/k['descent_mps'],energy_kwh=0.)])
+    for name,t in [('link_build',k['link_build_s']),('service',r['service_end_s']-r['service_start_s'])]:
+        phases.append(dict(phase=name,duration_s=t,energy_kwh=(k['hover_power_kw']+k['comm_power_kw'])*t/3600))
+    service_energy=phases[-1]['energy_kwh']
+    phases=phases[:3]+phases[6:]+phases[3:6]
+    e=math.fsum(p['energy_kwh'] for p in phases)
+    out=math.fsum(p['duration_s'] for p in phases if p['phase'].startswith('out_'))
+    back=math.fsum(p['duration_s'] for p in phases if p['phase'].startswith('back_'))
+    return dict(sortie_id=r['sortie_id'],relay_id=r['relay_id'],phases=phases,distance_m=d,
+        terrain_peak_m=peak,terrain_cells=cells,legacy_sampled_peak_m=float(elev.max()),cruise_altitude_m=h,flight_out_s=out,flight_back_s=back,
+        energy_kwh=e,return_soc=1-e/k['energy_kwh'],reserve_margin_kwh=(1-k['reserve'])*k['energy_kwh']-e,
+        calculated_return_s=r['service_end_s']+back,agl_m=z-terr.elevation(x,y),
+        legacy_unrounded_energy_kwh=2*(factor*up+k['cruise_power_kw']*cruise/3600)+service_energy)
+def interruptions(rows,step):
+    intervals=[]
+    for r in sorted(rows,key=lambda r:(r['trip_id'],r['time_s'])):
+        if intervals and intervals[-1]['trip_id']==r['trip_id'] and abs(intervals[-1]['last_sample_s']+step-r['time_s'])<1e-6:
+            intervals[-1]['last_sample_s']=r['time_s']; intervals[-1]['uncovered_samples']+=1
+        else: intervals.append(dict(trip_id=r['trip_id'],start_s=r['time_s'],last_sample_s=r['time_s'],uncovered_samples=1))
+    for r in intervals:
+        r['end_exclusive_s']=r['last_sample_s']+step; r['sample_seconds']=r['uncovered_samples']*step
+    return intervals
 
-
-def read_csv(p):
-    with Path(p).open(encoding="utf-8-sig") as f:
-        return list(csv.DictReader(f))
-
-
-def dump(name, obj):
-    (OUT / name).write_text(json.dumps(obj, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-
-
-def table(name, rows, fields):
-    with (OUT / name).open("w", encoding="utf-8-sig", newline="") as f:
-        w = csv.DictWriter(f, fieldnames=fields, lineterminator="\n")
-        w.writeheader(); w.writerows(rows)
-
-
-def charge_time(soc, full_s):
-    return full_s * (0.65 * (0.9 - soc) / 0.9 + 0.35) if soc < 0.9 else full_s * 0.35 * (1 - soc) / 0.1
-
+def run(plan_path,transport_path,out):
+    out.mkdir(parents=True,exist_ok=True); prov=provenance(plan_path,transport_path)
+    sc=load_scenario(); k=sc['official_relay']; plan=json.loads(plan_path.read_text(encoding='utf-8'))['relay_sorties']
+    transport=read_csv(transport_path); checks=[]
+    def check(name,ok,detail=None): checks.append(dict(check=name,pass_=bool(ok),detail=detail))
+    check('fixed_physical_sorties',Counter(r['relay_id'] for r in plan)==Counter({'R01':1,'R02':2}))
+    check('unique_sorties',len({r['sortie_id'] for r in plan})==len(plan))
+    check('three_distinct_components',len({r['energy_component_id'] for r in plan})==len(plan)==3 and len(plan)<=k['energy_components']['count'])
+    terr=Terrain.load_npz(RESULTS/'q3_terrain_cache.npz')
+    with tempfile.TemporaryDirectory(prefix='q3-transport-') as tmp:
+        root=Path(tmp); model=Model(Q2_RESULTS/'q2_inputs.json',Q2_RESULTS/'q2_scenario.json')
+        terrain_errors=[]
+        exact=exact_terrain(terr)
+        for key,g in model.data['geometry'].items():
+            a,b=(model.nodes[n] for n in key.split('|'))
+            peak,count=exact.maximum((a['x_m'],a['y_m']),(b['x_m'],b['y_m']))
+            if abs(peak-g['terrain_max_m'])>1e-8 or count!=g['cell_count']:
+                terrain_errors.append(dict(path=key,peak_m=peak,cells=count))
+        check('transport_native_DEM_geometry',not terrain_errors,dict(paths=len(model.data['geometry']),errors=terrain_errors))
+        entries=[dict(trip_id=r['trip_id'],drone_id=r['drone_id'],battery_id=r['battery_id'],box_ids=json.loads(r['box_ids_json']),
+            route=r['route'].split('-')[1:-1],preparation_start_s=float(r['preparation_start_s'])) for r in transport]
+        trips=recompute(model,entries) # explicit schedule only, never search
+        export(model,trips,root,{'validation_only':True})
+        shutil.copyfile(root/'q2_segments.csv',out/'q3_transport_timeline.csv')
+        arithmetic=independent_schedule(root); trajectory_checks=trajectories(root,Trajectory)
+        check('transport_independent_arithmetic',True,arithmetic)
+        check('transport_trajectory_boundaries',True,trajectory_checks)
+        rebuilt={r['trip_id']:r for r in read_csv(root/'q2_trips.csv')}
+        for r in transport:
+            t=rebuilt[r['trip_id']]
+            check('transport_export_'+r['trip_id'],all(r[n]==t[n] for n in ('type_id','drone_id','battery_id','route','box_ids_json')) and
+                all(abs(float(r[n])-float(t[n]))<=1e-6 for n in ('takeoff_s','return_s','total_energy_kwh','return_soc')))
+        tj=TransportTrajectory(root); origin=tj.nodes()['O01']
+        g01=(origin['x_m'],origin['y_m'],origin['ground_m']+sc['official_communication']['g01']['antenna_height_m'])
+        energies=[energy_and_phases(r,sc,terr,origin) for r in plan]; by_drone=defaultdict(list)
+        for r,e in zip(plan,energies):
+            sid=r['sortie_id']; check(sid+'_energy_reserve',e['reserve_margin_kwh']>=-1e-9,e)
+            check(sid+'_agl',-1e-5<=e['agl_m']<=k['max_hover_agl_m']+1e-5,e['agl_m'])
+            check(sid+'_nonnegative_order',0<=r['prep_start_s']<=r['takeoff_s']<=r['service_start_s']<r['service_end_s']<r['return_s'])
+            check(sid+'_departure',abs(r['takeoff_s']-r['prep_start_s']-k['prep_s'])<1e-6)
+            # Half the original 0.1 s display unit, not a feasibility relaxation.
+            check(sid+'_arrival',abs(r['service_start_s']-r['takeoff_s']-e['flight_out_s']-k['link_build_s'])<=.050001,
+                dict(calculated=r['takeoff_s']+e['flight_out_s']+k['link_build_s'],scheduled=r['service_start_s']))
+            check(sid+'_return_time',abs(r['return_s']-e['calculated_return_s'])<=.050001,
+                dict(calculated=e['calculated_return_s'],scheduled=r['return_s']))
+            by_drone[r['relay_id']].append((r,e))
+        for rid,seq in by_drone.items():
+            seq.sort(key=lambda x:x[0]['prep_start_s'])
+            for (a,ae),(b,be) in zip(seq,seq[1:]):
+                available=ae['calculated_return_s']+k['turnaround_s']
+                check(rid+'_physical_turnaround',b['prep_start_s']>=available-1e-6,
+                    dict(previous=a['sortie_id'],next=b['sortie_id'],next_prep_s=b['prep_start_s'],physically_available_s=available,gap_s=b['prep_start_s']-available))
+        fsp,lobs,direct,access,backhaul=independent_link_budget(sc)
+        def link(p,q,threshold,spacing):
+            fs=20*math.log10(max(math.dist(p,q)/1000,1e-9))+fsp
+            if fs+lobs<=threshold: return True
+            if fs>threshold: return False
+            return not independent_los_occluded(terr,*p,*q,spacing_m=spacing,clearance=sc['model']['los_clearance_m'])
+        positions=[tuple(r[n] for n in ('hover_x_m','hover_y_m','hover_altitude_m')) for r in plan]
+        def samples(step):
+            records=[]
+            for tid,t in rebuilt.items():
+                start,end=float(t['takeoff_s']),float(t['return_s'])
+                for i in range(math.ceil((end-start)/step)):
+                    time=start+i*step
+                    if time>=end: continue
+                    s=tj.position(tid,time)
+                    if s['phase']=='finished': raise ValueError('Premature finished trajectory')
+                    records.append((time,tid,t['drone_id'],(s['x'],s['y'],s['altitude_m']),s['flight_phase']))
+            return records
+        def evaluate(records,spacing,step):
+            bh=[link(p,g01,backhaul,spacing) for p in positions]; uncovered=[]; links=[]
+            for time,tid,drone,p,phase in records:
+                provider='G01' if link(g01,p,direct,spacing) else None
+                if provider is None:
+                    for i,r in enumerate(plan):
+                        if r['service_start_s']<=time<r['service_end_s'] and bh[i] and link(positions[i],p,access,spacing):
+                            provider=r['sortie_id']; break
+                links.append(dict(time_s=time,trip_id=tid,transport_uav=drone,provider=provider or 'UNCOVERED'))
+                if provider is None: uncovered.append(dict(time_s=time,trip_id=tid,transport_uav=drone,x=p[0],y=p[1],z=p[2],flight_phase=phase))
+            intervals=interruptions(uncovered,step)
+            result=dict(time_step_s=step,los_spacing_m=spacing,total_samples=len(records),uncovered_samples=len(uncovered),
+                coverage=1-len(uncovered)/len(records) if records else None,outage_sample_seconds=len(uncovered)*step,
+                interruption_count=len(intervals),longest_outage_sample_seconds=max((r['sample_seconds'] for r in intervals),default=0),
+                backhaul=dict(zip((r['sortie_id'] for r in plan),bh)),status='PASS' if records and not uncovered and all(bh) else 'FAIL')
+            return result,uncovered,intervals,links
+        base=samples(1.)
+        agls=[p[2]-terr.elevation(p[0],p[1]) for _,_,_,p,_ in base]
+        cruise_agls=[agl for agl,record in zip(agls,base) if record[-1]=='cruise']
+        check('transport_cruise_clearance',min(cruise_agls)>=50-1e-5,
+            dict(samples=len(cruise_agls),minimum_agl_m=min(cruise_agls),all_phases_min_agl_m=min(agls),
+                note='Node working altitudes use attachment elevations; ground endpoints are not cruise clearance tests.'))
+        los=[]; uf=['time_s','trip_id','transport_uav','x','y','z','flight_phase']
+        for spacing in (15.,10.,5.):
+            result,unc,intervals,links=evaluate(base,spacing,1.); los.append(result)
+            print('LOS',spacing,json.dumps(result),flush=True)
+            if spacing==10:
+                primary=result
+                table(out/'e4_blackout_samples.csv',unc,uf)
+                table(out/'e4_blackout_intervals.csv',intervals,['trip_id','start_s','last_sample_s','uncovered_samples','end_exclusive_s','sample_seconds'])
+                table(out/'q3_communication_links.csv',links,['time_s','trip_id','transport_uav','provider'])
+        temporal=[]
+        for step in (.5,.25):
+            result,unc,intervals,_=evaluate(samples(step),10.,step); temporal.append(result)
+            table(out/f'e4_blackout_samples_{step:g}s.csv',unc,uf)
+            print('TIME',step,json.dumps(result),flush=True)
+        for result in los+temporal:
+            check(f"communication_{result['time_step_s']}s_{result['los_spacing_m']}m",result['status']=='PASS',result)
+        metrics=arithmetic['metrics']; passed=all(c['pass_'] for c in checks)
+        result=dict(status='PASS' if passed else 'FAIL',overall_pass=passed,strict_feasible=passed,checks=checks,
+            physical_relay_count=len(by_drone),relay_sortie_count=len(plan),relay_component_count=len({r['energy_component_id'] for r in plan}),
+            energy_kwh=math.fsum(e['energy_kwh'] for e in energies),relay_total_energy_kwh=math.fsum(e['energy_kwh'] for e in energies),
+            legacy_fixed_window_unrounded_kwh=math.fsum(e['legacy_unrounded_energy_kwh'] for e in energies),
+            relay_sorties=energies,transport=arithmetic,communication=primary,los_sensitivity=los,temporal_sensitivity=temporal,
+            transport_total_energy_kwh=metrics['total_energy_kwh'],transport_makespan=metrics['makespan_s'],
+            scheduled_joint_makespan=max(metrics['makespan_s'],max(r['return_s'] for r in plan)),
+            calculated_joint_makespan=max(metrics['makespan_s'],max(e['calculated_return_s'] for e in energies)),
+            coverage=primary['coverage'],uncovered_samples=primary['uncovered_samples'],total_samples=primary['total_samples'],
+            qualification='Discrete per-trip t=takeoff+k*step < return; left closed/right open; not continuous-time proof.',
+            energy_convention='Directional round trip + link-building hover/radio + service hover/radio; descent zero; no early rounding.',provenance=prov)
+    if identity(plan_path,transport_path)!=prov['input_sha256']: raise RuntimeError('Inputs changed during validation')
+    result['provenance']['finished_utc']=datetime.now(timezone.utc).isoformat()
+    dump(out/'e4_final_validation.json',result)
+    dump(out/'e4_relay_validation.json',dict(sorties=energies,checks=[c for c in checks if c['check'].startswith(('S0','R0','fixed','unique','three'))]))
+    dump(out/'e4_transport_validation.json',dict(arithmetic=arithmetic,trajectory=trajectory_checks,checks=[c for c in checks if c['check'].startswith('transport')]))
+    dump(out/'e4_communication_validation.json',primary)
+    fields=['time_step_s','los_spacing_m','total_samples','uncovered_samples','coverage','outage_sample_seconds','interruption_count','longest_outage_sample_seconds','backhaul','status']
+    table(out/'e4_los_sensitivity.csv',los,fields); table(out/'e4_temporal_sensitivity.csv',temporal,fields)
+    print(json.dumps({k:result[k] for k in ('status','energy_kwh','total_samples','uncovered_samples','coverage')},indent=2))
+    return 0 if passed else 1
 
 def main():
-    rp = RelayProblem()
-    k = rp.sc["official_relay"]
-    terr = rp.terr
-    g01 = rp.g01
-    fsp, lobs, th_direct, th_access, th_backhaul = independent_link_budget(rp.sc)
-
-    # ---- E4 shifts --------------------------------------------------------
-    SHIFT = {"T011": 2320.0, "T015": 1224.0}   # T015 +1224 so prep >= T012 return
-    T015_NEW_DRONE = "U08"
-
-    # ---- load Q2 transport -------------------------------------------------
-    trips = {}
-    for r in read_csv(Q2_RESULTS / "q2_trips.csv"):
-        trips[r["trip_id"]] = dict(
-            type_id=r["type_id"], drone_id=r["drone_id"], battery_id=r["battery_id"],
-            prep=float(r["preparation_start_s"]), takeoff=float(r["takeoff_s"]),
-            ret=float(r["return_s"]), energy=float(r["total_energy_kwh"]),
-            soc=float(r["return_soc"]), box_ids=json.loads(r["box_ids_json"]),
-            route=[x for x in r["route"].split("-") if x not in ("", "O01")])
-    deliveries = []
-    for r in read_csv(Q2_RESULTS / "q2_deliveries.csv"):
-        deliveries.append(dict(trip_id=r["trip_id"], box_id=r["box_id"],
-                               hard=float(r["hard_due_s"]) if r["hard_due_s"] else None,
-                               complete=float(r["delivery_complete_s"])))
-    q2 = json.loads((Q2_RESULTS / "q2_inputs.json").read_text(encoding="utf-8"))
-    type_charge = {t["type_id"]: t["full_charge_s"] for t in q2["types"].values()}
-    inv_drones = q2["drones"]   # id -> type
-    inv_batt = q2["batteries"]  # id -> type
-
-    # ---- apply shifts -------------------------------------------------------
-    shifted = {}
-    for tid, t in trips.items():
-        d = dict(t)
-        s = SHIFT.get(tid, 0.0)
-        d["prep"] += s; d["takeoff"] += s; d["ret"] += s
-        if tid == "T015":
-            d["drone_id"] = T015_NEW_DRONE
-        shifted[tid] = d
-
-    # ---- transport validation ----------------------------------------------
-    checks = []
-    def check(name, ok, detail=""):
-        checks.append(dict(check=name, pass_=bool(ok), detail=detail))
-
-    # deadlines
-    overdue = []
-    for dlv in deliveries:
-        s = SHIFT.get(dlv["trip_id"], 0.0)
-        if dlv["hard"] is not None:
-            if dlv["complete"] + s > dlv["hard"] + 1e-6:
-                overdue.append((dlv["trip_id"], dlv["box_id"], dlv["complete"] + s, dlv["hard"]))
-    check("deadlines", len(overdue) == 0, f"overdue={overdue}")
-
-    # box coverage exactly once (unchanged)
-    ids = [b for t in trips.values() for b in t["box_ids"]]
-    check("box_coverage_exactly_once", len(ids) == 80 and len(set(ids)) == 80,
-          f"{len(set(ids))}/80 unique")
-
-    # UAV conflicts
-    by_drone = defaultdict(list)
-    for tid, t in shifted.items():
-        by_drone[t["drone_id"]].append((t["prep"], t["ret"], tid))
-    uav_conflict = []
-    for d, ivs in by_drone.items():
-        ivs.sort()
-        for i in range(len(ivs) - 1):
-            if ivs[i][1] > ivs[i + 1][0] + 1e-6:
-                uav_conflict.append((d, ivs[i][2], ivs[i + 1][2]))
-    check("uav_conflict", len(uav_conflict) == 0, f"conflict={uav_conflict}")
-
-    # UAV count within inventory (type compatible)
-    check("uav_count_in_inventory", all(t["drone_id"] in inv_drones for t in shifted.values())
-          and all(inv_drones[t["drone_id"]] == t["type_id"] for t in shifted.values()),
-          "drone ids/types valid")
-
-    # battery conflicts (occupancy + charge, using existing assignment)
-    by_batt = defaultdict(list)
-    for tid, t in shifted.items():
-        full = type_charge[t["type_id"]]
-        by_batt[t["battery_id"]].append((t["prep"], t["ret"], t["soc"], full, tid))
-    batt_conflict = []
-    for b, lst in by_batt.items():
-        lst.sort()
-        prev_avail = 0.0
-        for prep, ret, soc, full, tid in lst:
-            if prep < prev_avail - 1e-6:
-                batt_conflict.append((b, tid, prep, prev_avail))
-            prev_avail = ret + charge_time(soc, full)
-    check("battery_conflict", len(batt_conflict) == 0, f"conflict={batt_conflict}")
-    check("battery_count_in_inventory", all(t["battery_id"] in inv_batt for t in shifted.values()),
-          "battery ids valid")
-
-    # transport energy/SOC unchanged (geometry unchanged) — just re-report
-    check("transport_energy_soc_unchanged",
-          all(abs(shifted[t]["energy"] - trips[t]["energy"]) < 1e-9 for t in trips),
-          "geometry unchanged")
-
-    # ---- relay schedule -----------------------------------------------------
-    R01 = (315675.158634, 2550876.435495, 920.210144)
-    R02south = (322575.158634, 2546026.435495, 662.347198)
-    R02west = (314175.158634, 2553526.435495, 975.402405)
-
-    def sortie(p, a, b):
-        f = rp.relay_sortie(p, b - a)
-        return dict(flight_out_s=f["flight_out_s"], flight_back_s=f["flight_back_s"],
-                    energy_kwh=f["energy_kwh"])
-
-    # R01 north: derive window from demand (T015 shifted last sample + 1)
-    # here fixed from E4: service [816, 7834.5]
-    r01_a, r01_b = 816.0, 7834.5
-    # R02 south [745, 4751]; R02 west derived from reposition timing
-    r02s_a, r02s_b = 745.0, 4751.0
-    s_south = sortie(R02south, r02s_a, r02s_b)
-    r02_south_return = r02s_b + s_south["flight_back_s"]
-    r02_west_prep = r02_south_return + k["turnaround_s"]
-    s_west0 = sortie(R02west, 0, 0)
-    r02_west_service_start = r02_west_prep + k["prep_s"] + s_west0["flight_out_s"] + k["link_build_s"]
-
-    # R01 energy (6 decimals)
-    r01_energy = sortie(R01, r01_a, r01_b)["energy_kwh"]
-    r02s_energy = s_south["energy_kwh"]
-    # R02 west window = T011's shifted low-altitude samples, capped by arrival
-    # (computed in communication pass below)
-
-    relay_checks = []
-    def rcheck(name, ok, detail=""):
-        relay_checks.append(dict(check=name, pass_=bool(ok), detail=detail))
-
-    rcheck("physical_relay_count", True, "R01, R02 only (<=2)")
-    rcheck("r01_energy_limit", r01_energy <= 2.56, f"R01 energy={r01_energy:.9f} (limit 2.56)")
-    rcheck("r01_return_soc", 1 - r01_energy / k["energy_kwh"] >= k["reserve"] - 1e-9,
-           f"R01 SOC={1 - r01_energy / k['energy_kwh']:.9f} (>=0.2)")
-    rcheck("r01_agl", 0 <= R01[2] - terr.elevation(R01[0], R01[1]) <= 300.00001)
-    rcheck("r01_backhaul", bool(_link_ok(terr, fsp, lobs, th_backhaul, R01, g01)))
-    rcheck("r02s_energy_limit", r02s_energy <= 2.56, f"R02s energy={r02s_energy:.9f}")
-    rcheck("r02s_agl", 0 <= R02south[2] - terr.elevation(R02south[0], R02south[1]) <= 300.00001)
-    rcheck("r02w_agl", 0 <= R02west[2] - terr.elevation(R02west[0], R02west[1]) <= 300.00001)
-    rcheck("r02w_backhaul", bool(_link_ok(terr, fsp, lobs, th_backhaul, R02west, g01)))
-
-    # ---- communication: rebuild trajectories --------------------------------
-    tj = rp.tj
-    samples = []  # (time, trip_id, drone_id, x, y, z, phase, flight_phase)
-    for tid, t in shifted.items():
-        t0, t1 = t["takeoff"], t["ret"]
-        tt = t0
-        while tt < t1:
-            # map shifted time back to original trajectory time
-            s = SHIFT.get(tid, 0.0)
-            st = tj.position(tid, tt - s)
-            if st["phase"] != "finished":
-                samples.append((tt, tid, t["drone_id"], st["x"], st["y"], st["altitude_m"],
-                                st["phase"], st["flight_phase"]))
-            tt += 1.0
-    N = len(samples)
-    print(f"rebuilt samples: {N}")
-
-    # ---- LOS helper ---------------------------------------------------------
-    def link_ok(p, q, th, spacing=10.0):
-        d = math.hypot(q[0] - p[0], q[1] - p[1], q[2] - p[2]) / 1000.0
-        fs = 20 * math.log10(max(d, 1e-9)) + fsp
-        if fs + lobs <= th:
-            return True
-        if fs > th:
-            return False
-        return not independent_los_occluded(terr, p[0], p[1], p[2], q[0], q[1], q[2],
-                                            spacing_m=spacing)
-
-    def evaluate(spacing):
-        # West demand = samples NOT covered by direct / R01 / R02-south.
-        # R02 west is physically available (hovering, backhaul OK) from its
-        # reposition arrival r02_west_service_start, so it covers the residual
-        # from that arrival onward (not from the first residual sample).
-        residual_times = []
-        for (t, tid, drone, x, y, z, phase, fphase) in samples:
-            q = (x, y, z)
-            if link_ok(g01, q, th_direct, spacing):
-                continue
-            if r01_a <= t < r01_b and link_ok(R01, q, th_access, spacing):
-                continue
-            if r02s_a <= t < r02s_b and link_ok(R02south, q, th_access, spacing):
-                continue
-            residual_times.append(t)
-        west_a = r02_west_service_start
-        west_b = (max(residual_times) + 1) if residual_times else west_a
-        uncovered = []
-        for (t, tid, drone, x, y, z, phase, fphase) in samples:
-            q = (x, y, z)
-            cov = False
-            if link_ok(g01, q, th_direct, spacing):
-                cov = True
-            elif r01_a <= t < r01_b and link_ok(R01, q, th_access, spacing):
-                cov = True
-            elif r02s_a <= t < r02s_b and link_ok(R02south, q, th_access, spacing):
-                cov = True
-            elif west_a <= t < west_b and link_ok(R02west, q, th_access, spacing):
-                cov = True
-            if not cov:
-                uncovered.append(dict(time_s=t, trip_id=tid, transport_uav=drone,
-                                     x=round(x, 2), y=round(y, 2), z=round(z, 2),
-                                     flight_phase=fphase))
-        return uncovered, west_a, west_b
-
-    uncovered10, west_a, west_b = evaluate(10.0)
-    s_west = sortie(R02west, west_a, west_b)
-    r02w_energy = s_west["energy_kwh"]
-    rcheck("r02w_energy_limit", r02w_energy <= 2.56, f"R02w energy={r02w_energy:.9f}")
-    rcheck("r02_sortie_sequence", r02_west_service_start <= west_a + 1e-6,
-           f"R02 west service start={r02_west_service_start:.2f} <= west_a={west_a:.2f}")
-    rcheck("r02_soc", 1 - r02w_energy / k["energy_kwh"] >= k["reserve"] - 1e-9,
-           f"R02w SOC={1 - r02w_energy/k['energy_kwh']:.9f}")
-
-    # components: R01 (1) + R02 south (1) + R02 west (1) = 3
-    rcheck("relay_components", 3 <= k["energy_components"]["count"], "3 components <= 6")
-
-    comm10 = dict(uncovered_samples=len(uncovered10), total_samples=N,
-                  coverage=1 - len(uncovered10) / N)
-    table("e4_blackout_samples.csv", uncovered10,
-          ["time_s", "trip_id", "transport_uav", "x", "y", "z", "flight_phase"])
-    # intervals
-    intervals = []
-    for u in uncovered10:
-        t, tid = u["time_s"], u["trip_id"]
-        if intervals and intervals[-1]["trip_id"] == tid and abs(intervals[-1]["last_s"] + 1 - t) < 1e-6:
-            intervals[-1]["last_s"] = t; intervals[-1]["uncovered_samples"] += 1
-        else:
-            intervals.append(dict(trip_id=tid, start_s=t, last_s=t, uncovered_samples=1))
-    table("e4_blackout_intervals.csv", intervals,
-          ["trip_id", "start_s", "last_s", "uncovered_samples"])
-
-    # LOS sensitivity
-    los_rows = []
-    for sp in (15.0, 10.0, 5.0):
-        unc, _, _ = evaluate(sp)
-        los_rows.append(dict(los_spacing_m=sp, total_samples=N,
-                             uncovered_samples=len(unc),
-                             coverage=round(1 - len(unc) / N, 9),
-                             max_continuous_outage=max((r["uncovered_samples"] for r in intervals) if sp == 10 else (0,), default=0),
-                             PASS=(len(unc) == 0)))
-    table("e4_los_sensitivity.csv", los_rows,
-          ["los_spacing_m", "total_samples", "uncovered_samples", "coverage",
-           "max_continuous_outage", "PASS"])
-
-    # temporal sensitivity 0.5 s around critical windows
-    temp_rows = []
-    for (label, lo, hi) in [("T011_enter_blindspot", west_a - 5, west_a + 5),
-                            ("T011_exit_blindspot", west_b - 5, west_b + 5),
-                            ("R02_west_service_start", r02_west_service_start - 5, r02_west_service_start + 5),
-                            ("R02_sortie_switch", r02_south_return - 5, r02_west_prep + 5)]:
-        unc_half = 0
-        for (t, tid, drone, x, y, z, phase, fphase) in samples:
-            if lo <= t <= hi:
-                q = (x, y, z)
-                cov = (link_ok(g01, q, th_direct, 10) or
-                       (r01_a <= t < r01_b and link_ok(R01, q, th_access, 10)) or
-                       (r02s_a <= t < r02s_b and link_ok(R02south, q, th_access, 10)) or
-                       (west_a <= t < west_b and link_ok(R02west, q, th_access, 10)))
-                if not cov:
-                    unc_half += 1
-        # finer 0.2 s sample at the exact boundary for blind spot entry
-        temp_rows.append(dict(window=label, half_sec_uncovered=unc_half,
-                              PASS=(unc_half == 0)))
-    table("e4_temporal_sensitivity.csv", temp_rows, ["window", "half_sec_uncovered", "PASS"])
-
-    # ---- final metrics -------------------------------------------------------
-    transport_makespan = max(t["ret"] for t in shifted.values())
-    relay_makespan = max(r01_b + sortie(R01, r01_a, r01_b)["flight_back_s"],
-                         west_b + s_west["flight_back_s"])
-    joint_makespan = max(transport_makespan, relay_makespan)
-    relay_total_energy = r01_energy + r02s_energy + r02w_energy
-    transport_total_energy = sum(t["energy"] for t in shifted.values())
-
-    overall = (all(c["pass_"] for c in checks) and all(c["pass_"] for c in relay_checks)
-               and comm10["uncovered_samples"] == 0)
-
-    final = dict(
-        transport_constraints="PASS" if all(c["pass_"] for c in checks) else "FAIL",
-        battery_constraints="PASS" if all(c["pass_"] for c in checks if c["check"].startswith("battery")) else "FAIL",
-        relay_constraints="PASS" if all(c["pass_"] for c in relay_checks) else "FAIL",
-        communication_1s_10m="PASS" if comm10["uncovered_samples"] == 0 else "FAIL",
-        los_15m=los_rows[0]["PASS"], los_10m=los_rows[1]["PASS"], los_5m=los_rows[2]["PASS"],
-        temporal_sensitivity=all(r["PASS"] for r in temp_rows),
-        physical_relay_count=2,
-        relay_component_count=3,
-        relay_sortie_count=3,
-        uncovered_samples=comm10["uncovered_samples"],
-        coverage=comm10["coverage"],
-        overdue_boxes=len(overdue),
-        joint_makespan=round(joint_makespan, 3),
-        transport_makespan=round(transport_makespan, 3),
-        relay_makespan=round(relay_makespan, 3),
-        transport_total_energy_kwh=round(transport_total_energy, 9),
-        relay_total_energy_kwh=round(relay_total_energy, 9),
-        r01_energy_kwh=round(r01_energy, 9), r01_return_soc=round(1 - r01_energy / k["energy_kwh"], 9),
-        r02_south_energy_kwh=round(r02s_energy, 9), r02_south_return_soc=round(1 - r02s_energy / k["energy_kwh"], 9),
-        r02_west_energy_kwh=round(r02w_energy, 9), r02_west_return_soc=round(1 - r02w_energy / k["energy_kwh"], 9),
-        r02_west_service_start=round(r02_west_service_start, 3),
-        overall_pass=overall,
-    )
-    dump("e4_transport_validation.json", dict(checks=checks, overdue_boxes=overdue))
-    dump("e4_relay_validation.json", dict(checks=relay_checks, r01_energy_kwh=round(r01_energy, 9),
-                                           r01_return_soc=round(1 - r01_energy / k["energy_kwh"], 9)))
-    dump("e4_communication_validation.json", comm10)
-    dump("e4_final_validation.json", final)
-    print(json.dumps(final, ensure_ascii=False, indent=2))
-
-
-def _link_ok(terr, fsp, lobs, th, p, q, spacing=10.0):
-    d = math.hypot(q[0] - p[0], q[1] - p[1], q[2] - p[2]) / 1000.0
-    fs = 20 * math.log10(max(d, 1e-9)) + fsp
-    if fs + lobs <= th:
-        return True
-    if fs > th:
-        return False
-    return not independent_los_occluded(terr, p[0], p[1], p[2], q[0], q[1], q[2], spacing_m=spacing)
-
-
-if __name__ == "__main__":
-    main()
+    p=argparse.ArgumentParser(description=__doc__)
+    p.add_argument('--plan',type=Path,default=RESULTS/'q3_official_plan.json')
+    p.add_argument('--transport',type=Path,default=RESULTS/'q3_transport_schedule.csv')
+    p.add_argument('--output',type=Path,default=RESULTS)
+    a=p.parse_args()
+    try: return run(a.plan.resolve(),a.transport.resolve(),a.output.resolve())
+    except Exception as exc:
+        a.output.mkdir(parents=True,exist_ok=True)
+        dump(a.output/'e4_final_validation.json',dict(status='ERROR',overall_pass=False,error=f'{type(exc).__name__}: {exc}',command=[sys.executable,*sys.argv]))
+        import traceback; traceback.print_exc(); return 2
+if __name__=='__main__': sys.exit(main())

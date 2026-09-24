@@ -140,7 +140,7 @@ for (r, site, k), ex in exported_cap.items():
 check("max_payload_independent", cap_ok)
 
 # --- 5. batches: box coverage, mass/volume, energy, time, reserve -----------
-plan_files = sorted(R.glob("q1_batches_reserve_*.csv")) + sorted(R.glob("q1_batches_priority_*.csv"))
+plan_files = [R / "q1_batches_default.csv"] + sorted(R.glob("q1_batches_reserve_*.csv")) + sorted(R.glob("q1_batches_priority_*.csv"))
 checked = 0
 all_ok = True
 for f in plan_files:
@@ -154,9 +154,19 @@ for f in plan_files:
         if not (all(z[1] == x["site"] for z in cargo) and mass <= m["Q"] and vol <= m["V"] + 1e-12):
             all_ok = False
         op, energy = trip_energy_time(x["site"], x["model"], mass, len(cargo))
+        flight = leg_perf("O01", x["site"], x["model"], mass)[0] + leg_perf(x["site"], "O01", x["model"], 0)[0]
+        prep = m["prep"] + m["load"] * len(cargo)
+        handover = m["handover"] + m["perbox"] * len(cargo)
+        if any(not math.isclose(float(x[field]), expected, abs_tol=1e-7)
+               for field, expected in (("flight_s", flight), ("preparation_s", prep), ("handover_s", handover))):
+            all_ok = False
         if not math.isclose(energy, float(x["energy_kwh"]), abs_tol=1e-9):
             all_ok = False
         if not math.isclose(op, float(x["operation_s"]), abs_tol=1e-7):
+            all_ok = False
+        if not math.isclose(100 * (1 - energy / m["battery"]), float(x["soc_pct"]), abs_tol=1e-7):
+            all_ok = False
+        if not math.isclose(mass, float(x["mass_kg"]), abs_tol=1e-9) or not math.isclose(vol, float(x["volume_m3"]), abs_tol=1e-12):
             all_ok = False
         if not energy <= (1 - reserve) * m["battery"] + 1e-9:
             all_ok = False
@@ -173,8 +183,19 @@ sub_ok = (len(sub) == len(base) and
               s["机型编号"] == b["model"] and s["货箱编号列表"] == b["box_ids"]
               for s, b in zip(sub, base)))
 check("submission_rows", sub_ok)
+field_map = {"总质量（kg）": "mass_kg", "总体积（m³）": "volume_m3",
+             "往返时间（s）": "operation_s", "架次能耗（kWh）": "energy_kwh", "返航SOC（%）": "soc_pct"}
+check("submission_numeric_fields", len(sub) == len(base) and all(
+    math.isclose(float(s[shown]), float(b[source_field]), abs_tol=1e-8)
+    for s, b in zip(sub, base) for shown, source_field in field_map.items()))
+summary = [r for r in read("q1_model_comparison.csv")
+           if float(r["reserve"]) == 0.2 and r["priority"] == "时间_架次_能耗"]
+check("default_summary", len(summary) == 1 and int(summary[0]["trips"]) == len(base) and all(
+    math.isclose(float(summary[0][field]), math.fsum(float(b[field]) for b in base), abs_tol=1e-8)
+    for field in ("energy_kwh", "operation_s", "flight_s")))
 
 result = dict(status="PASS" if all(ok for _, ok, _ in checks) else "FAIL",
               checks=[{"check": n, "pass": ok, "detail": d} for n, ok, d in checks])
 (R / "q1_verification.json").write_text(json.dumps(result, ensure_ascii=False, indent=2), encoding="utf-8")
 print("\nOVERALL:", result["status"])
+sys.exit(0 if result["status"] == "PASS" else 1)

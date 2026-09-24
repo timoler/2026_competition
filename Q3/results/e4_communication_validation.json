@@ -1,5 +1,16 @@
 {
-  "uncovered_samples": 0,
+  "time_step_s": 1.0,
+  "los_spacing_m": 10.0,
   "total_samples": 36351,
-  "coverage": 1.0
+  "uncovered_samples": 0,
+  "coverage": 1.0,
+  "outage_sample_seconds": 0.0,
+  "interruption_count": 0,
+  "longest_outage_sample_seconds": 0,
+  "backhaul": {
+    "S01": true,
+    "S02": true,
+    "S03": true
+  },
+  "status": "PASS"
 }

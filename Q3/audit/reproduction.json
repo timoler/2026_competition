@@ -1,0 +1,19 @@
+{
+  "transport_regenerated_identically": true,
+  "comparison": {
+    "e4_blackout_intervals.csv": true,
+    "e4_blackout_samples.csv": true,
+    "e4_blackout_samples_0.25s.csv": true,
+    "e4_blackout_samples_0.5s.csv": true,
+    "e4_communication_validation.json": true,
+    "e4_final_validation.json": true,
+    "e4_los_sensitivity.csv": true,
+    "e4_relay_validation.json": true,
+    "e4_temporal_sensitivity.csv": true,
+    "e4_transport_validation.json": true,
+    "q3_communication_links.csv": true,
+    "q3_transport_timeline.csv": true
+  },
+  "all_equal": true,
+  "note": "Fresh direct independent run vs finalize subprocess; only run provenance excluded from JSON comparison."
+}

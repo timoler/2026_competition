@@ -1,72 +1,32 @@
-# Q3：通信约束下的运输与中继联合调度
+# Q3：固定两架中继方案的真实验证
 
-**2026-09-23，最终方案。** 在连续通信约束下，对 Q2 运输初始方案做局部重调度，并用**两架物理中继 R01/R02**（R02 两次顺序架次）实现全程 100% 连续通信。正式统计口径：1 秒时间网格、10 米 LOS、接入+回传双向链路。
+**2026-09-24 本次总状态：PASS。** 固定两架物理中继 R01/R02、三个架次（R01×1、R02×2）、三组能源组件。悬停点不变；S02 服务窗口前移 45 s 以修复 R02 周转与 T004 早段空窗；未恢复三架方案。
 
-## 1. 起点：Q2 运输初始方案 + 静态两架中继
+1.0/0.5/0.25 秒网格在 LOS 5/10/15 米下采样覆盖全部通过（0 uncovered）；方向性返航模型下中继返航与 R02 周转时序均通过。当前方案满足已验证约束（57 项检查），不声称全局最优或连续时间的严格证明。
 
-Q2 初始方案（未考虑连续通信联合约束）：26 个运输架次，transport makespan ≈ 6973.6 s。
+## 正式数据与证据
 
-直接在其上放置两架静态中继（R01 北、R02 南，各一次固定悬停），仍存在 **407 个 uncovered samples，coverage = 98.880361%**。
+- [本次自动报告](results/q3_current_report.md)：能耗、SOC、时序、样本数、覆盖率与失败项，均由本次独立验证输出生成。
+- [完整验证及输入身份](results/e4_final_validation.json)、[实际运行日志](results/q3_validator_run.log)、[审查报告](audit/REVIEW.md)。
+- [固定中继决策](results/q3_official_plan.json)：从基准正式CSV冻结；S02 窗口前移 45 s（[745,4751]→[700,4706]）。
+- [正式运输调度](results/q3_transport_schedule.csv)：T011 +2320秒；T015 +1224秒并分配U08。按Q2原时刻恢复双精度，保持组批、路线、电池不变；不回写Q2。
+- [逐架次中继表](results/q3_relay_schedule.csv)：计划时刻与 calculated_* 一致，另列能耗、SOC 与状态。
+- [逐阶段能源](results/e4_relay_validation.json)、[逐样本通信](results/q3_communication_links.csv)、[实际运输航段](results/q3_transport_timeline.csv)。
 
-## 2. 通信失败诊断
-
-`analyze_two_relay_failures.py` 定位：407 个失败样本**全部集中于架次 T011**，时间约 [4175, 4582] s，对应其 **S004 服务点的低空下降进近与返航爬升段**（(319529, 2553224.7)，海拔 228–242 m）。该点处于 G01、R01、R02 三者的地形阴影中——是一个**西向第三视锥盲区**；同时该时段其余运输机又分布在北、南两个区域，需要 R01/R02 分别覆盖，形成"三视锥同时需求"，两架静态中继无法满足。
-
-## 3. Q3 联合调度调整（关键）
-
-保持**货箱组批与访问路线不变**，仅做局部运输重调度 + 中继动态换位：
-
-| 调整 | 内容 |
-|---|---|
-| T011 后移 +2320 s | S004 低空盲区从 [4175,4582] 挪到 [6490,6902]（任务末期安静窗口） |
-| T015 从 U07 → U08、后移 +1224 s | 腾出 U07 给 T011；T015 新 prep 6518.45 ≥ T012 返航 6517.50，无冲突 |
-| R02 动态换位 | 南侧需求 4751 s 结束后返 O01，转场至西侧，6478.3 s 到达并覆盖 S004 盲区 |
-
-## 4. 最终结果
-
-| 指标 | 值 |
-|---|---|
-| physical relay UAV | **2**（R01 / R02） |
-| relay sorties | **3**（R01 ×1，R02 ×2 顺序架次） |
-| relay components | **3**（≤6） |
-| uncovered samples | **0** |
-| coverage | **100.000000%** |
-| overdue boxes | 0 |
-| battery validation | PASS |
-| UAV conflict | 0 |
-| transport makespan | 8197.6 s |
-| joint makespan | **8440.2 s** |
-
-| 中继 | 悬停位置 (UTM x/y, m) | 服务窗口 [s,e) | 能量 kWh | 返航 SOC |
-|---|---|---|---|---|
-| R01（北） | 315675 / 2550876, 920.2 | [816, 7834.5) | 2.545846 | 20.4423% |
-| R02（南） | 322575 / 2546026, 662.3 | [745, 4751) | 1.485975 | 53.5633% |
-| R02（西） | 314175 / 2553526, 975.4 | [6478.3, 6902.0) | 0.670401 | 79.0500% |
-
-## 5. 鲁棒性
-
-- LOS 15 / 10 / 5 m 敏感性：全部 PASS（0 中断）。
-- 时间边界 0.5 s / 0.25 s 高分辨率检查：全部 PASS。
-
-## 6. 权衡
-
-- 相比 Q2，运输完成时间增加约 **+1224 s**（6973.6 → 8197.6），换取严格连续通信。
-- 运输能耗不变（飞行几何未变）；中继总能耗 = 4.702 kWh（两架、三架次）。
-
-## 7. 风险（须如实说明）
-
-**R01 能量临界**：R01 覆盖延长至 7834.5 s，energy = 2.545846 kWh，返航 SOC = 20.4423%，仅高于 20% 下限 **0.44 个百分点**。这是零安全裕量的临界可行，**不得声称强能源鲁棒性**；任何能耗口径微调都可能使 R01 越界。
-
-## 运行与复现
+## 复现
 
 ```bash
-python Q3/code/validate_two_relay_experiment.py   # 独立严格验收（overall PASS）
-python Q3/code/finalize_e4_q3.py                  # 生成正式 q3_final_* / relay / transport / links
+python -B Q3/code/build_official_transport.py
+python -B Q3/code/finalize_e4_q3.py
+python -B Q3/code/test_finalize_e4_q3.py
 ```
 
-方法、假设与搜索范围见 [METHOD_STRICT.md](METHOD_STRICT.md)。
+finalize在新临时目录调用独立验证器，校验当前输入及代码SHA-256、检查项与退出码后发布。固定方案应退出0（PASS）；缺失、过期、异常输出退出2（ERROR）。solve.py、validate.py、summary.py、generate_q3_links.py统一进入该验证链，不重搜、不引用历史三架结果。
 
-## 历史对照
+## 结论边界与历史
 
-- `results/comparison_2relay_static/`：Q2 原始时序 + 静态两中继（407 中断）——证明联合调度确实解决了通信问题。
-- `results/archive_3relay/`：早期三架增配（R03）对照实验，**不属于原题资源约束下的正式最终方案**。
+逐架次 t=takeoff+k×step，t<return；起飞纳入、返回排除，服务窗口左闭右开。100%仅代表指定离散网格的采样覆盖，并以名义服务窗口存在为条件。物理时序另行检查，本次通过。
+
+方法见[METHOD_STRICT.md](METHOD_STRICT.md)。archive_3relay、comparison_2relay_static、history_pre_audit中的结果、标为历史的三个实验报告及figures/history_pre_audit仅作对照。历史experiment_*、strict_feasibility、relay、sensitivity、baseline等脚本不是正式入口，本次未运行。
+
+results/e4_best.json、e0_baseline.json及two_relay_failure_*是历史实验/失败分析资料，不属于当前正式验证输入。

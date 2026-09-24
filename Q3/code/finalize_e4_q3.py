@@ -1,161 +1,122 @@
-"""Formalize the E4 two-relay (R01/R02) joint schedule as the official Q3.
-
-Generates the 3-sortie relay schedule (R01 x1, R02 x2), the adjusted transport
-schedule (T011 +2320 s, T015 +1224 s -> U08), the final validation/summary JSONs
-and the LOS sensitivity table; then archives the old 3-relay and old static
-2-relay (407 uncovered) results under Q3/results/archive_3relay/ and
-Q3/results/comparison_2relay_static/ so they are kept as historical references
-only.  Q2 is never modified.
+﻿"""Publish only fresh independent validation of the immutable official decisions.
+Always runs the validator in a fresh temporary directory; never reuses old PASS.
+Constraint failure publishes FAIL diagnostics and exits 1; missing/invalid output
+or exceptions invalidate formal status, publish ERROR and exit 2.
 """
 from __future__ import annotations
-import csv, json, shutil, sys
+import argparse,json,math,shutil,subprocess,sys,tempfile
 from pathlib import Path
-
-CODE = Path(__file__).resolve().parent
-sys.path.insert(0, str(CODE))
-from relay import RelayProblem
-from config import RESULTS, Q2_RESULTS
-
-OUT = RESULTS
+CODE=Path(__file__).resolve().parent
+sys.path.insert(0,str(CODE))
+from validation_io import RESULTS,read_csv,dump,table,identity
 
 
-def read_csv(p):
-    with Path(p).open(encoding="utf-8-sig") as f:
-        return list(csv.DictReader(f))
+def verify_report(report,plan,transport,returncode):
+    if report.get('status') not in ('PASS','FAIL'): raise ValueError('Validator did not complete checks')
+    if report.get('provenance',{}).get('input_sha256')!=identity(plan,transport): raise ValueError('Stale or mismatched validator input identity')
+    checks=report.get('checks')
+    if not isinstance(checks,list) or not checks or any(type(c.get('pass_')) is not bool for c in checks): raise ValueError('Missing actual checks')
+    required={'fixed_physical_sorties','three_distinct_components','transport_independent_arithmetic',
+        'transport_trajectory_boundaries','transport_cruise_clearance','transport_native_DEM_geometry','R02_physical_turnaround'}
+    required|={f'S0{i}_{name}' for i in (1,2,3) for name in ('energy_reserve','agl','arrival','return_time','departure','nonnegative_order')}
+    if not required.issubset({c['check'] for c in checks}): raise ValueError('Incomplete checks')
+    los=report['los_sensitivity']; temporal=report['temporal_sensitivity']
+    if {r['los_spacing_m'] for r in los}!={5.,10.,15.} or {r['time_step_s'] for r in temporal}!={.5,.25}: raise ValueError('Missing sensitivity runs')
+    for r in los+temporal:
+        if r['total_samples']<=0 or not 0<=r['uncovered_samples']<=r['total_samples']: raise ValueError('Invalid samples')
+        expected=1-r['uncovered_samples']/r['total_samples']
+        if abs(r['coverage']-expected)>1e-12: raise ValueError('Coverage mismatch')
+        valid=r['uncovered_samples']==0 and all(r['backhaul'].values())
+        if (r['status']=='PASS')!=valid: raise ValueError('Contradictory communication status')
+    passed=all(c['pass_'] for c in checks) and all(r['status']=='PASS' for r in los+temporal)
+    if report['overall_pass']!=passed or report['strict_feasible']!=passed or (report['status']=='PASS')!=passed: raise ValueError('Contradictory aggregate status')
+    if returncode!=(0 if passed else 1): raise ValueError('Validator exit/status mismatch')
+    energy=math.fsum(r['energy_kwh'] for r in report['relay_sorties'])
+    if abs(energy-report['energy_kwh'])>1e-12: raise ValueError('Energy sum mismatch')
+    return passed
 
 
-def write_csv(path, rows, fields):
-    with Path(path).open("w", encoding="utf-8-sig", newline="") as f:
-        w = csv.DictWriter(f, fieldnames=fields, lineterminator="\n")
-        w.writeheader(); w.writerows(rows)
+def publish(report,plan,out,scratch):
+    rows=json.loads(plan.read_text(encoding='utf-8'))['relay_sorties']
+    energy={r['sortie_id']:r for r in report['relay_sorties']}
+    for r in rows:
+        e=energy[r['sortie_id']]
+        for name in ('energy_kwh','return_soc','reserve_margin_kwh','calculated_return_s'):
+            r[name]=e[name]
+        r['calculated_flight_out_s']=e['flight_out_s']; r['calculated_flight_back_s']=e['flight_back_s']
+        r['validation_status']=report['status']
+    for name in ('q3_relay_schedule.csv','q3_final_schedule.csv'): table(out/name,rows,list(rows[0]))
+    for name in ('q3_final_validation.json','q3_validation.json','q3_schedule_summary.json'): dump(out/name,report)
+    fields=['scenario','relays','relay_sorties','energy_components','coverage','outage_s','longest_outage_s','relay_energy_kwh','strict_feasible','status']
+    comm=report['communication']
+    table(out/'q3_summary.csv',[dict(scenario='C_two_relay_joint_fixed',relays=report['physical_relay_count'],relay_sorties=report['relay_sortie_count'],
+        energy_components=report['relay_component_count'],coverage=comm['coverage'],outage_s=comm['outage_sample_seconds'],
+        longest_outage_s=comm['longest_outage_sample_seconds'],relay_energy_kwh=report['energy_kwh'],strict_feasible=report['strict_feasible'],status=report['status'])],fields)
+    for source,target in [('e4_los_sensitivity.csv','q3_los_resolution_sensitivity.csv'),
+                          ('e4_blackout_intervals.csv','q3_final_blackout_intervals.csv'),
+                          ('e4_blackout_intervals.csv','q3_blackout_intervals.csv')]:
+        shutil.copyfile(scratch/source,out/target)
+    for p in scratch.iterdir():
+        if p.is_file(): shutil.copyfile(p,out/p.name)
+    lines=['# Q3 本次固定方案验证（自动生成）','',f"总状态：**{report['status']}**。不得将单项采样覆盖通过写成方案可行。",'',
+        f"物理中继 {report['physical_relay_count']} 架（R01/R02）；{report['relay_sortie_count']} 架次（R01×1、R02×2）；{report['relay_component_count']} 组能源组件。",'',
+        f"中继总能耗 {report['energy_kwh']:.12f} kWh；运输总能耗 {report['transport_total_energy_kwh']:.12f} kWh。",'',
+        f"运输完工 {report['transport_makespan']:.9f} s；联合完工（含中继返航）{report['calculated_joint_makespan']:.9f} s。",'',
+        '| 架次 | 能耗 kWh | 返航 SOC | 高于20%余量 kWh |','|---|---:|---:|---:|']
+    lines += [f"| {e['sortie_id']} / {e['relay_id']} | {e['energy_kwh']:.12f} | {e['return_soc']:.9%} | {e['reserve_margin_kwh']:.12f} |" for e in report['relay_sorties']]
+    lines += ['', '| 时间步长 s | LOS 间距 m | 实际样本 | uncovered | 覆盖率 | 中断段 | 最长样本秒 | 状态 |', '|---:|---:|---:|---:|---:|---:|---:|---|']
+    lines += [f"| {r['time_step_s']:g} | {r['los_spacing_m']:g} | {r['total_samples']} | {r['uncovered_samples']} | {r['coverage']:.9%} | {r['interruption_count']} | {r['longest_outage_sample_seconds']:g} | {r['status']} |" for r in report['los_sensitivity']+report['temporal_sensitivity']]
+    lines += ['', '失败项：', '']+[f"- `{c['check']}`：`{json.dumps(c['detail'],ensure_ascii=False)}`" for c in report['checks'] if not c['pass_']]
+    lines += ['', '逐架次 t=takeoff+k×步长，t<return；起点纳入、返回端点排除。服务窗口左闭右开。中断样本秒为 uncovered×步长，不是已严格证明的连续中断时长。',
+        '', 'LOS 5/10/15 m 指视线水平投影上的地形采样间距，并非净空；净空为0 m。每次采样同时检查双向接入和双向回传，不允许中继间多跳。',
+        '', '能耗唯一口径：往返分别计算爬升/巡航/下降，返程从悬停海拔出发；建链与服务均计悬停和通信功率，下降附加能耗按附件为0。逐阶段不提前舍入。建链期间通信功率按开启计，是明确的保守假设。',
+        '', '阶段明细、版本、依赖版本、输入 SHA-256、实际命令见 e4_final_validation.json；运行日志见 q3_validator_run.log。']
+    (out/'q3_current_report.md').write_text('\n'.join(lines)+'\n',encoding='utf-8')
 
 
-def dump(name, obj):
-    (OUT / name).write_text(json.dumps(obj, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+def invalidate(out,error):
+    # Keep prior evidence but remove it from the current formal namespace.
+    names=['q3_relay_schedule.csv','q3_final_schedule.csv','q3_los_resolution_sensitivity.csv',
+        'q3_final_blackout_intervals.csv','q3_blackout_intervals.csv','q3_communication_links.csv',
+        'q3_current_report.md','e4_relay_validation.json','e4_transport_validation.json',
+        'e4_communication_validation.json','e4_los_sensitivity.csv','e4_temporal_sensitivity.csv']
+    for name in names:
+        if (out/name).is_file():
+            previous=out/'previous_unvalidated'; previous.mkdir(exist_ok=True)
+            shutil.copyfile(out/name,previous/name)
+            (out/name).unlink()
+    report=dict(status='ERROR',overall_pass=False,strict_feasible=False,error=error,
+                total_samples=None,uncovered_samples=None,coverage=None,energy_kwh=None,
+                qualification='Validation not completed. No current PASS or numerical claim.')
+    for name in ('q3_final_validation.json','q3_validation.json','q3_schedule_summary.json','e4_final_validation.json'):
+        dump(out/name,report)
+    # Make old human-facing summary unusable as a current success claim.
+    table(out/'q3_summary.csv',[dict(status='ERROR',detail=error)],['status','detail'])
 
 
 def main():
-    rp = RelayProblem()
-    k = rp.sc["official_relay"]
-    terr = rp.terr
-
-    def lonlat(x, y):
-        lo, la = terr.inverse.transform(x, y)
-        return float(lo), float(la)
-
-    # ---- relay sorties ------------------------------------------------------
-    # (relay_id, position, service_start, service_end)
-    sorties = [
-        ("R01", (315675.158634, 2550876.435495, 920.210144), 816.0, 7834.5),
-        ("R02", (322575.158634, 2546026.435495, 662.347198), 745.0, 4751.0),
-        ("R02", (314175.158634, 2553526.435495, 975.402405), 6478.3, 6902.0),
-    ]
-    rows = []
-    for i, (rid, p, a, b) in enumerate(sorties, 1):
-        f = rp.relay_sortie(p, b - a)
-        agl = p[2] - terr.elevation(p[0], p[1])
-        lo, la = lonlat(p[0], p[1])
-        prep_start = a - k["link_build_s"] - f["flight_out_s"] - k["prep_s"]
-        takeoff = prep_start + k["prep_s"]
-        ret = b + f["flight_back_s"]
-        energy = f["energy_kwh"]
-        rows.append(dict(
-            sortie_id=f"S{i:02d}", relay_id=rid, energy_component_id=f"ERC-{i:02d}",
-            hover_x_m=round(p[0], 6), hover_y_m=round(p[1], 6),
-            hover_altitude_m=round(p[2], 6), hover_lon=round(lo, 7), hover_lat=round(la, 7),
-            agl_m=round(agl, 6), prep_start_s=round(prep_start, 6), takeoff_s=round(takeoff, 6),
-            service_start_s=a, service_end_s=b, return_s=round(ret, 6),
-            flight_out_s=f["flight_out_s"], flight_back_s=f["flight_back_s"],
-            service_duration_s=round(b - a, 6), energy_kwh=round(energy, 9),
-            return_soc=round(1 - energy / k["energy_kwh"], 9)))
-
-    fields = ["sortie_id", "relay_id", "energy_component_id", "hover_x_m", "hover_y_m",
-              "hover_altitude_m", "hover_lon", "hover_lat", "agl_m", "prep_start_s",
-              "takeoff_s", "service_start_s", "service_end_s", "return_s",
-              "flight_out_s", "flight_back_s", "service_duration_s", "energy_kwh", "return_soc"]
-    write_csv(OUT / "q3_relay_schedule.csv", rows, fields)
-    write_csv(OUT / "q3_final_schedule.csv", rows, fields)
-
-    # ---- transport schedule (T011 +2320, T015 +1224 -> U08) -----------------
-    trips = read_csv(Q2_RESULTS / "q2_trips.csv")
-    SHIFT = {"T011": 2320.0, "T015": 1224.0}
-    trows = []
-    for r in trips:
-        tid = r["trip_id"]
-        s = SHIFT.get(tid, 0.0)
-        drone = "U08" if tid == "T015" else r["drone_id"]
-        trows.append(dict(trip_id=tid, type_id=r["type_id"], drone_id=drone,
-                          battery_id=r["battery_id"], route=r["route"],
-                          box_ids_json=r["box_ids_json"],
-                          preparation_start_s=round(float(r["preparation_start_s"]) + s, 6),
-                          takeoff_s=round(float(r["takeoff_s"]) + s, 6),
-                          return_s=round(float(r["return_s"]) + s, 6),
-                          total_energy_kwh=r["total_energy_kwh"],
-                          return_soc=r["return_soc"]))
-    tfields = ["trip_id", "type_id", "drone_id", "battery_id", "route", "box_ids_json",
-               "preparation_start_s", "takeoff_s", "return_s", "total_energy_kwh", "return_soc"]
-    write_csv(OUT / "q3_transport_schedule.csv", trows, tfields)
-
-    # ---- final validation / summary ----------------------------------------
-    n_relays = 2
-    n_sorties = 3
-    n_components = 3
-    energy_total = round(sum(r["energy_kwh"] for r in rows), 9)
-    final = dict(
-        status="PASS", strict_feasible=True, time_step_s=1, los_spacing_m=10,
-        total_samples=36351, uncovered_samples=0, outage_sample_seconds=0,
-        coverage=1.0, max_relays=n_relays, physical_relay_count=n_relays,
-        relay_sortie_count=n_sorties, relay_component_count=n_components,
-        energy_kwh=energy_total,
-        robust_across_tested_los=True,
-        qualification="1-second per-trip grid; two physical relays (R01/R02), "
-                      "R02 flies two sequential sorties (south then west)",
-        checks=[
-            dict(check=c, pass_=True, detail="")
-            for c in ["q2_trajectories_match", "relay_count", "energy_components",
-                      "relay_backhaul_R01", "relay_agl_R01", "relay_energy_R01",
-                      "relay_soc_R01", "relay_sequence_R01", "relay_conflict_R01",
-                      "relay_backhaul_R02", "relay_agl_R02", "relay_energy_R02",
-                      "relay_soc_R02", "relay_sequence_R02", "relay_conflict_R02",
-                      "continuous_connectivity"]],
-    )
-    dump("q3_final_validation.json", final)
-    dump("q3_validation.json", final)
-    dump("q3_schedule_summary.json", dict(
-        n_relays_used=n_relays, n_sorties=n_sorties, n_components=n_components,
-        fine_total=36351, fine_uncovered=0, fine_coverage=1.0,
-        time_step_s=1, los_spacing_m=10, strict_feasible=True,
-        energy_kwh=energy_total, robust_across_tested_los=True,
-        resource_scenario="official 2-relay fleet (R01/R02), R02 two sequential sorties",
-        joint_makespan_s=8440.2, transport_makespan_s=8197.649))
-
-    # LOS sensitivity (from E4 validator: 15/10/5 all PASS)
-    write_csv(OUT / "q3_los_resolution_sensitivity.csv", [
-        dict(los_spacing_m=15, total_samples=36351, uncovered_samples=0, coverage=1.0, status="PASS", energy_kwh=energy_total),
-        dict(los_spacing_m=10, total_samples=36351, uncovered_samples=0, coverage=1.0, status="PASS", energy_kwh=energy_total),
-        dict(los_spacing_m=5, total_samples=36351, uncovered_samples=0, coverage=1.0, status="PASS", energy_kwh=energy_total),
-    ], ["los_spacing_m", "total_samples", "uncovered_samples", "coverage", "status", "energy_kwh"])
-
-    # empty blackout intervals (0 uncovered)
-    write_csv(OUT / "q3_final_blackout_intervals.csv", [],
-              ["trip_id", "start_s", "last_sample_s", "end_exclusive_s", "uncovered_samples"])
-
-    # ---- archive old results -------------------------------------------------
-    (OUT / "archive_3relay").mkdir(exist_ok=True)
-    (OUT / "comparison_2relay_static").mkdir(exist_ok=True)
-    for name in ["q3_schedule_3relay.csv", "q3_feasibility_3relay.json",
-                 "q3_communication_links.csv", "q3_baseline_communication.csv",
-                 "q3_baseline_per_trip.csv", "q3_baseline_summary.json"]:
-        p = OUT / name
-        if p.exists():
-            shutil.move(str(p), str(OUT / "archive_3relay" / name))
-    for name in ["q3_schedule_2relay.csv", "q3_feasibility_2relay.json"]:
-        p = OUT / name
-        if p.exists():
-            shutil.move(str(p), str(OUT / "comparison_2relay_static" / name))
-
-    print(json.dumps(final, ensure_ascii=False, indent=2))
-
-
-if __name__ == "__main__":
-    main()
+    p=argparse.ArgumentParser(description=__doc__)
+    p.add_argument('--plan',type=Path,default=RESULTS/'q3_official_plan.json')
+    p.add_argument('--transport',type=Path,default=RESULTS/'q3_transport_schedule.csv')
+    p.add_argument('--output',type=Path,default=RESULTS)
+    a=p.parse_args(); out=a.output.resolve(); out.mkdir(parents=True,exist_ok=True)
+    try:
+        plan=a.plan.resolve(); transport=a.transport.resolve()
+        with tempfile.TemporaryDirectory(prefix='q3-validation-') as tmp:
+            scratch=Path(tmp)
+            cmd=[sys.executable,'-B',str(CODE/'validate_two_relay_experiment.py'),'--plan',str(plan),'--transport',str(transport),'--output',str(scratch)]
+            run=subprocess.run(cmd,text=True,encoding='utf-8',errors='replace',stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
+            (out/'q3_validator_run.log').write_text(json.dumps(dict(command=cmd,exit_code=run.returncode))+'\n'+run.stdout,encoding='utf-8')
+            report=json.loads((scratch/'e4_final_validation.json').read_text(encoding='utf-8'))
+            passed=verify_report(report,plan,transport,run.returncode)
+            needed=['e4_relay_validation.json','e4_transport_validation.json','e4_communication_validation.json','e4_los_sensitivity.csv',
+                'e4_temporal_sensitivity.csv','e4_blackout_intervals.csv','e4_blackout_samples.csv','q3_communication_links.csv',
+                'q3_transport_timeline.csv','e4_blackout_samples_0.5s.csv','e4_blackout_samples_0.25s.csv']
+            if any(not (scratch/n).is_file() for n in needed): raise FileNotFoundError('Missing validator artifact')
+            publish(report,plan,out,scratch)
+            print(json.dumps(dict(status=report['status'],energy_kwh=report['energy_kwh'],uncovered_samples=report['uncovered_samples'])))
+            return 0 if passed else 1
+    except Exception as exc:
+        invalidate(out,f'{type(exc).__name__}: {exc}')
+        import traceback; traceback.print_exc(); return 2
+if __name__=='__main__': sys.exit(main())

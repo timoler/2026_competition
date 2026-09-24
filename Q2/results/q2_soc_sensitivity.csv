@@ -1,0 +1,5 @@
+﻿energy_scale,min_return_soc,feasible
+0.98,0.2253,True
+1.0,0.209489,True
+1.02,0.193679,False
+1.05,0.169964,False
