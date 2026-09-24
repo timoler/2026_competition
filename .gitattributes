@@ -1,0 +1,10 @@
+# 二进制文件强制按 binary 处理，禁止 Git 做 CRLF/LF 行尾转换（否则会损坏 PNG/npz/mat 等）
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.gif   binary
+*.npz   binary
+*.mat   binary
+*.xlsx  binary
+*.docx  binary
+*.pdf   binary
