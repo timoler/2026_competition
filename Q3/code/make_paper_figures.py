@@ -86,7 +86,7 @@ def fig1():
     ax1.legend(handles=[mpatches.Patch(color=LIGHT, label="准备/转场"),
                         mpatches.Patch(color=BLUE, label="R01 服务"),
                         mpatches.Patch(color=ORANGE, label="R02 服务")],
-               loc="upper right", frameon=False, fontsize=8, ncol=3)
+               loc="lower left", frameon=False, fontsize=8, ncol=3)
 
     # --- transport trips colored by relay coverage ---
     drones = sorted({t["drone_id"] for t in transport})
@@ -105,7 +105,7 @@ def fig1():
                         mpatches.Patch(color=BLUE, label="R01 保障"),
                         mpatches.Patch(color=ORANGE, label="R02 保障"),
                         mpatches.Patch(color=VIOLET, label="R01+R02 保障")],
-               loc="upper right", frameon=False, fontsize=8, ncol=2)
+               loc="lower right", frameon=False, fontsize=8, ncol=2)
     fig.tight_layout()
     fig.savefig(FIG / "q3_fig1_joint_timeline.png", dpi=300)
     plt.close(fig)
