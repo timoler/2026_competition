@@ -130,7 +130,7 @@ def fig2():
     for i, v in enumerate(unc):
         axes[0].text(i, v + 8, str(v), ha="center", fontsize=10, color=INK)
     axes[0].set_xticks(list(x)); axes[0].set_xticklabels(names, rotation=20, ha="right", fontsize=8)
-    axes[0].set_ylabel("uncovered 样本数")
+    axes[0].set_ylabel("未覆盖通信样本数")
     axes[0].set_ylim(0, max(unc) * 1.15)
 
     axes[1].bar(x, cov, color=cols, width=0.55, edgecolor="white")
@@ -151,7 +151,7 @@ def fig3():
     los = read_csv("q3_los_resolution_sensitivity.csv")
     tmp = read_csv("e4_temporal_sensitivity.csv")
     rows = los + tmp
-    header = ["时间步长 s", "LOS 间距 m", "样本数", "uncovered", "覆盖率", "状态"]
+    header = ["时间步长 s", "LOS 间距 m", "样本数", "未覆盖样本数", "覆盖率", "状态"]
     data = [[r["time_step_s"], r["los_spacing_m"], r["total_samples"],
              r["uncovered_samples"], f"{float(r['coverage'])*100:.4f}%", r["status"]]
             for r in rows]

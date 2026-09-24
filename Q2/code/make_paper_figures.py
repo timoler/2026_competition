@@ -84,7 +84,7 @@ def fig2():
     ax.bar(x, margin, color=AQUA, width=0.8, edgecolor="white")
     ax.axhline(0, color=RED, linewidth=1.2)
     ax.set_xlabel("硬时限货箱（按送达完成时刻排序）")
-    ax.set_ylabel("剩余裕量 = 截止 − 送达完成 (s)")
+    ax.set_ylabel("硬时限剩余裕量（s）")
     ax.set_xlim(0, len(hard) + 1)
     mn = min(margin)
     ax.text(1, mn + (max(margin) - mn) * 0.06, f"最小裕量 {mn:.0f} s > 0",
@@ -123,7 +123,7 @@ def fig3():
     fig, axes = plt.subplots(1, 3, figsize=(10.4, 3.4))
     x = range(len(schemes))
     axes[0].bar(x, makespan, color=BLUE, width=0.55, edgecolor="white")
-    axes[0].set_ylabel("makespan (s)")
+    axes[0].set_ylabel("完工时间 (s)")
     axes[1].bar(x, energy, color=AQUA, width=0.55, edgecolor="white")
     axes[1].set_ylabel("总能耗 (kWh)")
     axes[2].bar(x, trips, color=ORANGE, width=0.55, edgecolor="white")
