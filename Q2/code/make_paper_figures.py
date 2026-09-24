@@ -55,15 +55,17 @@ def fig1():
         s, e = float(t["preparation_start_s"]), float(t["return_s"])
         ax.barh(y, e - s, left=s, height=0.62, color=TYPE_COLOR[t["type_id"]],
                 edgecolor="white", linewidth=0.3)
-    # legend by type
-    for k in ("A", "B", "C"):
-        ax.barh([-9], [1], color=TYPE_COLOR[k], label=TYPE_NAME[k])
+    # legend by type (use explicit patches, not off-screen bars)
+    import matplotlib.patches as mpatches
+    ax.legend(handles=[mpatches.Patch(color=TYPE_COLOR[k], label=TYPE_NAME[k])
+                       for k in ("A", "B", "C")],
+              loc="lower right", frameon=False, ncol=3, fontsize=9)
     ax.set_yticks(list(ypos.values()))
     ax.set_yticklabels(drones)
+    ax.set_ylim(-0.5, len(drones) - 0.5)
     ax.set_xlabel("时间 (s)")
     ax.set_ylabel("运输无人机")
     ax.set_xlim(0, max(float(t["return_s"]) for t in trips) * 1.02)
-    ax.legend(loc="lower right", frameon=False, ncol=3)
     fig.tight_layout()
     fig.savefig(FIG / "q2_fig1_drone_gantt.png", dpi=300)
     plt.close(fig)
@@ -109,14 +111,14 @@ def fig3():
     improved = read_csv("q2_improvement.csv")
     imp_last = improved[-1]
 
-    method_label = {"single_stop_baseline": "单点构造最佳",
-                    "multipoint": "多点构造最佳"}
+    method_label = {"single_stop_baseline": "单点构造",
+                    "multipoint": "多点构造"}
     order = sorted(best, key=lambda k: best[k]["makespan"])
     schemes = order + ["improved"]
     makespan = [best[k]["makespan"] for k in order] + [float(imp_last["makespan_s"])]
     energy = [best[k]["energy"] for k in order] + [float(imp_last["energy_kwh"])]
     trips = [best[k]["trips"] for k in order] + [int(imp_last["trips"])]
-    labels = [method_label.get(k, k) for k in order] + ["局部改进后"]
+    labels = [method_label.get(k, k) for k in order] + ["局部改进"]
 
     fig, axes = plt.subplots(1, 3, figsize=(10.4, 3.4))
     x = range(len(schemes))
@@ -128,7 +130,8 @@ def fig3():
     axes[2].set_ylabel("架次数")
     for ax in axes:
         ax.set_xticks(list(x))
-        ax.set_xticklabels(labels, rotation=30, ha="right", fontsize=8)
+        ax.set_xticklabels(labels, fontsize=9)
+        ax.tick_params(axis="x", rotation=0)
     for ax, vals in zip(axes, (makespan, energy, trips)):
         ax.set_ylim(0, max(vals) * 1.12)
     fig.tight_layout()
