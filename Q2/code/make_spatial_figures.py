@@ -11,9 +11,9 @@
 地形底图复用 Q3/code/terrain.py 的 Terrain 加载器，与 Q3 视线遮挡判定使用同一份
 地形数据与同一套 UTM(EPSG:32649) → 经纬度换算，避免出现第二套地形口径。
 
-输出：
-  - Q2/figures/q2_fig5_transport_routes.png
-  - Q2/figures/q2_fig6_typical_multistop_route.png
+输出（论文图统一目录 paper_figures/）：
+  - paper_figures/q2_transport_routes_final.png
+  - paper_figures/q2_multistop_route_final.png
 """
 from __future__ import annotations
 
@@ -33,7 +33,7 @@ from pyproj import Transformer
 CODE = Path(__file__).resolve().parent
 REPO = CODE.parents[1]
 R = REPO / "Q2" / "results"
-FIG = REPO / "Q2" / "figures"
+FIG = REPO / "paper_figures"   # 论文图统一目录（本仓库唯一论文图入口）
 FIG.mkdir(parents=True, exist_ok=True)
 
 # 地形：复用 Q3 已验证的 DEM 缓存与加载器（同一份附件 DEM，同一套坐标换算）
@@ -191,9 +191,9 @@ def fig5():
     ax.legend(handles=handles, loc="upper left", frameon=False, fontsize=8.5,
               labelspacing=0.55)
     fig.tight_layout()
-    fig.savefig(FIG / "q2_fig5_transport_routes.png", dpi=300)
+    fig.savefig(FIG / "q2_transport_routes_final.png", dpi=300)
     plt.close(fig)
-    print(f"q2_fig5_transport_routes.png: {len(paths)} 架次，"
+    print(f"q2_transport_routes_final.png: {len(paths)} 架次，"
           f"A/B/C = {by_type['A']}/{by_type['B']}/{by_type['C']}")
 
 
@@ -276,9 +276,9 @@ def fig6():
         plt.Line2D([], [], color=RED, marker="*", lw=0, ms=12, label="O01 调度中心（G01 网关）"),
     ], loc="lower left", frameon=False, fontsize=8.5)
     fig.tight_layout()
-    fig.savefig(FIG / "q2_fig6_typical_multistop_route.png", dpi=300)
+    fig.savefig(FIG / "q2_multistop_route_final.png", dpi=300)
     plt.close(fig)
-    print(f"q2_fig6_typical_multistop_route.png: 选中 {tid} "
+    print(f"q2_multistop_route_final.png: 选中 {tid} "
           f"{t['route']}（{len(order)} 个服务点）")
 
 

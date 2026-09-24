@@ -13,6 +13,11 @@
 
 每问 `README.md` 是该问唯一成果入口，含目标、方法、数据口径、运行方式、结果、论文图表、复核记录与状态。
 
+**论文用图与表格只放一处**：[`paper_figures/`](paper_figures/README.md)（图，索引见该目录 README）与
+[`paper_tables/`](paper_tables/)（表）。两者都是 `Qx/code/` 脚本从正式 CSV/JSON **只读生成**的产物，
+不存放任何原始结果数据，故不属于重复的成果汇总区。各问 `Qx/figures/` 下的是早期版本与历史快照，
+不是论文图，详见各问 figures README。
+
 ## 三人分工
 
 | 成员 | 负责问题 | 交叉复核 | 兼任角色 |
@@ -32,7 +37,9 @@ BRANCHES.md              # 分支拓扑、归档标签、依赖关系
 consolidate_main.py      # 仓库整合脚本（归档+清理旧分支）
 .gitignore
 模板/Qx/README.md         # 复制后填写，不作为比赛结果
-Q1/ Q2/ Q3/ Q4/          # 四问成果
+Q1/ Q2/ Q3/ Q4/          # 四问成果（Qx/figures/ 仅存早期版本与历史快照）
+paper_figures/           # 论文图唯一出口（*_final.png，只读生成）+ 索引 README
+paper_tables/            # 论文表唯一出口（3 个 CSV，只读生成）
 ```
 
 ## 工作方式（短期分支）

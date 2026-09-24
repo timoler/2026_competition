@@ -20,9 +20,9 @@
 中点，用权威轨迹接口取运输机真实三维位置，再与中继真实悬停点连线。
 链路关系全部来自 q3_communication_links.csv，不虚构任何覆盖圆或连接。
 
-输出：
-  - Q3/figures/q3_fig4_transport_relay_spatial.png      三维真实地形版本
-  - Q3/figures/q3_fig4_transport_relay_spatial_2d.png   平面版本（供论文择优选用）
+输出（论文图统一目录 paper_figures/）：
+  - paper_figures/q3_transport_relay_spatial_final.png      三维真实地形版本
+  - paper_figures/q3_transport_relay_spatial_2d_final.png   平面版本（供论文择优选用）
 """
 from __future__ import annotations
 
@@ -44,9 +44,12 @@ CODE = Path(__file__).resolve().parent
 if str(CODE) not in sys.path:
     sys.path.insert(0, str(CODE))
 
-from config import Q2_RESULTS, RESULTS, FIGURES, TERRAIN_CACHE  # noqa: E402
+from config import Q2_RESULTS, REPO, RESULTS, TERRAIN_CACHE  # noqa: E402
 from terrain import Terrain  # noqa: E402
 from trajectory import TransportTrajectory  # noqa: E402
+
+PFIG = REPO / "paper_figures"   # 论文图统一目录（本仓库唯一论文图入口）
+PFIG.mkdir(parents=True, exist_ok=True)
 
 BLUE, ORANGE, AQUA, VIOLET = "#2a78d6", "#eb6834", "#1baf7a", "#4a3aa7"
 RED, GRAY, INK, MUTED, GRID = "#d03b3b", "#898781", "#0b0b0b", "#898781", "#e1e0d9"
@@ -290,7 +293,7 @@ def fig3d(nodes, trips, profiles, sorties, win, prov, terr):
     ]
     fig.legend(handles=handles, loc="upper left", bbox_to_anchor=(0.005, 0.995),
                frameon=False, fontsize=8.5, labelspacing=0.5)
-    fig.savefig(FIGURES / "q3_fig4_transport_relay_spatial.png", dpi=300)
+    fig.savefig(PFIG / "q3_transport_relay_spatial_final.png", dpi=300)
     plt.close(fig)
 
 
@@ -384,7 +387,7 @@ def fig2d(nodes, trips, profiles, sorties, win, prov, terr):
     ax.legend(handles=handles, loc="upper center", bbox_to_anchor=(0.5, -0.10),
               ncol=3, frameon=False, fontsize=8.5, columnspacing=1.6)
     fig.tight_layout()
-    fig.savefig(FIGURES / "q3_fig4_transport_relay_spatial_2d.png", dpi=300)
+    fig.savefig(PFIG / "q3_transport_relay_spatial_2d_final.png", dpi=300)
     plt.close(fig)
 
 
