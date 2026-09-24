@@ -1,13 +1,17 @@
 {
-  "q3_source_commit": "afba25c976360f32f4a49d7e8cb0af64b63f0e79",
+  "generated_at": "2026-09-24T17:06:02+08:00",
+  "q3_source_commit": "01b33411f71c79992228b098de7f860aff2db035",
+  "q4_head_at_run": "34520996d95c05ab9fab84c5622594de833218c9",
   "input_files_sha256": {
     "Q2/results/q2_trips.csv": "42cabfa241e561dfb680176013fdfd1a56238e161d5bae68b32815fb4cf41616",
     "Q2/results/q2_inputs.json": "d195b84436270ab3e41f589138240c3d56c8315583a2877aa416cf938778e070",
-    "Q3/results/q3_relay_schedule.csv": "a4519692a63df568aef627dbaf423bbf79f2b2413dae4d7bb542f8bbadf6b7e6",
-    "Q3/results/q3_communication_links.csv": "4816bb7ec629ac4444a430176e2c2e1941b352b95d671b7661de9ca8f3ec6123"
+    "Q3/results/q3_relay_schedule.csv": "2530de7eaad9aaae36965c14a46a8708c79705cf8acb8d831b73c3ee492d323c",
+    "Q3/results/q3_communication_links.csv": "e7b195898e2e88698bfd84e115dee3d93717b7cf9c6779277419a990c847ed8a"
   },
-  "q4_head_at_run": "afba25c976360f32f4a49d7e8cb0af64b63f0e79",
+  "q4_results_sha256": {
+    "Q4/results/q4_best_2groups.json": "78b2168443dce57980ef953a834c281077e082175dd7df7f13c00b1b4fe9a1ef",
+    "Q4/results/q4_best_3groups.json": "730ba55faae0e59f3b3acf48989f2aa86c0f754fa85a61cc66be37422a77b5a1"
+  },
   "q3_commit_in_history": true,
-  "q4_validation_status": "PASS",
-  "elapsed_s": 9.115
+  "q4_validation_status": "PASS"
 }

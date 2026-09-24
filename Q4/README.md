@@ -49,7 +49,7 @@ Q4 不改动任何 Q1/Q2/Q3 文件。
 
 ## 7. 工作量均衡定义
 
-每组报告：服务区数、货箱数、架次数、运输累计占用时间、运输能耗、中继服务时长、中继能耗；综合工作量等权（0.2）归一化 5 项，报告 max(W)−min(W) 与 CV。
+每组报告：服务区数、货箱数、架次数、运输累计占用时间、运输能耗、中继服务时长、中继能耗；综合工作量等权（0.2）归一化 5 项，报告 max(W)−min(W)（`workload_imbalance`）。该指标仅作为字典序目标中的**末位辅助择优指标**，用于同等资源缺口与总资源需求下的辅助比较，**不解释为严格意义上的组间工作量均衡最优**；当前实现**不计算 CV**。
 
 ## 8. 2 组方案（gap=2）
 
@@ -111,5 +111,6 @@ python Q4/code/make_figures.py    # 生成论文图
 - `results/q4_resource_comparison.csv`、`q4_resource_gap.csv` —— 资源对比与缺口
 - `results/q4_workload_comparison.csv` —— 工作量对比
 - `results/strict_relay_binding_sensitivity.json` —— 中继严格绑定敏感性
-- `results/q4_all_partitions_2groups.csv`、`q4_all_partitions_3groups.csv` —— 全量枚举
+- `results/q4_all_partitions_2groups.csv` —— 2 组全量枚举（2047 个候选，按字典序排序）
+- `results/q4_all_partitions_3groups.csv` —— 3 组枚举的排序前 1000 个候选（完整枚举 86526 个，计数见 `q4_all_partitions_3groups_summary.json`）
 - `figures/*.png`

@@ -7,19 +7,104 @@
       "detail": ""
     },
     {
+      "check": "2groups_service_area_complete_coverage",
+      "pass": true,
+      "detail": "15/15 服务区"
+    },
+    {
+      "check": "2groups_service_area_exactly_once",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "2groups_no_empty_group",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "2groups_atomic_block_integrity",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "2groups_multi_site_trip_co_grouped",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "2groups_resources_nonnegative",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "3groups_service_area_complete_coverage",
+      "pass": true,
+      "detail": "15/15 服务区"
+    },
+    {
+      "check": "3groups_service_area_exactly_once",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "3groups_no_empty_group",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "3groups_atomic_block_integrity",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "3groups_multi_site_trip_co_grouped",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "3groups_resources_nonnegative",
+      "pass": true,
+      "detail": ""
+    },
+    {
       "check": "resource_recomputation_matches",
       "pass": true,
       "detail": "mismatch=[]"
     },
     {
-      "check": "multi_site_trips_co_grouped",
+      "check": "enum_2groups_csv_sorted",
       "pass": true,
-      "detail": ""
+      "detail": "2047 rows"
     },
     {
-      "check": "no_empty_group",
+      "check": "enum_2groups_first_is_best",
       "pass": true,
-      "detail": ""
+      "detail": "csv_first=(gap 2, res 29, imb 1.000000)"
+    },
+    {
+      "check": "enum_2groups_total_enumerated",
+      "pass": true,
+      "detail": "2047 rows"
+    },
+    {
+      "check": "enum_3groups_csv_sorted",
+      "pass": true,
+      "detail": "1000 rows"
+    },
+    {
+      "check": "enum_3groups_first_is_best",
+      "pass": true,
+      "detail": "csv_first=(gap 4, res 32, imb 1.000000)"
+    },
+    {
+      "check": "enum_3groups_total_enumerated",
+      "pass": true,
+      "detail": "total_enumerated=86526"
+    },
+    {
+      "check": "enum_3groups_saved_top_n",
+      "pass": true,
+      "detail": "saved_top_n=1000, csv_rows=1000"
     },
     {
       "check": "trip_count_unchanged",
@@ -30,11 +115,6 @@
       "check": "relay_schedule_unchanged",
       "pass": true,
       "detail": "3 relay sorties (R01 x1 + R02 x2, physical relays = 2)"
-    },
-    {
-      "check": "resources_nonnegative",
-      "pass": true,
-      "detail": ""
     },
     {
       "check": "gap_calculation_correct",
