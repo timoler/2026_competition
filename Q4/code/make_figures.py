@@ -40,7 +40,7 @@ def nodes():
 
 
 def block_edges():
-    trips = read_csv(Q2R / "q2_trips.csv")
+    trips = read_csv(Q3R / "q3_transport_schedule.csv")
     edges = set()
     for r in trips:
         route = [x for x in r["route"].split("-") if x not in ("", "O01")]

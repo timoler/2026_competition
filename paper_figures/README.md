@@ -37,8 +37,15 @@ CSV/JSON 只读生成，300 dpi、白底、中文标签；不手工改图，不�
 
 ## 表格
 
-见 [`../paper_tables/`](../paper_tables/)：`q1_priority_comparison.csv`、`q2_search_comparison.csv`、
-`q3_communication_sensitivity.csv`，分别由对应 `Qx/code/make_paper_figures.py` 的 `table*()` 生成。
+见 [`../paper_tables/`](../paper_tables/)：
+
+- Q1：`q1_max_payload.csv`（20% 余量下 15 服务区 × A/B/C 最大安全载荷）、`q1_batch_detail.csv`
+  （18 架次逐箱组批明细）、`q1_priority_comparison.csv`（4 种目标优先级）、`q1_sensitivity.csv`
+  （返航余量 10–30% 敏感性）
+- Q2：`q2_search_comparison.csv`
+- Q3：`q3_communication_sensitivity.csv`
+
+均由对应 `Qx/code/make_paper_figures.py` 的 `table*()` 只读生成。
 
 ## 重新生成
 

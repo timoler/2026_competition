@@ -52,7 +52,7 @@ def charge_time(soc, full_s):
 # ----------------------------------------------------------------------------
 def load():
     trips = []
-    for r in read_csv(Q2R / "q2_trips.csv"):
+    for r in read_csv(Q3R / "q3_transport_schedule.csv"):
         route = [x for x in r["route"].split("-") if x not in ("", "O01")]
         trips.append(dict(trip_id=r["trip_id"], type_id=r["type_id"],
                           route=route, prep=float(r["preparation_start_s"]),

@@ -160,15 +160,15 @@
       "imbalance": 1.0
     },
     {
-      "partition": "{B01,B02,B03,B04,B05,B06,B08,B09,B11,B12}|{B07,B10}",
+      "partition": "{B01,B02,B03,B05,B07,B08,B09,B10,B11,B12}|{B04,B06}",
       "gap": 3,
-      "total_resources": 32,
+      "total_resources": 31,
       "imbalance": 1.0
     },
     {
-      "partition": "{B01,B02,B03,B04,B05,B06,B07,B08,B11,B12}|{B09,B10}",
-      "gap": 4,
-      "total_resources": 32,
+      "partition": "{B01,B02,B04,B05,B06,B07,B08,B09,B10,B11,B12}|{B03}",
+      "gap": 3,
+      "total_resources": 31,
       "imbalance": 1.0
     }
   ]

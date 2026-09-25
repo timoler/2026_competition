@@ -94,8 +94,8 @@ def fig2():
     fig, axes = plt.subplots(1, 2, figsize=(9.4, 3.6))
     x = range(len(sites))
     ax = axes[0]
-    ax.bar(x, B, color=BLUE, label="B 型架次", width=0.7, edgecolor="white")
-    ax.bar(x, C, bottom=B, color=ORANGE, label="C 型架次", width=0.7, edgecolor="white")
+    ax.bar(x, B, color=BLUE, label="B 型承运货箱数", width=0.7, edgecolor="white")
+    ax.bar(x, C, bottom=B, color=ORANGE, label="C 型承运货箱数", width=0.7, edgecolor="white")
     ax.set_xticks(list(x))
     ax.set_xticklabels(sites, rotation=30, ha="right", fontsize=9)
     ax.set_xlabel("服务区")
@@ -144,6 +144,67 @@ def table1():
         w.writerows(out)
 
 
+# ---------------------------------------------------------------------------
+# Table 2: max safety payload at 20% reserve — 15 sites x A/B/C
+# ---------------------------------------------------------------------------
+def table2():
+    rows = read_csv("q1_max_payload_sensitivity.csv")
+    reserve_020 = [r for r in rows if abs(float(r["reserve"]) - 0.2) < 1e-9]
+    sites = sorted({r["site"] for r in reserve_020})
+    models = ["A", "B", "C"]
+    by = {(r["site"], r["model"]): r for r in reserve_020}
+    out = []
+    for s in sites:
+        rec = {"服务区": s}
+        for m in models:
+            r = by.get((s, m))
+            rec[f"{m} 型 (kg)"] = round(float(r["max_payload_kg"]), 2) if r else ""
+        out.append(rec)
+    with (PTAB / "q1_max_payload.csv").open("w", encoding="utf-8-sig", newline="") as f:
+        w = csv.DictWriter(f, fieldnames=list(out[0]))
+        w.writeheader()
+        w.writerows(out)
+
+
+# ---------------------------------------------------------------------------
+# Table 3: 80-box batch detail (18 trips, per-box assignment)
+# ---------------------------------------------------------------------------
+def table3():
+    rows = read_csv("q1_batches_default.csv")
+    out = []
+    for r in rows:
+        out.append(dict(
+            架次号=r["trip_id"], 服务区=r["site"], 机型=r["model"],
+            货箱编号=r["box_ids"].replace(";", ", "),
+            载质量_kg=int(float(r["mass_kg"])),
+            体积_m3=round(float(r["volume_m3"]), 3),
+            能耗_kWh=round(float(r["energy_kwh"]), 4),
+            返航SOC_pct=round(float(r["soc_pct"]), 2)))
+    with (PTAB / "q1_batch_detail.csv").open("w", encoding="utf-8-sig", newline="") as f:
+        w = csv.DictWriter(f, fieldnames=list(out[0]))
+        w.writeheader()
+        w.writerows(out)
+
+
+# ---------------------------------------------------------------------------
+# Table 4: reserve sensitivity (default priority 时间→架次→能耗)
+# ---------------------------------------------------------------------------
+def table4():
+    rows = read_csv("q1_model_comparison.csv")
+    default = [r for r in rows if r["priority"] == "时间_架次_能耗"]
+    default.sort(key=lambda r: float(r["reserve"]))
+    out = [dict(返航安全余量_pct=int(round(float(r["reserve"]) * 100)),
+                架次数=int(r["trips"]),
+                总能耗_kWh=round(float(r["energy_kwh"]), 4),
+                累计作业时间_s=round(float(r["operation_s"]), 2))
+           for r in default]
+    with (PTAB / "q1_sensitivity.csv").open("w", encoding="utf-8-sig", newline="") as f:
+        w = csv.DictWriter(f, fieldnames=list(out[0]))
+        w.writeheader()
+        w.writerows(out)
+
+
 if __name__ == "__main__":
-    fig1(); fig2(); table1()
-    print("Q1 final figures + table written")
+    fig1(); fig2()
+    table1(); table2(); table3(); table4()
+    print("Q1 final figures + tables written")

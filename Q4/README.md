@@ -12,10 +12,14 @@
 
 | 来源 | 内容 |
 |---|---|
-| `Q2/results/q2_trips.csv` | 26 个运输架次路线、机型、电池、准备/返航时刻、能耗、返航 SOC |
-| `Q2/results/q2_inputs.json` | 节点、机型、货箱、共享电池库存、充电时间 |
+| `Q3/results/q3_transport_schedule.csv` | 26 个运输架次路线、机型、电池、准备/返航时刻、能耗、返航 SOC（**Q3 联合调度后的正式时刻表**，含 T011 后移 2320 s、T015 由 U07 改 U08 并后移 1224 s） |
+| `Q2/results/q2_inputs.json` | 节点、机型、货箱、共享电池库存、充电时间（原始库存口径，非时间表） |
 | `Q3/results/q3_relay_schedule.csv` | 3 个中继架次（R01 ×1 + R02 ×2 顺序架次）的悬停位置、服务时段、能耗、返航 SOC |
 | `Q3/results/q3_communication_links.csv` | 每个中继架次保障了哪些运输架次 |
+
+> 修正说明（2026-09-25）：此前 Q4 误读 `Q2/results/q2_trips.csv`（Q2 原时间表，makespan 6973.6 s），
+> 与 Q3 联合调度后的正式时刻表（makespan 8197.6 s）不一致。现已改为读 `q3_transport_schedule.csv`。
+> 重跑后最优分区（2 组 gap=2、3 组 gap=4）与资源数不变，仅次优候选排序因时间窗变化而微调。
 
 Q4 不改动任何 Q1/Q2/Q3 文件。
 

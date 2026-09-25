@@ -30,7 +30,7 @@ CODE = REPO / "Q4" / "code"
 
 # Q4 的真实输入依赖（只读，不得改动）。
 INPUT_FILES = [
-    Q2R / "q2_trips.csv",
+    Q3R / "q3_transport_schedule.csv",
     Q2R / "q2_inputs.json",
     Q3R / "q3_relay_schedule.csv",
     Q3R / "q3_communication_links.csv",
