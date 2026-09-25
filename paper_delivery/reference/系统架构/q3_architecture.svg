@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 680" width="1100" height="680" data-generator="fireworks-tech-graph" data-schema-version="1" data-text-metrics="heuristic-v1" data-style-id="4" data-visual-theme="Notion Clean" data-diagram-type="architecture" data-motion-scene="" data-semantic-profile="generic" data-semantic-valid="true" data-quality-profile="standard" data-max-bends-per-edge="8" data-max-total-bends="18" data-max-route-stretch="5.0" data-max-bridged-crossings="8" data-min-node-gap="32.0" data-min-container-gutter="0.0" data-min-label-clearance="12.0" data-min-segment-length="0.0">
+  <defs>
+    <marker id="arrowA" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#3b82f6"/>
+    </marker>
+    <marker id="arrowB" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#3b82f6"/>
+    </marker>
+    <marker id="arrowC" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#3b82f6"/>
+    </marker>
+    <marker id="arrowE" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#3b82f6"/>
+    </marker>
+    <marker id="arrowF" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#9ca3af"/>
+    </marker>
+    <marker id="arrowG" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#9ca3af"/>
+    </marker>
+    <marker id="arrowH" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#d1d5db"/>
+    </marker>
+    <style>
+    text { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, 'PingFang SC', 'Noto Sans CJK SC', 'Microsoft YaHei', 'Microsoft JhengHei', 'SimHei', sans-serif; }
+    .title { font-size: 18px; font-weight: 700; fill: #111827; }
+    .subtitle { font-size: 13px; font-weight: 500; fill: #9ca3af; }
+    .section { font-size: 13px; font-weight: 700; fill: #6b7280; letter-spacing: 1.4px; }
+    .section-sub { font-size: 12px; font-weight: 500; fill: #6b7280; }
+    .node-title { font-weight: 700; fill: #111827; }
+    .node-sub { font-weight: 500; fill: #374151; }
+    .node-type { font-size: 11px; font-weight: 700; fill: #6b7280; letter-spacing: 0.08em; }
+    .arrow-label { font-size: 12px; font-weight: 600; fill: #6b7280; }
+    .legend { font-size: 12px; font-weight: 500; fill: #6b7280; }
+    .footnote { font-size: 12px; font-weight: 500; fill: #6b7280; }
+    .metric-label { font-size: 8.5px; font-weight: 700; fill: #6b7280; text-transform: uppercase; }
+    .metric-value { font-size: 9.5px; font-weight: 700; fill: #111827; }
+    </style>
+  </defs>
+  <rect data-graph-role="background" width="1100.0" height="680.0" fill="#ffffff"/>
+  <text x="48.0" y="48" text-anchor="start" class="title">问题三  通信连续性与中继协同系统架构</text>
+  <line x1="48" y1="82" x2="1052.0" y2="82" stroke="#e5e7eb" stroke-width="1"/>
+  <g id="transport" data-graph-role="container" data-container-id="transport" data-semantic-role="boundary" data-graph-bounds="40,120,370,540">
+  <rect data-graph-role="container" x="40.0" y="120.0" width="330.0" height="420.0" rx="4.0" fill="none" stroke="#777" stroke-width="1.4"/>
+  <text x="58.0" y="144.0" class="section">运输轨迹层</text>
+    <rect id="transport-header" data-graph-role="reserved" data-reserved-kind="container-header" x="48" y="126" width="95" height="30" fill="none" stroke="none"/>
+  </g>
+  <g id="comm" data-graph-role="container" data-container-id="comm" data-semantic-role="boundary" data-graph-bounds="420,120,720,540">
+  <rect data-graph-role="container" x="420.0" y="120.0" width="300.0" height="420.0" rx="4.0" fill="none" stroke="#777" stroke-width="1.4"/>
+  <text x="438.0" y="144.0" class="section">通信判定层</text>
+    <rect id="comm-header" data-graph-role="reserved" data-reserved-kind="container-header" x="428" y="126" width="95" height="30" fill="none" stroke="none"/>
+  </g>
+  <g id="relay" data-graph-role="container" data-container-id="relay" data-semantic-role="boundary" data-graph-bounds="770,120,1060,540">
+  <rect data-graph-role="container" x="770.0" y="120.0" width="290.0" height="420.0" rx="4.0" fill="none" stroke="#777" stroke-width="1.4"/>
+  <text x="788.0" y="144.0" class="section">中继调度层</text>
+    <rect id="relay-header" data-graph-role="reserved" data-reserved-kind="container-header" x="778" y="126" width="95" height="30" fill="none" stroke="none"/>
+  </g>
+  <path id="a1" data-graph-role="edge" data-edge-id="a1" data-source="q2" data-target="track" data-edge-kind="flow" data-topic-id="" data-flow="control" data-motion-role="" data-motion-stage="" data-motion-order="" data-protocol="" data-via="" data-critical-path-id="" data-critical-hop="" data-critical-hops="" data-critical="false" data-bends="0" data-route-stretch="1.0" data-bridges="" d="M 195,255 L 195,350" fill="none" stroke="#3b82f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrowA)"/>
+  <path id="a2" data-graph-role="edge" data-edge-id="a2" data-source="track" data-target="los" data-edge-kind="flow" data-topic-id="" data-flow="control" data-motion-role="" data-motion-stage="" data-motion-order="" data-protocol="" data-via="" data-critical-path-id="" data-critical-hop="" data-critical-hops="" data-critical="false" data-bends="2" data-route-stretch="1.0" data-bridges="" d="M 315,377.5 L 339,377.5 L 339,227.5 L 455,227.5" fill="none" stroke="#3b82f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrowA)"/>
+  <path id="a3" data-graph-role="edge" data-edge-id="a3" data-source="los" data-target="budget" data-edge-kind="flow" data-topic-id="" data-flow="control" data-motion-role="" data-motion-stage="" data-motion-order="" data-protocol="" data-via="" data-critical-path-id="" data-critical-hop="" data-critical-hops="" data-critical="false" data-bends="0" data-route-stretch="1.0" data-bridges="" d="M 570,255 L 570,350" fill="none" stroke="#3b82f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrowA)"/>
+  <path id="a4" data-graph-role="edge" data-edge-id="a4" data-source="budget" data-target="relayplan" data-edge-kind="flow" data-topic-id="" data-flow="control" data-motion-role="" data-motion-stage="" data-motion-order="" data-protocol="" data-via="" data-critical-path-id="" data-critical-hop="" data-critical-hops="" data-critical="false" data-bends="2" data-route-stretch="1.0" data-bridges="" d="M 685,377.5 L 709,377.5 L 709,227.5 L 805,227.5" fill="none" stroke="#3b82f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrowA)"/>
+  <path id="a5" data-graph-role="edge" data-edge-id="a5" data-source="relayplan" data-target="coverage" data-edge-kind="flow" data-topic-id="" data-flow="control" data-motion-role="" data-motion-stage="" data-motion-order="" data-protocol="" data-via="" data-critical-path-id="" data-critical-hop="" data-critical-hops="" data-critical="false" data-bends="0" data-route-stretch="1.0" data-bridges="" d="M 915,255 L 915,350" fill="none" stroke="#3b82f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrowA)"/>
+  <path id="a6" data-graph-role="edge" data-edge-id="a6" data-source="coverage" data-target="adjust" data-edge-kind="flow" data-topic-id="" data-flow="control" data-motion-role="" data-motion-stage="" data-motion-order="" data-protocol="" data-via="" data-critical-path-id="" data-critical-hop="" data-critical-hops="" data-critical="false" data-bends="2" data-route-stretch="1.0" data-bridges="" d="M 805,377.5 L 745,377.5 L 745,502.5 L 685,502.5" fill="none" stroke="#3b82f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrowA)"/>
+  <g id="node-q2" data-graph-role="node" data-node-id="q2" data-semantic-role="rect" data-motion-role="" data-motion-stage="" data-motion-order="" data-parent="" data-deployment-id="" data-topic-id="" data-span-id="" data-station-order="" data-status="" data-start-ms="" data-duration-ms="" data-parent-span="" data-graph-bounds="75,200,315,255">
+  <rect x="75.0" y="200.0" width="240.0" height="55.0" rx="4.0" fill="#ffffff" stroke="#222222" stroke-width="1.8"/>
+  <text data-text-role="title" data-full-text="Q2运输架次" data-text-max-width="216.0" x="195.0" y="227.5" text-anchor="middle" class="node-title" font-size="18">Q2运输架次</text>
+  </g>
+  <g id="node-track" data-graph-role="node" data-node-id="track" data-semantic-role="rect" data-motion-role="" data-motion-stage="" data-motion-order="" data-parent="" data-deployment-id="" data-topic-id="" data-span-id="" data-station-order="" data-status="" data-start-ms="" data-duration-ms="" data-parent-span="" data-graph-bounds="75,350,315,405">
+  <rect x="75.0" y="350.0" width="240.0" height="55.0" rx="4.0" fill="#ffffff" stroke="#222222" stroke-width="1.8"/>
+  <text data-text-role="title" data-full-text="三维位置接口" data-text-max-width="216.0" x="195.0" y="377.5" text-anchor="middle" class="node-title" font-size="18">三维位置接口</text>
+  </g>
+  <g id="node-los" data-graph-role="node" data-node-id="los" data-semantic-role="rect" data-motion-role="" data-motion-stage="" data-motion-order="" data-parent="" data-deployment-id="" data-topic-id="" data-span-id="" data-station-order="" data-status="" data-start-ms="" data-duration-ms="" data-parent-span="" data-graph-bounds="455,200,685,255">
+  <rect x="455.0" y="200.0" width="230.0" height="55.0" rx="4.0" fill="#ffffff" stroke="#222222" stroke-width="1.8"/>
+  <text data-text-role="title" data-full-text="DEM与LOS判定" data-text-max-width="206.0" x="570.0" y="227.5" text-anchor="middle" class="node-title" font-size="18">DEM与LOS判定</text>
+  </g>
+  <g id="node-budget" data-graph-role="node" data-node-id="budget" data-semantic-role="rect" data-motion-role="" data-motion-stage="" data-motion-order="" data-parent="" data-deployment-id="" data-topic-id="" data-span-id="" data-station-order="" data-status="" data-start-ms="" data-duration-ms="" data-parent-span="" data-graph-bounds="455,350,685,405">
+  <rect x="455.0" y="350.0" width="230.0" height="55.0" rx="4.0" fill="#ffffff" stroke="#222222" stroke-width="1.8"/>
+  <text data-text-role="title" data-full-text="链路预算" data-text-max-width="206.0" x="570.0" y="377.5" text-anchor="middle" class="node-title" font-size="18">链路预算</text>
+  </g>
+  <g id="node-relayplan" data-graph-role="node" data-node-id="relayplan" data-semantic-role="rect" data-motion-role="" data-motion-stage="" data-motion-order="" data-parent="" data-deployment-id="" data-topic-id="" data-span-id="" data-station-order="" data-status="" data-start-ms="" data-duration-ms="" data-parent-span="" data-graph-bounds="805,200,1025,255">
+  <rect x="805.0" y="200.0" width="220.0" height="55.0" rx="4.0" fill="#ffffff" stroke="#222222" stroke-width="1.8"/>
+  <text data-text-role="title" data-full-text="R01/R02架次" data-text-max-width="196.0" x="915.0" y="227.5" text-anchor="middle" class="node-title" font-size="18">R01/R02架次</text>
+  </g>
+  <g id="node-coverage" data-graph-role="node" data-node-id="coverage" data-semantic-role="rect" data-motion-role="" data-motion-stage="" data-motion-order="" data-parent="" data-deployment-id="" data-topic-id="" data-span-id="" data-station-order="" data-status="" data-start-ms="" data-duration-ms="" data-parent-span="" data-graph-bounds="805,350,1025,405">
+  <rect x="805.0" y="350.0" width="220.0" height="55.0" rx="4.0" fill="#ffffff" stroke="#222222" stroke-width="1.8"/>
+  <text data-text-role="title" data-full-text="连续覆盖验证" data-text-max-width="196.0" x="915.0" y="377.5" text-anchor="middle" class="node-title" font-size="18">连续覆盖验证</text>
+  </g>
+  <g id="node-adjust" data-graph-role="node" data-node-id="adjust" data-semantic-role="rect" data-motion-role="" data-motion-stage="" data-motion-order="" data-parent="" data-deployment-id="" data-topic-id="" data-span-id="" data-station-order="" data-status="" data-start-ms="" data-duration-ms="" data-parent-span="" data-graph-bounds="455,475,685,530">
+  <rect x="455.0" y="475.0" width="230.0" height="55.0" rx="4.0" fill="#ffffff" stroke="#222222" stroke-width="1.8"/>
+  <text data-text-role="title" data-full-text="时序调整" data-text-max-width="206.0" x="570.0" y="502.5" text-anchor="middle" class="node-title" font-size="18">时序调整</text>
+  </g>
+</svg>
