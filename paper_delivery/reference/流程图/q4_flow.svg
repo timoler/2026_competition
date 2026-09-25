@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 640" width="960" height="640" data-generator="fireworks-tech-graph" data-schema-version="1" data-text-metrics="heuristic-v1" data-style-id="4" data-visual-theme="Notion Clean" data-diagram-type="flowchart" data-motion-scene="" data-semantic-profile="generic" data-semantic-valid="true" data-quality-profile="standard" data-max-bends-per-edge="8" data-max-total-bends="18" data-max-route-stretch="5.0" data-max-bridged-crossings="8" data-min-node-gap="32.0" data-min-container-gutter="0.0" data-min-label-clearance="12.0" data-min-segment-length="0.0">
+  <defs>
+    <marker id="arrowA" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#3b82f6"/>
+    </marker>
+    <marker id="arrowB" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#3b82f6"/>
+    </marker>
+    <marker id="arrowC" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#3b82f6"/>
+    </marker>
+    <marker id="arrowE" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#3b82f6"/>
+    </marker>
+    <marker id="arrowF" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#9ca3af"/>
+    </marker>
+    <marker id="arrowG" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#9ca3af"/>
+    </marker>
+    <marker id="arrowH" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#d1d5db"/>
+    </marker>
+    <style>
+    text { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, 'PingFang SC', 'Noto Sans CJK SC', 'Microsoft YaHei', 'Microsoft JhengHei', 'SimHei', sans-serif; }
+    .title { font-size: 18px; font-weight: 700; fill: #111827; }
+    .subtitle { font-size: 13px; font-weight: 500; fill: #9ca3af; }
+    .section { font-size: 13px; font-weight: 700; fill: #6b7280; letter-spacing: 1.4px; }
+    .section-sub { font-size: 12px; font-weight: 500; fill: #6b7280; }
+    .node-title { font-weight: 700; fill: #111827; }
+    .node-sub { font-weight: 500; fill: #374151; }
+    .node-type { font-size: 11px; font-weight: 700; fill: #6b7280; letter-spacing: 0.08em; }
+    .arrow-label { font-size: 12px; font-weight: 600; fill: #6b7280; }
+    .legend { font-size: 12px; font-weight: 500; fill: #6b7280; }
+    .footnote { font-size: 12px; font-weight: 500; fill: #6b7280; }
+    .metric-label { font-size: 8.5px; font-weight: 700; fill: #6b7280; text-transform: uppercase; }
+    .metric-value { font-size: 9.5px; font-weight: 700; fill: #111827; }
+    </style>
+  </defs>
+  <rect data-graph-role="background" width="960.0" height="640.0" fill="#ffffff"/>
+  <text x="48.0" y="48" text-anchor="start" class="title">问题四  独立执行分区与资源配置</text>
+  <line x1="48" y1="82" x2="912.0" y2="82" stroke="#e5e7eb" stroke-width="1"/>
+  <path id="e9" data-graph-role="edge" data-edge-id="e9" data-source="check" data-target="partition" data-edge-kind="flow" data-topic-id="" data-flow="control" data-motion-role="" data-motion-stage="" data-motion-order="" data-protocol="" data-via="" data-critical-path-id="" data-critical-hop="" data-critical-hops="" data-critical="false" data-bends="3" data-route-stretch="1.366" data-bridges="" d="M 370,506 L 300,506 L 300,505 L 300,270 L 480,270 L 480,233" fill="none" stroke="#3b82f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrowA)"/>
+  <path id="e1" data-graph-role="edge" data-edge-id="e1" data-source="input" data-target="blocks" data-edge-kind="flow" data-topic-id="" data-flow="control" data-motion-role="" data-motion-stage="" data-motion-order="" data-protocol="" data-via="" data-critical-path-id="" data-critical-hop="" data-critical-hops="" data-critical="false" data-bends="2" data-route-stretch="1.0" data-bridges="" d="M 471,112 L 471,132.4 L 200,132.4 L 200,175" fill="none" stroke="#3b82f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrowA)"/>
+  <path id="e2" data-graph-role="edge" data-edge-id="e2" data-source="input" data-target="partition" data-edge-kind="flow" data-topic-id="" data-flow="control" data-motion-role="" data-motion-stage="" data-motion-order="" data-protocol="" data-via="" data-critical-path-id="" data-critical-hop="" data-critical-hops="" data-critical="false" data-bends="2" data-route-stretch="1.0" data-bridges="" d="M 489,112 L 489,132.4 L 480,132.4 L 480,175" fill="none" stroke="#3b82f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrowA)"/>
+  <path id="e3" data-graph-role="edge" data-edge-id="e3" data-source="blocks" data-target="partition" data-edge-kind="flow" data-topic-id="" data-flow="control" data-motion-role="" data-motion-stage="" data-motion-order="" data-protocol="" data-via="" data-critical-path-id="" data-critical-hop="" data-critical-hops="" data-critical="false" data-bends="0" data-route-stretch="1.0" data-bridges="" d="M 310,204 L 370,204" fill="none" stroke="#3b82f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrowA)"/>
+  <path id="e4" data-graph-role="edge" data-edge-id="e4" data-source="partition" data-target="legal" data-edge-kind="flow" data-topic-id="" data-flow="control" data-motion-role="" data-motion-stage="" data-motion-order="" data-protocol="" data-via="" data-critical-path-id="" data-critical-hop="" data-critical-hops="" data-critical="false" data-bends="0" data-route-stretch="1.0" data-bridges="" d="M 590,204 L 650,204" fill="none" stroke="#3b82f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrowA)"/>
+  <path id="e5" data-graph-role="edge" data-edge-id="e5" data-source="legal" data-target="recalc" data-edge-kind="flow" data-topic-id="" data-flow="control" data-motion-role="" data-motion-stage="" data-motion-order="" data-protocol="" data-via="" data-critical-path-id="" data-critical-hop="" data-critical-hops="" data-critical="false" data-bends="3" data-route-stretch="1.0" data-bridges="" d="M 760,233 L 760,253.4 L 614,253.4 L 614,335 L 590,335" fill="none" stroke="#3b82f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrowA)"/>
+  <path id="e6" data-graph-role="edge" data-edge-id="e6" data-source="recalc" data-target="compare" data-edge-kind="flow" data-topic-id="" data-flow="control" data-motion-role="" data-motion-stage="" data-motion-order="" data-protocol="" data-via="" data-critical-path-id="" data-critical-hop="" data-critical-hops="" data-critical="false" data-bends="2" data-route-stretch="1.0" data-bridges="" d="M 590,353 L 610.4,353 L 610.4,344 L 650,344" fill="none" stroke="#3b82f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrowA)"/>
+  <path id="e7" data-graph-role="edge" data-edge-id="e7" data-source="compare" data-target="check" data-edge-kind="flow" data-topic-id="" data-flow="control" data-motion-role="" data-motion-stage="" data-motion-order="" data-protocol="" data-via="" data-critical-path-id="" data-critical-hop="" data-critical-hops="" data-critical="false" data-bends="3" data-route-stretch="1.0" data-bridges="" d="M 760,373 L 760,393.4 L 614,393.4 L 614,497 L 590,497" fill="none" stroke="#3b82f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrowA)"/>
+  <path id="e8" data-graph-role="edge" data-edge-id="e8" data-source="check" data-target="out" data-edge-kind="flow" data-topic-id="" data-flow="control" data-motion-role="" data-motion-stage="" data-motion-order="" data-protocol="" data-via="" data-critical-path-id="" data-critical-hop="" data-critical-hops="" data-critical="false" data-bends="2" data-route-stretch="1.0" data-bridges="" d="M 590,515 L 610.4,515 L 610.4,504 L 650,504" fill="none" stroke="#3b82f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrowA)"/>
+  <g id="node-input" data-graph-role="node" data-node-id="input" data-semantic-role="rect" data-motion-role="" data-motion-stage="" data-motion-order="" data-parent="" data-deployment-id="" data-topic-id="" data-span-id="" data-station-order="" data-status="" data-start-ms="" data-duration-ms="" data-parent-span="" data-graph-bounds="360,60,600,112">
+  <rect x="360.0" y="60.0" width="240.0" height="52.0" rx="4.0" fill="#ffffff" stroke="#222222" stroke-width="1.8"/>
+  <text data-text-role="title" data-full-text="固定Q3任务与库存" data-text-max-width="216.0" x="480.0" y="86.0" text-anchor="middle" class="node-title" font-size="18">固定Q3任务与库存</text>
+  </g>
+  <g id="node-blocks" data-graph-role="node" data-node-id="blocks" data-semantic-role="rect" data-motion-role="" data-motion-stage="" data-motion-order="" data-parent="" data-deployment-id="" data-topic-id="" data-span-id="" data-station-order="" data-status="" data-start-ms="" data-duration-ms="" data-parent-span="" data-graph-bounds="90,175,310,233">
+  <rect x="90.0" y="175.0" width="220.0" height="58.0" rx="4.0" fill="#ffffff" stroke="#222222" stroke-width="1.8"/>
+  <text data-text-role="title" data-full-text="不可拆任务块" data-text-max-width="196.0" x="200.0" y="204.0" text-anchor="middle" class="node-title" font-size="18">不可拆任务块</text>
+  </g>
+  <g id="node-partition" data-graph-role="node" data-node-id="partition" data-semantic-role="rect" data-motion-role="" data-motion-stage="" data-motion-order="" data-parent="" data-deployment-id="" data-topic-id="" data-span-id="" data-station-order="" data-status="" data-start-ms="" data-duration-ms="" data-parent-span="" data-graph-bounds="370,175,590,233">
+  <rect x="370.0" y="175.0" width="220.0" height="58.0" rx="4.0" fill="#ffffff" stroke="#222222" stroke-width="1.8"/>
+  <text data-text-role="title" data-full-text="2组或3组分区枚举" data-text-max-width="196.0" x="480.0" y="204.0" text-anchor="middle" class="node-title" font-size="18">2组或3组分区枚举</text>
+  </g>
+  <g id="node-legal" data-graph-role="node" data-node-id="legal" data-semantic-role="rect" data-motion-role="" data-motion-stage="" data-motion-order="" data-parent="" data-deployment-id="" data-topic-id="" data-span-id="" data-station-order="" data-status="" data-start-ms="" data-duration-ms="" data-parent-span="" data-graph-bounds="650,175,870,233">
+  <rect x="650.0" y="175.0" width="220.0" height="58.0" rx="4.0" fill="#ffffff" stroke="#222222" stroke-width="1.8"/>
+  <text data-text-role="title" data-full-text="覆盖、互斥、同组检查" data-text-max-width="196.0" x="760.0" y="204.0" text-anchor="middle" class="node-title" font-size="18">覆盖、互斥、同组检查</text>
+  </g>
+  <g id="node-recalc" data-graph-role="node" data-node-id="recalc" data-semantic-role="rect" data-motion-role="" data-motion-stage="" data-motion-order="" data-parent="" data-deployment-id="" data-topic-id="" data-span-id="" data-station-order="" data-status="" data-start-ms="" data-duration-ms="" data-parent-span="" data-graph-bounds="370,315,590,373">
+  <rect x="370.0" y="315.0" width="220.0" height="58.0" rx="4.0" fill="#ffffff" stroke="#222222" stroke-width="1.8"/>
+  <text data-text-role="title" data-full-text="独立重算资源需求" data-text-max-width="196.0" x="480.0" y="344.0" text-anchor="middle" class="node-title" font-size="18">独立重算资源需求</text>
+  </g>
+  <g id="node-compare" data-graph-role="node" data-node-id="compare" data-semantic-role="rect" data-motion-role="" data-motion-stage="" data-motion-order="" data-parent="" data-deployment-id="" data-topic-id="" data-span-id="" data-station-order="" data-status="" data-start-ms="" data-duration-ms="" data-parent-span="" data-graph-bounds="650,315,870,373">
+  <rect x="650.0" y="315.0" width="220.0" height="58.0" rx="4.0" fill="#ffffff" stroke="#222222" stroke-width="1.8"/>
+  <text data-text-role="title" data-full-text="缺口、资源与工作量比较" data-text-max-width="196.0" x="760.0" y="344.0" text-anchor="middle" class="node-title" font-size="16.49">缺口、资源与工作量比较</text>
+  </g>
+  <g id="node-check" data-graph-role="node" data-node-id="check" data-semantic-role="diamond" data-motion-role="" data-motion-stage="" data-motion-order="" data-parent="" data-deployment-id="" data-topic-id="" data-span-id="" data-station-order="" data-status="" data-start-ms="" data-duration-ms="" data-parent-span="" data-graph-bounds="370,465,590,547">
+  <rect x="370.0" y="465.0" width="220.0" height="82.0" rx="4.0" fill="#ffffff" stroke="#222222" stroke-width="2.0"/>
+  <text data-text-role="title" data-full-text="是否还有候选？" data-text-max-width="196.0" x="480.0" y="506.0" text-anchor="middle" class="node-title" font-size="18">是否还有候选？</text>
+  </g>
+  <g id="node-out" data-graph-role="node" data-node-id="out" data-semantic-role="rect" data-motion-role="" data-motion-stage="" data-motion-order="" data-parent="" data-deployment-id="" data-topic-id="" data-span-id="" data-station-order="" data-status="" data-start-ms="" data-duration-ms="" data-parent-span="" data-graph-bounds="650,475,870,533">
+  <rect x="650.0" y="475.0" width="220.0" height="58.0" rx="4.0" fill="#ffffff" stroke="#222222" stroke-width="1.8"/>
+  <text data-text-role="title" data-full-text="输出最优分区" data-text-max-width="196.0" x="760.0" y="504.0" text-anchor="middle" class="node-title" font-size="18">输出最优分区</text>
+  </g>
+</svg>

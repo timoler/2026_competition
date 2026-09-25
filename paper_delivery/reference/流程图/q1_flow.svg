@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 640" width="960" height="640" data-generator="fireworks-tech-graph" data-schema-version="1" data-text-metrics="heuristic-v1" data-style-id="4" data-visual-theme="Notion Clean" data-diagram-type="flowchart" data-motion-scene="" data-semantic-profile="generic" data-semantic-valid="true" data-quality-profile="standard" data-max-bends-per-edge="8" data-max-total-bends="18" data-max-route-stretch="5.0" data-max-bridged-crossings="8" data-min-node-gap="32.0" data-min-container-gutter="0.0" data-min-label-clearance="12.0" data-min-segment-length="0.0">
+  <defs>
+    <marker id="arrowA" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#3b82f6"/>
+    </marker>
+    <marker id="arrowB" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#3b82f6"/>
+    </marker>
+    <marker id="arrowC" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#3b82f6"/>
+    </marker>
+    <marker id="arrowE" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#3b82f6"/>
+    </marker>
+    <marker id="arrowF" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#9ca3af"/>
+    </marker>
+    <marker id="arrowG" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#9ca3af"/>
+    </marker>
+    <marker id="arrowH" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#d1d5db"/>
+    </marker>
+    <style>
+    text { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, 'PingFang SC', 'Noto Sans CJK SC', 'Microsoft YaHei', 'Microsoft JhengHei', 'SimHei', sans-serif; }
+    .title { font-size: 18px; font-weight: 700; fill: #111827; }
+    .subtitle { font-size: 13px; font-weight: 500; fill: #9ca3af; }
+    .section { font-size: 13px; font-weight: 700; fill: #6b7280; letter-spacing: 1.4px; }
+    .section-sub { font-size: 12px; font-weight: 500; fill: #6b7280; }
+    .node-title { font-weight: 700; fill: #111827; }
+    .node-sub { font-weight: 500; fill: #374151; }
+    .node-type { font-size: 11px; font-weight: 700; fill: #6b7280; letter-spacing: 0.08em; }
+    .arrow-label { font-size: 12px; font-weight: 600; fill: #6b7280; }
+    .legend { font-size: 12px; font-weight: 500; fill: #6b7280; }
+    .footnote { font-size: 12px; font-weight: 500; fill: #6b7280; }
+    .metric-label { font-size: 8.5px; font-weight: 700; fill: #6b7280; text-transform: uppercase; }
+    .metric-value { font-size: 9.5px; font-weight: 700; fill: #111827; }
+    </style>
+  </defs>
+  <rect data-graph-role="background" width="960.0" height="640.0" fill="#ffffff"/>
+  <text x="48.0" y="48" text-anchor="start" class="title">问题一  单点往返与不可拆货箱组批</text>
+  <line x1="48" y1="82" x2="912.0" y2="82" stroke="#e5e7eb" stroke-width="1"/>
+  <path id="e1" data-graph-role="edge" data-edge-id="e1" data-source="input" data-target="performance" data-edge-kind="flow" data-topic-id="" data-flow="control" data-motion-role="" data-motion-stage="" data-motion-order="" data-protocol="" data-via="" data-critical-path-id="" data-critical-hop="" data-critical-hops="" data-critical="false" data-bends="2" data-route-stretch="1.0" data-bridges="" d="M 471,122 L 471,142.4 L 240,142.4 L 240,180" fill="none" stroke="#3b82f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrowA)"/>
+  <path id="e2" data-graph-role="edge" data-edge-id="e2" data-source="input" data-target="boxes" data-edge-kind="flow" data-topic-id="" data-flow="control" data-motion-role="" data-motion-stage="" data-motion-order="" data-protocol="" data-via="" data-critical-path-id="" data-critical-hop="" data-critical-hops="" data-critical="false" data-bends="2" data-route-stretch="1.0" data-bridges="" d="M 489,122 L 489,142.4 L 720,142.4 L 720,180" fill="none" stroke="#3b82f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrowA)"/>
+  <path id="e3" data-graph-role="edge" data-edge-id="e3" data-source="performance" data-target="modes" data-edge-kind="flow" data-topic-id="" data-flow="control" data-motion-role="" data-motion-stage="" data-motion-order="" data-protocol="" data-via="" data-critical-path-id="" data-critical-hop="" data-critical-hops="" data-critical="false" data-bends="1" data-route-stretch="1.0" data-bridges="" d="M 240,238 L 240,329 L 360,329" fill="none" stroke="#3b82f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrowA)"/>
+  <path id="e4" data-graph-role="edge" data-edge-id="e4" data-source="boxes" data-target="modes" data-edge-kind="flow" data-topic-id="" data-flow="control" data-motion-role="" data-motion-stage="" data-motion-order="" data-protocol="" data-via="" data-critical-path-id="" data-critical-hop="" data-critical-hops="" data-critical="false" data-bends="1" data-route-stretch="1.0" data-bridges="" d="M 720,238 L 720,320 L 600,320" fill="none" stroke="#3b82f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrowA)"/>
+  <path id="e5" data-graph-role="edge" data-edge-id="e5" data-source="modes" data-target="check" data-edge-kind="flow" data-topic-id="" data-flow="control" data-motion-role="" data-motion-stage="" data-motion-order="" data-protocol="" data-via="" data-critical-path-id="" data-critical-hop="" data-critical-hops="" data-critical="false" data-bends="0" data-route-stretch="1.0" data-bridges="" d="M 480,358 L 480,415" fill="none" stroke="#3b82f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrowA)"/>
+  <path id="e6" data-graph-role="edge" data-edge-id="e6" data-source="check" data-target="dp" data-edge-kind="flow" data-topic-id="" data-flow="control" data-motion-role="" data-motion-stage="" data-motion-order="" data-protocol="" data-via="" data-critical-path-id="" data-critical-hop="" data-critical-hops="" data-critical="false" data-bends="0" data-route-stretch="1.0" data-bridges="" d="M 480,505 L 480,555" fill="none" stroke="#3b82f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrowA)"/>
+  <path id="e7" data-graph-role="edge" data-edge-id="e7" data-source="check" data-target="modes" data-edge-kind="flow" data-topic-id="" data-flow="control" data-motion-role="" data-motion-stage="" data-motion-order="" data-protocol="" data-via="" data-critical-path-id="" data-critical-hop="" data-critical-hops="" data-critical="false" data-bends="2" data-route-stretch="1.334" data-bridges="" d="M 600,460 L 620.4,460 L 620.4,338 L 600,338" fill="none" stroke="#3b82f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrowA)"/>
+  <g id="node-input" data-graph-role="node" data-node-id="input" data-semantic-role="rect" data-motion-role="" data-motion-stage="" data-motion-order="" data-parent="" data-deployment-id="" data-topic-id="" data-span-id="" data-station-order="" data-status="" data-start-ms="" data-duration-ms="" data-parent-span="" data-graph-bounds="360,70,600,122">
+  <rect x="360.0" y="70.0" width="240.0" height="52.0" rx="4.0" fill="#ffffff" stroke="#222222" stroke-width="1.8"/>
+  <text data-text-role="title" data-full-text="基础数据" data-text-max-width="216.0" x="480.0" y="96.0" text-anchor="middle" class="node-title" font-size="18">基础数据</text>
+  </g>
+  <g id="node-performance" data-graph-role="node" data-node-id="performance" data-semantic-role="rect" data-motion-role="" data-motion-stage="" data-motion-order="" data-parent="" data-deployment-id="" data-topic-id="" data-span-id="" data-station-order="" data-status="" data-start-ms="" data-duration-ms="" data-parent-span="" data-graph-bounds="120,180,360,238">
+  <rect x="120.0" y="180.0" width="240.0" height="58.0" rx="4.0" fill="#ffffff" stroke="#222222" stroke-width="1.8"/>
+  <text data-text-role="title" data-full-text="空间与飞行性能" data-text-max-width="216.0" x="240.0" y="209.0" text-anchor="middle" class="node-title" font-size="18">空间与飞行性能</text>
+  </g>
+  <g id="node-boxes" data-graph-role="node" data-node-id="boxes" data-semantic-role="rect" data-motion-role="" data-motion-stage="" data-motion-order="" data-parent="" data-deployment-id="" data-topic-id="" data-span-id="" data-station-order="" data-status="" data-start-ms="" data-duration-ms="" data-parent-span="" data-graph-bounds="600,180,840,238">
+  <rect x="600.0" y="180.0" width="240.0" height="58.0" rx="4.0" fill="#ffffff" stroke="#222222" stroke-width="1.8"/>
+  <text data-text-role="title" data-full-text="货箱质量、体积与不可拆分" data-text-max-width="216.0" x="720.0" y="209.0" text-anchor="middle" class="node-title" font-size="16.66">货箱质量、体积与不可拆分</text>
+  </g>
+  <g id="node-modes" data-graph-role="node" data-node-id="modes" data-semantic-role="rect" data-motion-role="" data-motion-stage="" data-motion-order="" data-parent="" data-deployment-id="" data-topic-id="" data-span-id="" data-station-order="" data-status="" data-start-ms="" data-duration-ms="" data-parent-span="" data-graph-bounds="360,300,600,358">
+  <rect x="360.0" y="300.0" width="240.0" height="58.0" rx="4.0" fill="#ffffff" stroke="#222222" stroke-width="1.8"/>
+  <text data-text-role="title" data-full-text="生成可行装载模式" data-text-max-width="216.0" x="480.0" y="329.0" text-anchor="middle" class="node-title" font-size="18">生成可行装载模式</text>
+  </g>
+  <g id="node-check" data-graph-role="node" data-node-id="check" data-semantic-role="diamond" data-motion-role="" data-motion-stage="" data-motion-order="" data-parent="" data-deployment-id="" data-topic-id="" data-span-id="" data-station-order="" data-status="" data-start-ms="" data-duration-ms="" data-parent-span="" data-graph-bounds="360,415,600,505">
+  <rect x="360.0" y="415.0" width="240.0" height="90.0" rx="4.0" fill="#ffffff" stroke="#222222" stroke-width="2.0"/>
+  <text data-text-role="title" data-full-text="满足载重、体积、SOC？" data-text-max-width="216.0" x="480.0" y="460.0" text-anchor="middle" class="node-title" font-size="18">满足载重、体积、SOC？</text>
+  </g>
+  <g id="node-dp" data-graph-role="node" data-node-id="dp" data-semantic-role="rect" data-motion-role="" data-motion-stage="" data-motion-order="" data-parent="" data-deployment-id="" data-topic-id="" data-span-id="" data-station-order="" data-status="" data-start-ms="" data-duration-ms="" data-parent-span="" data-graph-bounds="360,555,600,613">
+  <rect x="360.0" y="555.0" width="240.0" height="58.0" rx="4.0" fill="#ffffff" stroke="#222222" stroke-width="1.8"/>
+  <text data-text-role="title" data-full-text="记忆化动态规划" data-text-max-width="216.0" x="480.0" y="584.0" text-anchor="middle" class="node-title" font-size="18">记忆化动态规划</text>
+  </g>
+</svg>
