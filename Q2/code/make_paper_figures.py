@@ -95,7 +95,7 @@ def fig2():
     xmax = margins[0]
     ax.set_xlim(0, xmax * 1.22)
     ax.annotate(
-        f"最小裕量 {mn:.1f} s > 0",
+        f"最小裕量 {mn:.2f} s > 0",
         xy=(mn, mn_y),
         xytext=(xmax * 0.46, mn_y - 1.5),
         arrowprops=dict(arrowstyle="->", color=INK, lw=0.9, shrinkA=0, shrinkB=0),
