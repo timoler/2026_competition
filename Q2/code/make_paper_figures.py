@@ -71,12 +71,15 @@ def fig1():
 def fig2():
     deliv = read_csv("q2_deliveries.csv")
     hard = [r for r in deliv if r["hard_due_s"] and r["hard_due_s"].strip()]
+    # 剩余裕量 = 硬截止时刻 − 交付完成时刻，逐箱复算。
     data = [(float(r["hard_due_s"]) - float(r["delivery_complete_s"]), r["box_id"])
             for r in hard]
-    data.sort(key=lambda x: x[0])
+    # 由大到小排序：最大裕量在最下方、最小裕量在最上方，使"从上到下"读作升序。
+    data.sort(key=lambda x: x[0], reverse=True)
     margins = [d[0] for d in data]
     labels = [d[1] for d in data]
-    y = list(range(len(data)))
+    n = len(data)
+    y = list(range(n))
 
     fig, ax = plt.subplots(figsize=(7.6, 5.8))
     ax.barh(y, margins, height=0.6, color=AQUA, edgecolor="white", linewidth=0.3)
@@ -85,9 +88,20 @@ def fig2():
     ax.set_yticklabels(labels, fontsize=6.5)
     ax.set_xlabel("硬时限剩余裕量 (s)")
     ax.set_ylabel("硬时限货箱（按剩余裕量升序）")
-    mn = margins[0]
-    ax.annotate(f"最小裕量 {mn:.0f} s > 0", xy=(mn, 0), xytext=(mn * 0.02, 3),
-                fontsize=8, color=INK)
+
+    # 最小裕量在最上方；标注放在上部空白处，用箭头指向最短条形右端。
+    mn = margins[-1]
+    mn_y = n - 1
+    xmax = margins[0]
+    ax.set_xlim(0, xmax * 1.22)
+    ax.annotate(
+        f"最小裕量 {mn:.1f} s > 0",
+        xy=(mn, mn_y),
+        xytext=(xmax * 0.46, mn_y - 1.5),
+        arrowprops=dict(arrowstyle="->", color=INK, lw=0.9, shrinkA=0, shrinkB=0),
+        fontsize=8.5, color=INK, ha="left", va="center",
+        bbox=dict(boxstyle="round,pad=0.3", fc="white", ec="none", alpha=0.92),
+    )
     ax.grid(axis="y", visible=False)
     fig.tight_layout()
     fig.savefig(PFIG / "q2_deadline_margin_final.png", dpi=300)
