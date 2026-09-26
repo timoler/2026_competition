@@ -184,7 +184,7 @@ sub_ok = (len(sub) == len(base) and
               for s, b in zip(sub, base)))
 check("submission_rows", sub_ok)
 field_map = {"总质量（kg）": "mass_kg", "总体积（m³）": "volume_m3",
-             "往返时间（s）": "operation_s", "架次能耗（kWh）": "energy_kwh", "返航SOC（%）": "soc_pct"}
+             "往返时间（s）": "flight_s", "架次能耗（kWh）": "energy_kwh", "返航SOC（%）": "soc_pct"}
 check("submission_numeric_fields", len(sub) == len(base) and all(
     math.isclose(float(s[shown]), float(b[source_field]), abs_tol=1e-8)
     for s, b in zip(sub, base) for shown, source_field in field_map.items()))

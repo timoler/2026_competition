@@ -11,7 +11,8 @@
 | 架次数 | 18 | `Q1/results/q1_submission_rows.csv` |
 | 货箱数 | 80（每箱恰好配送一次） | `Q1/results/q1_batches_default.csv` |
 | 总能耗 | 59.130796487 kWh | 同上（架次能耗求和） |
-| 累计作业时间 | 32776.092676944 s | 同上（往返时间求和） |
+| 累计作业时间 | 32776.092676944 s | 同上（作业时间 operation_s 求和，含准备+飞行+交接） |
+| 飞行往返时间（提交字段） | 19288.092676944 s | `q1_submission_rows.csv` 往返时间求和（纯飞行，不含准备/交接） |
 | 最低返航 SOC | 23.0888%（≈23.09%） | `q1_submission_rows.csv` 返航SOC最小值 |
 | 验证状态 | PASS（7 项检查） | `Q1/results/q1_verification.json` |
 | 架次数下界 | 18（按各服务区质量/体积/安全载荷推得） | `Q1/README.md:69` |

@@ -154,7 +154,7 @@ for r,order,label in [(r,(2,0,1),'时间_架次_能耗') for r in [.1,.15,.2,.25
     if r==.2 and label=='时间_架次_能耗':baseline=result
 save('q1_model_comparison.csv',summary)
 save('q1_batches_default.csv',baseline)
-save('q1_submission_rows.csv',[{'架次编号':x['trip_id'],'服务区编号':x['site'],'机型编号':x['model'],'货箱编号列表':x['box_ids'],'总质量（kg）':x['mass_kg'],'总体积（m³）':x['volume_m3'],'往返时间（s）':x['operation_s'],'架次能耗（kWh）':x['energy_kwh'],'返航SOC（%）':x['soc_pct']} for x in baseline])
+save('q1_submission_rows.csv',[{'架次编号':x['trip_id'],'服务区编号':x['site'],'机型编号':x['model'],'货箱编号列表':x['box_ids'],'总质量（kg）':x['mass_kg'],'总体积（m³）':x['volume_m3'],'往返时间（s）':x['flight_s'],'架次能耗（kWh）':x['energy_kwh'],'返航SOC（%）':x['soc_pct']} for x in baseline])
 manifest=[dict(file=str(f.relative_to(SRC)),sha256=hashlib.sha256(f.read_bytes()).hexdigest()) for f in sorted(SRC.rglob('*')) if f.is_file()]
 (OUT/'q1_source_hashes.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2),encoding='utf-8')
 print(json.dumps(summary,ensure_ascii=False,indent=2))
